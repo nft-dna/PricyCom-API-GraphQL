@@ -1,5 +1,5 @@
 # VolcanoCom-API-GraphQL
-GraphQL API server for VolcanoCom v2 - backend for [VolcanoCom-Client-V2](https://github.com/Fantom-foundation/Artion-Client-V2).
+GraphQL API server for Volcano v2 - backend
 
 Build using make:
 ```bash

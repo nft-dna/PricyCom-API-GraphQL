@@ -1,4 +1,4 @@
-# VolcanoCom-API-GraphQL
+# Volcano-API-GraphQL
 GraphQL API server for Volcano v2 - backend
 
 Build using make:

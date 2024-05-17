@@ -1,8 +1,4 @@
-{
-  "_format": "hh-sol-artifact-1",
-  "contractName": "IVolcanoBundleMarketplace",
-  "sourceName": "contracts/VolcanoMarketplace.sol",
-  "abi": [
+[
     {
       "inputs": [
         {
@@ -26,9 +22,4 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ],
-  "bytecode": "0x",
-  "deployedBytecode": "0x",
-  "linkReferences": {},
-  "deployedLinkReferences": {}
-}
+]

@@ -1,89 +1,78 @@
 {
-  "_format": "hh-sol-artifact-1",
-  "contractName": "IVolcanoAddressRegistry",
-  "sourceName": "contracts/VolcanoMarketplace.sol",
-  "abi": [
-    {
-      "inputs": [],
-      "name": "auction",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "bundleMarketplace",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "erc1155Factory",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "erc721factory",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "priceFeed",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "tokenRegistry",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    }
+  "inputs": [],
+  "name": "auction",
+  "outputs": [
+	{
+	  "internalType": "address",
+	  "name": "",
+	  "type": "address"
+	}
   ],
-  "bytecode": "0x",
-  "deployedBytecode": "0x",
-  "linkReferences": {},
-  "deployedLinkReferences": {}
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "bundleMarketplace",
+  "outputs": [
+	{
+	  "internalType": "address",
+	  "name": "",
+	  "type": "address"
+	}
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "erc1155Factory",
+  "outputs": [
+	{
+	  "internalType": "address",
+	  "name": "",
+	  "type": "address"
+	}
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "erc721factory",
+  "outputs": [
+	{
+	  "internalType": "address",
+	  "name": "",
+	  "type": "address"
+	}
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "priceFeed",
+  "outputs": [
+	{
+	  "internalType": "address",
+	  "name": "",
+	  "type": "address"
+	}
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "tokenRegistry",
+  "outputs": [
+	{
+	  "internalType": "address",
+	  "name": "",
+	  "type": "address"
+	}
+  ],
+  "stateMutability": "view",
+  "type": "function"
 }

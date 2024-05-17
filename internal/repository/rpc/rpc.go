@@ -1,4 +1,4 @@
-// Package rpc provides high level access to the Fantom Opera blockchain
+// Package rpc provides high level access to the Volcano Opera blockchain
 // node through RPC interface.
 package rpc
 
@@ -34,7 +34,7 @@ var cfg *config.Config
 // log represents the logger to be used by the repository.
 var log logger.Logger
 
-// Opera represents the implementation of the Blockchain interface for Fantom Opera node.
+// Opera represents the implementation of the Blockchain interface for Volcano Opera node.
 type Opera struct {
 	// basics of the connection
 	rpc *client.Client
@@ -48,8 +48,8 @@ type Opera struct {
 	headers chan *eth.Header
 
 	// decode ABI structures
-	abiFantom721   *abi.ABI
-	abiFantom1155  *abi.ABI
+	abiVolcano721   *abi.ABI
+	abiVolcano1155  *abi.ABI
 	abiMarketplace *abi.ABI
 
 	// contracts
@@ -57,7 +57,7 @@ type Opera struct {
 	auctionContracts           map[common.Address]IAuctionContract
 	marketplaceContracts       map[common.Address]IMarketplaceContract
 	payTokenPriceContract      IMarketplaceContract // for token royalty or pay token price
-	tokenRegistryContract      *contracts.FantomTokenRegistry
+	tokenRegistryContract      *contracts.VolcanoTokenRegistry
 	royaltyRegistryContract    *contracts.FantomRoyaltyRegistry
 	rngFeedContract            *contracts.RandomNumberOracle
 
@@ -75,32 +75,10 @@ func (o *Opera) RegisterContract(ct string, addr *common.Address) (err error) {
 	switch ct {
 
 	case "auction":
-		var ac AuctionContractV1
-		ac.auctionV1aContract, err = contracts.NewFantomAuction(*addr, o.ftm)
+		var ac AuctionContractV2 
+		ac.auctionV2Contract, err = contracts.NewVolcanoAuction(*addr, o.ftm)
 		if err == nil {
-			log.Noticef("loaded V0 auction contract at %s", addr.String())
-		}
-		ac.auctionV1Contract, err = contracts.NewFantomAuctionV1(*addr, o.ftm)
-		if err == nil {
-			log.Noticef("loaded V1 auction contract at %s", addr.String())
-		}
-		o.auctionContracts[*addr] = &ac
-		o.auctionContractsProps[*addr] = types.AuctionV1Props
-
-	case "auction2":
-		var ac AuctionContractV2
-		ac.auctionV2Contract, err = contracts.NewFantomAuctionV2(*addr, o.ftm)
-		if err == nil {
-			log.Noticef("loaded V2 auction contract at %s", addr.String())
-		}
-		o.auctionContracts[*addr] = &ac
-		o.auctionContractsProps[*addr] = types.AuctionV2Props
-
-	case "auction3":
-		var ac AuctionContractV2 // V3 use the same ABI as V2
-		ac.auctionV2Contract, err = contracts.NewFantomAuctionV2(*addr, o.ftm)
-		if err == nil {
-			log.Noticef("loaded V3 auction contract at %s", addr.String())
+			log.Noticef("loaded auction contract at %s", addr.String())
 		}
 		o.auctionContracts[*addr] = &ac
 		o.auctionContractsProps[*addr] = types.AuctionV3Props
@@ -109,24 +87,7 @@ func (o *Opera) RegisterContract(ct string, addr *common.Address) (err error) {
 
 	case "market":
 		var mc MarketplaceContractV1
-		mc.marketplace, err = contracts.NewFantomMarketplace(*addr, o.ftm)
-		if err == nil {
-			log.Noticef("loaded %s contract at %s", ct, addr.String())
-		}
-		o.marketplaceContracts[*addr] = &mc
-		o.payTokenPriceContract = &mc
-
-	case "market2":
-		var mc MarketplaceContractV1 // V2 use the same ABI as V1
-		mc.marketplace, err = contracts.NewFantomMarketplace(*addr, o.ftm)
-		if err == nil {
-			log.Noticef("loaded %s contract at %s", ct, addr.String())
-		}
-		o.marketplaceContracts[*addr] = &mc
-
-	case "market3":
-		var mc MarketplaceContractV1 // V3 use the same ABI as V1
-		mc.marketplace, err = contracts.NewFantomMarketplace(*addr, o.ftm)
+		mc.marketplace, err = contracts.NewVolcanoMarketplace(*addr, o.ftm)
 		if err == nil {
 			log.Noticef("loaded %s contract at %s", ct, addr.String())
 		}
@@ -141,7 +102,7 @@ func (o *Opera) RegisterContract(ct string, addr *common.Address) (err error) {
 		}
 
 	case "token_registry":
-		o.tokenRegistryContract, err = contracts.NewFantomTokenRegistry(*addr, o.ftm)
+		o.tokenRegistryContract, err = contracts.NewVolcanoTokenRegistry(*addr, o.ftm)
 		if err == nil {
 			log.Noticef("loaded %s contract at %s", ct, addr.String())
 		}
@@ -208,17 +169,17 @@ func connect() (*client.Client, error) {
 
 // loadABI tries to load and parse expected ABI for contracts we need.
 func loadABI(o *Opera) (err error) {
-	o.abiFantom721, err = loadABIFile("contracts/abi/FantomNFTTradable.json")
+	o.abiVolcano721, err = loadABIFile("contracts/abi/VolcanoERC721Tradable.json")
 	if err != nil {
 		return err
 	}
 
-	o.abiFantom1155, err = loadABIFile("contracts/abi/FantomArtTradable.json")
+	o.abiVolcano1155, err = loadABIFile("contracts/abi/VolcanoERC1155Tradable.json")
 	if err != nil {
 		return err
 	}
 
-	o.abiMarketplace, err = loadABIFile("contracts/abi/FantomMarketplace.json")
+	o.abiMarketplace, err = loadABIFile("contracts/abi/VolcanoMarketplace.json")
 	if err != nil {
 		return err
 	}
@@ -228,7 +189,7 @@ func loadABI(o *Opera) (err error) {
 
 // loadABIFile reads specified ABI file and returns the decoded ABI.
 func loadABIFile(path string) (*abi.ABI, error) {
-	// FantomNFTTradable
+	// VolcanoERC721Tradable
 	data, err := abiFiles.ReadFile(path)
 	if err != nil {
 		return nil, err

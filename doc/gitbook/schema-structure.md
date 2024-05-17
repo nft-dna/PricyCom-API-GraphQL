@@ -244,10 +244,10 @@ type Activity {
     # The related token
     token: Token
 
-    # The FantomMarketplace contract (for offers/listings)
+    # The VolcanoMarketplace contract (for offers/listings)
     marketplace: Address
 
-    # The FantomAuction contract (for auctions)
+    # The VolcanoAuction contract (for auctions)
     auctionHall: Address
 }
 
@@ -295,7 +295,7 @@ type Auction {
     # The seller of the item
     owner: Address!
 
-    # The FantomAuction contract
+    # The VolcanoAuction contract
     auctionHall: Address!
 
     # The auctioned amount of tokens (always 1 for ERC-721)
@@ -570,7 +570,7 @@ type Listing {
     # The listed token (detail)
     token: Token
 
-    # The FantomMarketplace contract
+    # The VolcanoMarketplace contract
     marketplace: Address!
 
     # The listed amount (only this exact amount can be bought)
@@ -762,7 +762,7 @@ type Offer {
     # The offered token (detail)
     token: Token
 
-    # The FantomMarketplace contract
+    # The VolcanoMarketplace contract
     marketplace: Address!
 
     # The buyer

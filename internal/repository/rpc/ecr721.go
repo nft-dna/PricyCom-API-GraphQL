@@ -1,4 +1,4 @@
-// Package rpc provides high level access to the Fantom Opera blockchain
+// Package rpc provides high level access to the Volcano Opera blockchain
 // node through RPC interface.
 package rpc
 
@@ -49,7 +49,7 @@ func (o *Opera) Erc721StartingBlockNumber(adr *common.Address) (uint64, error) {
 
 // CanMintErc721 checks if the given user can mint a new token on the given NFT contract.
 func (o *Opera) CanMintErc721(contract *common.Address, user *common.Address, fee *big.Int) (bool, error) {
-	data, err := o.abiFantom721.Pack("mint", *user, defaultMintingTestTokenUrl)
+	data, err := o.abiVolcano721.Pack("mint", *user, defaultMintingTestTokenUrl)
 	if err != nil {
 		return false, err
 	}
@@ -112,7 +112,7 @@ func (o *Opera) Erc721TokenUri(contract *common.Address, tokenId *big.Int) (stri
 		To:   contract,
 		Data: input,
 	}, nil)
-	res, err := o.abiFantom721.Unpack("tokenURI", data)
+	res, err := o.abiVolcano721.Unpack("tokenURI", data)
 	if err != nil {
 		log.Errorf("can not decode response; %s", err.Error())
 		return "", err

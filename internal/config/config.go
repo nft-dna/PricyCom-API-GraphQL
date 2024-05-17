@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// Config defines configuration options structure for Fantom API server.
+// Config defines configuration options structure for Volcano API server.
 type Config struct {
 	// AppName holds the name of the application
 	AppName string `mapstructure:"app_name"`
@@ -64,7 +64,7 @@ type Log struct {
 	Format string `mapstructure:"format"`
 }
 
-// Node represents the Fantom Opera node access configuration
+// Node represents the Volcano Opera node access configuration
 type Node struct {
 	Url string `mapstructure:"url"`
 }

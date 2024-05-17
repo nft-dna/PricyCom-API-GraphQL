@@ -72,7 +72,7 @@ func (app *apiServer) run() {
 	app.observeSignals()
 
 	// start responding to requests
-	app.log.Infof("welcome to Artion GraphQL server")
+	app.log.Infof("welcome to Volcano GraphQL server")
 	app.log.Infof("listening for requests on %s", app.cfg.Server.BindAddress)
 
 	// listen the interface

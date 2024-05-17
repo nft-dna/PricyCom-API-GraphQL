@@ -1,4 +1,4 @@
-// Package rpc provides high level access to the Fantom Opera blockchain
+// Package rpc provides high level access to the Volcano Opera blockchain
 // node through RPC interface.
 package rpc
 

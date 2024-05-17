@@ -1,4 +1,4 @@
-// Package rpc provides high level access to the Fantom Opera blockchain
+// Package rpc provides high level access to the Volcano Opera blockchain
 // node through RPC interface.
 package rpc
 
@@ -21,7 +21,7 @@ func (o *Opera) CollectionName(adr *common.Address) (string, error) {
 		log.Errorf("contract %s name not found", adr.String())
 		return "", err
 	}
-	res, err := o.abiFantom721.Unpack("name", data)
+	res, err := o.abiVolcano721.Unpack("name", data)
 	if err != nil {
 		log.Errorf("can not decode contract %s name; %s", adr.String(), err.Error())
 		return "", err
@@ -41,7 +41,7 @@ func (o *Opera) CollectionSymbol(adr *common.Address) (string, error) {
 		log.Errorf("contract %s symbol not found", adr.String())
 		return "", err
 	}
-	res, err := o.abiFantom721.Unpack("symbol", data)
+	res, err := o.abiVolcano721.Unpack("symbol", data)
 	if err != nil {
 		log.Errorf("can not decode contract %s symbol; %s", adr.String(), err.Error())
 		return "", err

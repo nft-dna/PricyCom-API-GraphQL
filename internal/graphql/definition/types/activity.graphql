@@ -95,10 +95,10 @@ type Activity {
     # The related token
     token: Token
 
-    # The FantomMarketplace contract (for offers/listings)
+    # The VolcanoMarketplace contract (for offers/listings)
     marketplace: Address
 
-    # The FantomAuction contract (for auctions)
+    # The VolcanoAuction contract (for auctions)
     auctionHall: Address
 
     # The transaction hash

@@ -12,7 +12,7 @@ type Auction {
     # The seller object
     ownerUser: User!
 
-    # The FantomAuction contract
+    # The VolcanoAuction contract
     auctionHall: Address!
 
     # Properties of auctions running on given auction contract

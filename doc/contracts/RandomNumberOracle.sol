@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.21;
 
 // RandomNumberConsumer represents a contract capable of receiving random numbers
 // provided by the oracle on requests.

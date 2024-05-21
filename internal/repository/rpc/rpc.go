@@ -82,6 +82,9 @@ func (o *Opera) RegisterContract(ct string, addr *common.Address) (err error) {
 		}
 		o.auctionContracts[*addr] = &ac
 		o.auctionContractsProps[*addr] = types.AuctionV3Props
+		if err == nil {
+			log.Noticef("loaded %s contract at %s", ct, addr.String())
+		}
 		o.basicContracts.AuctionHall = *addr
 		log.Warningf("setting basic auction to %s", addr.String())
 
@@ -92,7 +95,11 @@ func (o *Opera) RegisterContract(ct string, addr *common.Address) (err error) {
 			log.Noticef("loaded %s contract at %s", ct, addr.String())
 		}
 		o.marketplaceContracts[*addr] = &mc
+		if err == nil {
+			log.Noticef("loaded %s contract at %s", ct, addr.String())
+		}
 		o.basicContracts.Marketplace = *addr
+		o.payTokenPriceContract = &mc
 		log.Warningf("setting basic marketplace to %s", ct, addr.String())
 
 	case "rng":

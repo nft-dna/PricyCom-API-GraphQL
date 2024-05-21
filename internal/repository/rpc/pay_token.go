@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	"math/big"
 )
 
 // ListPayTokens obtains list of tokens allowed for market payments from TokenRegistry contract
@@ -49,6 +50,8 @@ func (o *Opera) getPayToken(address common.Address) (payToken types.PayToken, er
 		return
 	}
 	payToken.Decimals = int32(decimals)
-	payToken.UnitPrice, err = o.GetPayTokenPrice(&address, nil)
+	// MM commented 
+	// payToken.UnitPrice, err = o.GetPayTokenPrice(&address, nil)
+	payToken.UnitPrice = big.NewInt(0)
 	return
 }

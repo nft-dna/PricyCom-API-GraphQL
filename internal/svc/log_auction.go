@@ -55,10 +55,12 @@ func auctionCreated(evt *eth.Log, _ *logObserver) {
 		IsActive:      true,
 	}
 
+	/*
 	// extend the auction with details pulled from the contract
 	if err := repo.ExtendAuctionDetailAt(&auction, new(big.Int).SetUint64(evt.BlockNumber)); err != nil {
 		log.Errorf("failed to load extended auction details; %s", err.Error())
 	}
+	*/
 
 	if time.Time(auction.EndTime).Unix() <= 0 {
 		log.Errorf("invalid auction end time %d for %s/%s", time.Time(auction.EndTime).Unix(), auction.Contract.String(), auction.TokenId.String())

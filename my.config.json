@@ -1,8 +1,9 @@
 {
   "server": {
-    "bind": "0.0.0.0:9090",
+    "bind": "0.0.0.0:8080",
     "cors": [
-      "*"
+      "*",
+      "10.94.0.245"
     ],
     "write_timeout": 30,
     "resolver_timeout": 240

@@ -33,6 +33,7 @@ build/artionapi: internal/graphql/schema/gen/schema.graphql
 test: internal/graphql/schema/gen/schema.graphql
 	go test ./...
 
+#tools/make_graphql_bundle.sh internal/graphql/schema/gen/schema.graphql internal/graphql/definition
 internal/graphql/schema/gen/schema.graphql:
 	@bash tools/make_graphql_bundle.sh $@ internal/graphql/definition
 
@@ -120,10 +121,10 @@ db_notifications: doc/db/notification_tpl.json
 	mongoimport --db=artion --collection=notification_tpl --file=$<
 
 db_colcats: doc/db/colcats.json
-	mongoimport --db=artionshared --collection=colcats --file=$<
+	mongoimport --db=artion_shared --collection=colcats --file=$<
 
 db_collections: doc/db/collections.json
-	mongoimport --db=artionshared --collection=collections --file=$<
+	mongoimport --db=artion_shared --collection=collections --file=$<
 
 contracts:
 	solc --abi --bin --overwrite --optimize --optimize-runs=200 --metadata --hashes -o doc/contracts/build/ doc/contracts/PriceOracleProxy.sol

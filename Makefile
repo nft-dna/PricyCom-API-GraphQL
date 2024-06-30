@@ -20,7 +20,7 @@ BUILD_COMMIT := $(shell git show --format="%H" --no-patch)
 BUILD_COMMIT_TIME := $(shell git show --format="%cD" --no-patch)
 
 #go build -v -gcflags="all=-N -l" -ldflags="-X 'artion-api-graphql/cmd/artionapi/build.Version=1.1.0'" -o build/artionapi ./cmd/artionapi
-#	build/artionapi -cfg my-config-file.json
+#	build/artionapi -cfg my.config.json
 build/artionapi: internal/graphql/schema/gen/schema.graphql
 	@go build -v \
 	-gcflags="all=-N -l" \

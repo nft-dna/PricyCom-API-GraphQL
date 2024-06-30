@@ -9,7 +9,7 @@ import (
 )
 
 // nftMetadataWorkerThreads is the number of threads working on NFT metadata updates.
-const nftMetadataWorkerThreads = 100
+const nftMetadataWorkerThreads = 10
 
 // nftMetadataWorker represents a service responsible for processing NFT token metadata
 // update queue from the metadata updater service.
@@ -115,7 +115,7 @@ func (mwt *nftMetadataWorkerThread) update(tok *types.Token) {
 	}
 
 	// get the metadata
-	log.Debugf("loading metadata for %s/%s", tok.Contract.String(), tok.TokenId.String())
+	log.Infof("loading metadata for %s/%s", tok.Contract.String(), tok.TokenId.String())
 	md, err := repo.GetTokenJsonMetadata(tok.Uri)
 	if err != nil {
 		log.Warningf("NFT metadata [%s] failed on %s/%s; %s", tok.Uri, tok.Contract.String(), tok.TokenId.String(), err.Error())
@@ -136,7 +136,7 @@ func (mwt *nftMetadataWorkerThread) update(tok *types.Token) {
 			return
 		}
 
-		log.Debugf("NFT image [%s] has type %d", *md.Image, img.Type)
+		log.Infof("NFT image [%s] has type %d", *md.Image, img.Type)
 		tok.ImageType = img.Type
 	}
 
@@ -172,7 +172,7 @@ func (mwt *nftMetadataWorkerThread) update(tok *types.Token) {
 		log.Errorf("failed metadata update on %s/%s; %s", tok.Contract.String(), tok.TokenId.String(), err.Error())
 		return
 	}
-	log.Debugf("NFT %s/%s metadata updated [%s]", tok.Contract.String(), tok.TokenId.String(), tok.Name)
+	log.Infof("NFT %s/%s metadata updated [%s]", tok.Contract.String(), tok.TokenId.String(), tok.Name)
 }
 
 // tryLegacyUpdate tries to load critical details of the given NFT metadata from legacy source.

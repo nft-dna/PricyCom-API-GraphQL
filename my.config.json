@@ -3,7 +3,7 @@
     "bind": "0.0.0.0:8080",
     "cors": [
       "*",
-      "10.94.0.245"
+      "127.0.0.1"
     ],
     "write_timeout": 30,
     "resolver_timeout": 240
@@ -12,7 +12,7 @@
     "level": "Info"
   },
   "node": {
-    "url": "https://turbo.magma-rpc.com/"
+    "url": "https://sepolia.drpc.org/"
   },
   "db": {
     "url": "mongodb://127.0.0.1:27017",

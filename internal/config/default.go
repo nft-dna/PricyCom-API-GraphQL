@@ -8,7 +8,7 @@ import (
 // Default values of configuration options
 const (
 	// this defines default application name
-	defApplicationName = "Artion"
+	defApplicationName = "Volcano"
 
 	// EmptyAddress defines an empty address
 	EmptyAddress = "0x0000000000000000000000000000000000000000"
@@ -69,7 +69,7 @@ const (
 	defAuthNonceSecret = "0xABCDEF"
 
 	// defWrappedFTMContract is the default address of the wFTM contract
-	defWrappedFTMContract = "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"
+	//defWrappedFTMContract = "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"
 )
 
 // defCorsAllowOrigins holds CORS default allowed origins.
@@ -111,5 +111,5 @@ func applyDefaults(cfg *viper.Viper) {
 	cfg.SetDefault(keyAuthNonceSecret, defAuthNonceSecret)
 
 	// contracts
-	cfg.SetDefault(keyWrappedFTM, defWrappedFTMContract)
+	//cfg.SetDefault(keyWrappedFTM, defWrappedFTMContract)
 }

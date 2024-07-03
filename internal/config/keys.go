@@ -49,5 +49,5 @@ const (
 	keyAuthNonceSecret  = "auth.nonce_secret"
 
 	// mandatory contracts
-	keyWrappedFTM = "contracts.wftm"
+	//keyWrappedFTM = "contracts.wftm"
 )

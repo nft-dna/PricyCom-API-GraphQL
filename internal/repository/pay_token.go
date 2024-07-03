@@ -14,7 +14,7 @@ import (
 var tokenPriceDecimalsCorrection = big.NewInt(1_000_000_000_000)
 
 var zeroAddress = common.Address{}
-var wFtmAddress = common.HexToAddress("0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83")
+//var wFtmAddress = common.HexToAddress("0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83")
 
 // GetUnifiedPrice converts token price in pay-tokens to value in unified units for storing in database.
 func (p *Proxy) GetUnifiedPrice(address common.Address, amount hexutil.Big) (out types.TokenPrice, err error) {
@@ -70,9 +70,9 @@ func (p *Proxy) getPayToken(address *common.Address) (*types.PayToken, error) {
 		return nil, err
 	}
 	// replace zero address (native tokens) by wFTM token
-	if bytes.Equal(address.Bytes(), zeroAddress.Bytes()) {
-		address = &wFtmAddress
-	}
+	//if bytes.Equal(address.Bytes(), zeroAddress.Bytes()) {
+	//	address = &wFtmAddress
+	//}
 	for _, payToken := range list {
 		if 0 == bytes.Compare(payToken.Contract.Bytes(), address.Bytes()) {
 			return &payToken, nil

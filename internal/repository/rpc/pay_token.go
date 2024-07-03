@@ -23,11 +23,18 @@ func (o *Opera) ListPayTokens() (payTokens []types.PayToken, err error) {
 	for itr.Next() {
 		address := itr.Event.Token
 		payToken, err := o.getPayToken(address)
-		if err != nil {
-			return nil, err
+		// MM commented
+		// if err != nil {
+		// 	return nil, err
+		// }
+		if err == nil {
+			payTokens = append(payTokens, payToken)
 		}
-		payTokens = append(payTokens, payToken)
 	}
+	
+	// MM add native token	Contract common.Address
+	payTokens = append(payTokens, types.PayToken{Name: "LAVA", Symbol: "LAVA", Decimals: 18, UnitPrice: big.NewInt(0)})
+	
 	return
 }
 

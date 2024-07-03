@@ -51,7 +51,7 @@ const (
 	defSharedMongoUrl = "mongodb://localhost:27017"
 
 	// defSharedMongoDatabase holds the default name of the shared/replicated MongoDB database
-	defSharedMongoDatabase = "artionshared"
+	defSharedMongoDatabase = "artion_shared"
 
 	// defCacheEvictionTime holds default time for in-memory eviction periods
 	defCacheEvictionTime = 15 * time.Minute

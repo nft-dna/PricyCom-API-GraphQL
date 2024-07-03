@@ -29,8 +29,8 @@ mongoimport --db=artion --collection=status --file=doc/db/status.json
 For the shared MongoDB database:
 
 ```bash
-mongoimport --db=artionshared --collection=colcats --file=doc/db/colcats.json
-mongoimport --db=artionshared --collection=collections --file=doc/db/collections.json
+mongoimport --db=artion_shared --collection=colcats --file=doc/db/colcats.json
+mongoimport --db=artion_shared --collection=collections --file=doc/db/collections.json
 ```
 
 When configured, run the Artion api server:

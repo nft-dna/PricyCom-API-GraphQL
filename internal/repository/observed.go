@@ -5,8 +5,9 @@ import (
 	"artion-api-graphql/internal/types"
 	"bytes"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 // IsObservedContract checks if the given address is a known and observed contract.

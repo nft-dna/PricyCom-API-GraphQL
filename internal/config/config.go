@@ -3,8 +3,9 @@ package config
 
 import (
 	"crypto/ecdsa"
-	"github.com/ethereum/go-ethereum/common"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 // Config defines configuration options structure for Volcano API server.
@@ -48,14 +49,15 @@ type Config struct {
 
 // Server represents the GraphQL server configuration
 type Server struct {
-	BindAddress     string   `mapstructure:"bind"`
-	CorsOrigin      []string `mapstructure:"cors"`
-	ReadTimeout     int64    `mapstructure:"read_timeout"`
-	WriteTimeout    int64    `mapstructure:"write_timeout"`
-	IdleTimeout     int64    `mapstructure:"idle_timeout"`
-	HeaderTimeout   int64    `mapstructure:"header_timeout"`
-	ResolverTimeout int64    `mapstructure:"resolver_timeout"`
-	MaxParserMemory int64    `mapstructure:"mem_max"`
+	BindAddress           string   `mapstructure:"bind"`
+	CorsOrigin            []string `mapstructure:"cors"`
+	ReadTimeout           int64    `mapstructure:"read_timeout"`
+	WriteTimeout          int64    `mapstructure:"write_timeout"`
+	IdleTimeout           int64    `mapstructure:"idle_timeout"`
+	HeaderTimeout         int64    `mapstructure:"header_timeout"`
+	ResolverTimeout       int64    `mapstructure:"resolver_timeout"`
+	MaxParserMemory       int64    `mapstructure:"mem_max"`
+	MetadataWorkerThreads int64    `mapstructure:"metadataWorkerThreads"`
 }
 
 // Log represents the logger configuration
@@ -66,7 +68,8 @@ type Log struct {
 
 // Node represents the Volcano Opera node access configuration
 type Node struct {
-	Url string `mapstructure:"url"`
+	Url   string `mapstructure:"url"`
+	Token string `mapstructure:"token"`
 }
 
 // Ipfs represents the IPFS node access configuration

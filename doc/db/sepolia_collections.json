@@ -1,7 +1,7 @@
 {
     "_id": {"$oid": "61dc4cc7c805ce7c11614719"},
     "__v": 1,
-    "categories": [""],
+    "categories": ["1"],
     "collectionName": "MagmaBitBirds",
     "description": "MagmaBitBirds, Earn and Mutate",
     "discord": "",

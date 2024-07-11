@@ -4,11 +4,12 @@ package svc
 import (
 	"artion-api-graphql/internal/types"
 	"bytes"
+	"math/big"
+	"time"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"math/big"
-	"time"
 )
 
 // auctionCreated processes an event for newly created auction on an ERC-721 token.
@@ -56,20 +57,22 @@ func auctionCreated(evt *eth.Log, _ *logObserver) {
 	}
 
 	/*
-	// extend the auction with details pulled from the contract
-	if err := repo.ExtendAuctionDetailAt(&auction, new(big.Int).SetUint64(evt.BlockNumber)); err != nil {
-		log.Errorf("failed to load extended auction details; %s", err.Error())
-	}
+		// extend the auction with details pulled from the contract
+		if err := repo.ExtendAuctionDetailAt(&auction, new(big.Int).SetUint64(evt.BlockNumber)); err != nil {
+			log.Errorf("failed to load extended auction details; %s", err.Error())
+		}
 	*/
 
 	if time.Time(auction.EndTime).Unix() <= 0 {
 		log.Errorf("invalid auction end time %d for %s/%s", time.Time(auction.EndTime).Unix(), auction.Contract.String(), auction.TokenId.String())
-		return // skip saving broken auction
+		// MM from logs.. they are not logged.. actually ..
+		// return // skip saving broken auction
 	}
 
 	if time.Time(auction.StartTime).Unix() <= 0 {
 		log.Errorf("invalid auction start time %d for %s/%s", time.Time(auction.StartTime).Unix(), auction.Contract.String(), auction.TokenId.String())
-		return // skip saving broken auction
+		// MM from logs.. they are not logged.. actually ..
+		// return // skip saving broken auction
 	}
 
 	// if auction owner is not known, find them by the transaction sender
@@ -142,15 +145,27 @@ func extendAuctionFromTransaction(auction *types.Auction, tx common.Hash) {
 	// collect transaction data
 	sender, _, data := repo.MustTransactionData(tx)
 
-	// we expect 4 bytes for func call + 6 params of 32 bytes = 196 bytes
-	if len(data) != 196 {
-		log.Criticalf("invalid call at %s; expected 196 bytes, loaded %d bytes", tx.String(), len(data))
+	/*
+		// MM updated with newer minBidReserve flag
+		// we expect 4 bytes for func call + 6 params of 32 bytes = 196 bytes
+		if len(data) != 196 {
+			log.Criticalf("invalid call at %s; expected 196 bytes, loaded %d bytes", tx.String(), len(data))
+			return
+		}
+		// is this the right function call?
+		// createAuction(address _nftAddress, uint256 _tokenId, address _payToken, uint256 _reservePrice, uint256 _startTimestamp, uint256 _endTimestamp)
+		if 0 != bytes.Compare(data[:4], common.Hex2Bytes("14ec4106")) {
+			log.Criticalf("invalid function call at %s", tx.String())
+			return
+		}
+	*/
+	// we expect 4 bytes for func call + 7 params of 32 bytes = 228 bytes
+	if len(data) != 228 {
+		log.Criticalf("invalid call at %s; expected 228 bytes, loaded %d bytes", tx.String(), len(data))
 		return
 	}
-
-	// is this the right function call?
-	// createAuction(address _nftAddress, uint256 _tokenId, address _payToken, uint256 _reservePrice, uint256 _startTimestamp, uint256 _endTimestamp)
-	if 0 != bytes.Compare(data[:4], common.Hex2Bytes("14ec4106")) {
+	// createAuction(address _nftAddress, uint256 _tokenId, address _payToken, uint256 _reservePrice, uint256 _startTimestamp, bool minBidReserve, uint256 _endTimestamp)
+	if 0 != bytes.Compare(data[:4], common.Hex2Bytes("ab2870e2")) {
 		log.Criticalf("invalid function call at %s", tx.String())
 		return
 	}
@@ -159,7 +174,11 @@ func extendAuctionFromTransaction(auction *types.Auction, tx common.Hash) {
 	auction.PayToken = common.BytesToAddress(data[68:100])
 	auction.ReservePrice = (hexutil.Big)(*new(big.Int).SetBytes(data[100:132]))
 	auction.StartTime = types.Time(time.Unix(new(big.Int).SetBytes(data[132:164]).Int64(), 0))
-	auction.EndTime = types.Time(time.Unix(new(big.Int).SetBytes(data[164:]).Int64(), 0))
+	minBidReserve := ((new(big.Int).SetBytes(data[164:]).Int64()) != 0)
+	if minBidReserve {
+		auction.MinimalBid = auction.ReservePrice
+	}
+	auction.EndTime = types.Time(time.Unix(new(big.Int).SetBytes(data[196:]).Int64(), 0))
 }
 
 // auctionStartTimeUpdated processes auction start time update event log.

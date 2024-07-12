@@ -495,6 +495,9 @@ contract VolcanoMarketplace is Initializable, PausableUpgradeable, OwnableUpgrad
         delete (listings[_nftAddress][_tokenId][_owner]);
     }
 
+    receive () external payable  {    
+    }        
+
     /// @notice Method for offering item
     /// @param _nftAddress NFT contract address
     /// @param _tokenId TokenId
@@ -509,7 +512,9 @@ contract VolcanoMarketplace is Initializable, PausableUpgradeable, OwnableUpgrad
         uint256 _quantity,
         uint256 _pricePerItem,
         uint256 _deadline
-    ) external offerNotExists(_nftAddress, _tokenId, msg.sender) {
+    )   external 
+        payable		
+        offerNotExists(_nftAddress, _tokenId, msg.sender) {
         require(
             IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721) ||
                 IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC1155),
@@ -531,6 +536,11 @@ contract VolcanoMarketplace is Initializable, PausableUpgradeable, OwnableUpgrad
         require(_deadline > _getNow(), "invalid expiration");
 
         _validPayToken(address(_payToken));
+
+        if (address(_payToken) == address(0)) {
+            uint256 price = _pricePerItem * _quantity;
+            require(msg.value == price, "insufficient or incorrect value to offer");		
+        }     
 
         offers[_nftAddress][_tokenId][msg.sender] = Offer(
             _payToken,
@@ -557,6 +567,11 @@ contract VolcanoMarketplace is Initializable, PausableUpgradeable, OwnableUpgrad
         external
         offerExists(_nftAddress, _tokenId, msg.sender)
     {
+        Offer memory offer = offers[_nftAddress][_tokenId][msg.sender];
+        if (address(offer.payToken) == address(0)) {
+            uint256 price = offer.pricePerItem * offer.quantity;
+            payable(msg.sender).transfer(price);
+        } 
         delete (offers[_nftAddress][_tokenId][msg.sender]);
         emit OfferCanceled(msg.sender, _nftAddress, _tokenId);
     }
@@ -578,30 +593,46 @@ contract VolcanoMarketplace is Initializable, PausableUpgradeable, OwnableUpgrad
         uint256 feeAmount = (price * platformFee) / 1e3;
         uint256 royaltyFee;
 
-        offer.payToken.safeTransferFrom(_creator, feeReceipient, feeAmount);
+        if (address(offer.payToken) == address(0)) {
+            payable(feeReceipient).transfer(feeAmount);
+        } else {
+            offer.payToken.safeTransferFrom(_creator, feeReceipient, feeAmount);
+        }
 
         address minter = minters[_nftAddress][_tokenId];
         uint16 royalty = royalties[_nftAddress][_tokenId];
 
         if (minter != address(0) && royalty != 0) {
             royaltyFee = ((price - feeAmount) * royalty) / 10000;
-            offer.payToken.safeTransferFrom(_creator, minter, royaltyFee);
+			if (address(offer.payToken) == address(0)) {
+				payable(minter).transfer(royaltyFee);
+			} else {            
+                offer.payToken.safeTransferFrom(_creator, minter, royaltyFee);
+            }
             feeAmount = feeAmount + royaltyFee;
         } else {
             minter = collectionRoyalties[_nftAddress].feeRecipient;
             royalty = collectionRoyalties[_nftAddress].royalty;
             if (minter != address(0) && royalty != 0) {
                 royaltyFee = ((price - feeAmount) * royalty) / 10000;
-                offer.payToken.safeTransferFrom(_creator, minter, royaltyFee);
+                if (address(offer.payToken) == address(0)) {
+                    payable(minter).transfer(royaltyFee);
+                } else {                
+                    offer.payToken.safeTransferFrom(_creator, minter, royaltyFee);
+                }
                 feeAmount = feeAmount + royaltyFee;
             }
         }
 
-        offer.payToken.safeTransferFrom(
-            _creator,
-            msg.sender,
-            price - feeAmount
-        );
+		if (address(offer.payToken) == address(0)) {
+            payable(msg.sender).transfer(price - feeAmount);	
+		} else {
+            offer.payToken.safeTransferFrom(
+                _creator,
+                msg.sender,
+                price - feeAmount
+            );
+        }
 
         // Transfer NFT to buyer
         if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {

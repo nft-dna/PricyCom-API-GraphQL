@@ -49,15 +49,16 @@ type Config struct {
 
 // Server represents the GraphQL server configuration
 type Server struct {
-	BindAddress           string   `mapstructure:"bind"`
-	CorsOrigin            []string `mapstructure:"cors"`
-	ReadTimeout           int64    `mapstructure:"read_timeout"`
-	WriteTimeout          int64    `mapstructure:"write_timeout"`
-	IdleTimeout           int64    `mapstructure:"idle_timeout"`
-	HeaderTimeout         int64    `mapstructure:"header_timeout"`
-	ResolverTimeout       int64    `mapstructure:"resolver_timeout"`
-	MaxParserMemory       int64    `mapstructure:"mem_max"`
-	MetadataWorkerThreads int64    `mapstructure:"metadataWorkerThreads"`
+	BindAddress                string   `mapstructure:"bind"`
+	CorsOrigin                 []string `mapstructure:"cors"`
+	ReadTimeout                int64    `mapstructure:"read_timeout"`
+	WriteTimeout               int64    `mapstructure:"write_timeout"`
+	IdleTimeout                int64    `mapstructure:"idle_timeout"`
+	HeaderTimeout              int64    `mapstructure:"header_timeout"`
+	ResolverTimeout            int64    `mapstructure:"resolver_timeout"`
+	MaxParserMemory            int64    `mapstructure:"mem_max"`
+	MetadataWorkerThreads      int64    `mapstructure:"metadata_worker_threads"`
+	AddCollectionAsAppropriate bool     `mapstructure:"add_collection_as_appropriate"`
 }
 
 // Log represents the logger configuration
@@ -68,8 +69,9 @@ type Log struct {
 
 // Node represents the Volcano Opera node access configuration
 type Node struct {
-	Url   string `mapstructure:"url"`
-	Token string `mapstructure:"token"`
+	Url                  string `mapstructure:"url"`
+	Token                string `mapstructure:"token"`
+	BlkScannerHysteresis int64  `mapstructure:"blk_scanner_hysteresis"`
 }
 
 // Ipfs represents the IPFS node access configuration
@@ -88,6 +90,8 @@ type Ipfs struct {
 
 	// FileCacheDir is a directory, where can be uploaded files cached
 	FileCacheDir string `mapstructure:"file_cache_dir"`
+
+	EmulateOnSharedDb bool `mapstructure:"emulate_on_shared_db"`
 }
 
 // Database represents the database access configuration.

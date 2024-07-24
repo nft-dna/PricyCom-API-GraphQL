@@ -215,5 +215,5 @@ func (sdb *SharedMongoDbBridge) ObservedCollections() ([]common.Address, error) 
 
 		list = append(list, row.Adr)
 	}
-	return list, nil
+ 	return list, nil
 }

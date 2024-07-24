@@ -113,7 +113,14 @@ func (p *Proxy) UploadTokenData(metadata types.JsonMetadata, image types.Image) 
 
 // pinFile requests pinning of the given file generating IPFS CID of the stored file.
 func (p *Proxy) pinFile(filename string, content []byte) (cid string, err error) {
-	cid, err = p.pinner.PinFile(filename, content)
+	// MM
+	if p.pinner.EmulateOnSharedDb() {
+		image := types.NewNamedImage(content, filename)
+		err = p.shared.StoreImage(image)
+		cid = image.ID().Hex()
+	} else {
+		cid, err = p.pinner.PinFile(filename, content)
+	}
 	if err == nil {
 		err = p.filecache.PushIpfsFile(cid, content)
 	}
@@ -162,6 +169,16 @@ func (p *Proxy) getFileFromUri(uri string) (data []byte, mimetype string, err er
 		cachedContent := p.filecache.PullIpfsFile(getCidFromIpfsUri(ipfsUri))
 		if cachedContent != nil {
 			return cachedContent, "", nil
+		}
+
+		// MM
+		if p.pinner.EmulateOnSharedDb() {
+			image, err := p.shared.GetImage(getCidFromIpfsUri(ipfsUri))
+			if err == nil {
+				return image.Data, image.Type.Mimetype(), nil
+			} else {
+				return nil, "", fmt.Errorf("failed to retrieve image file %s from shared_db; %s", uri, err.Error())
+			}
 		}
 
 		// extract data from IPFS, if possible

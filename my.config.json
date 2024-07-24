@@ -7,7 +7,8 @@
     ],
     "write_timeout": 30,
     "resolver_timeout": 240,
-    "metadataWorkerThreads": 1
+    "metadata_worker_threads": 1,
+    "add_collection_as_appropriate": true
   },
   "log": {
     "level": "Info"
@@ -15,7 +16,8 @@
   "node": {
     "sepolia_url": "https://sepolia.drpc.org/",
     "url": "https://turbo.magma-rpc.com/",
-    "token": "LAVA"
+    "token": "LAVA",
+    "blk_scanner_hysteresis": 1
   },
   "db": {
     "url": "mongodb://127.0.0.1:27017",
@@ -30,7 +32,8 @@
     "gateway": "https://artion.mypinata.cloud",
     "gateway_bearer": "xyz.abc.def",
     "skip_http_gateways": true,
-    "file_cache_dir": "/tmp/artion/"
+    "file_cache_dir": "/tmp/artion/",
+    "emulate_on_shared_db": true   
   },
   "auth": {
     "bearer_secret": "0x0123456789",

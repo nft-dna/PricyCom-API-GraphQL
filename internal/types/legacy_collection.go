@@ -2,37 +2,38 @@ package types
 
 import (
 	"encoding/json"
-	"github.com/ethereum/go-ethereum/common"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"strconv"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // LegacyCollection represents token collection from old Artion.
 // Keeps off-chain data about the collection.
 type LegacyCollection struct {
-	Id              primitive.ObjectID `bson:"_id"`
-	Address         common.Address  `bson:"erc721Address"` // unique index
-	Name            string          `bson:"collectionName"`
-	Description     string          `bson:"description"`
-	CategoriesStr   []string        `bson:"categories"`
-	Image           string          `bson:"logoImageHash"`
-	Owner           *common.Address `bson:"owner"`
-	FeeRecipient    *common.Address `bson:"feeRecipient"`
-	RoyaltyValue    json.Number     `bson:"royalty"` // percents of fee (mostly int32, but sometime float)
-	Email           string          `bson:"email"`
-	SiteUrl         string          `bson:"siteUrl"`
-	DiscordUrl      string          `bson:"discord"`
-	TelegramUrl     string          `bson:"telegram"`
-	MediumUrl       string          `bson:"mediumHandle"`
-	TwitterUrl      string          `bson:"twitterHandle"`
-	Instagram       string          `bson:"instagramHandle"`
-	IsAppropriate   bool            `bson:"isAppropriate"` // is reviewed and royalties registered on chain
-	IsInternal      bool            `bson:"isInternal"` // is created using factory contract?
-	IsOwnerOnly     bool            `bson:"isOwnerble"` // is only Owner allowed to mint?
-	IsVerified      bool            `bson:"isVerified"` // is boosted by admin? (moderator is not sufficient)
-	IsReviewed      bool            `bson:"status"` // false = in review, true = approved (removed on reject)
-	AppropriateUpdate time.Time     `bson:"appropriateUpdate"` // when was "isAppropriate" changed last time?
+	Id                primitive.ObjectID `bson:"_id"`
+	Address           common.Address     `bson:"erc721Address"` // unique index
+	Name              string             `bson:"collectionName"`
+	Description       string             `bson:"description"`
+	CategoriesStr     []string           `bson:"categories"`
+	Image             string             `bson:"logoImageHash"`
+	Owner             *common.Address    `bson:"owner"`
+	FeeRecipient      *common.Address    `bson:"feeRecipient"`
+	RoyaltyValue      json.Number        `bson:"royalty"` // percents of fee (mostly int32, but sometime float)
+	Email             string             `bson:"email"`
+	SiteUrl           string             `bson:"siteUrl"`
+	DiscordUrl        string             `bson:"discord"`
+	TelegramUrl       string             `bson:"telegram"`
+	MediumUrl         string             `bson:"mediumHandle"`
+	TwitterUrl        string             `bson:"twitterHandle"`
+	Instagram         string             `bson:"instagramHandle"`
+	IsAppropriate     bool               `bson:"isAppropriate"`     // is reviewed and royalties registered on chain
+	IsInternal        bool               `bson:"isInternal"`        // is created using factory contract?
+	IsOwnerOnly       bool               `bson:"isOwnerble"`        // is only Owner allowed to mint?
+	IsVerified        bool               `bson:"isVerified"`        // is boosted by admin? (moderator is not sufficient)
+	IsReviewed        bool               `bson:"status"`            // false = in review, true = approved (removed on reject)
+	AppropriateUpdate time.Time          `bson:"appropriateUpdate"` // when was "isAppropriate" changed last time?
 }
 
 // CategoriesAsInt provides a list of category ID-s
@@ -79,16 +80,16 @@ func DecodeCollectionApplication(data []byte) (*CollectionApplication, error) {
 	return &out, nil
 }
 
-func (app CollectionApplication) ToCollection(image string, owner *common.Address) LegacyCollection {
+func (app CollectionApplication) ToCollection(image string, owner *common.Address, isAppropriate bool) LegacyCollection {
 	categoriesStr := make([]string, len(app.Categories))
 	for i, categoryId := range app.Categories {
 		categoriesStr[i] = strconv.Itoa(int(categoryId))
 	}
 	return LegacyCollection{
-		Address:         app.Contract,
-		Name:            app.Name,
-		Description:     app.Description,
-		CategoriesStr:   categoriesStr,
+		Address:       app.Contract,
+		Name:          app.Name,
+		Description:   app.Description,
+		CategoriesStr: categoriesStr,
 		Image:         image,
 		Owner:         owner,
 		FeeRecipient:  &app.FeeRecipient,
@@ -100,7 +101,7 @@ func (app CollectionApplication) ToCollection(image string, owner *common.Addres
 		MediumUrl:     app.MediumHandle,
 		TwitterUrl:    app.TwitterHandle,
 		Instagram:     app.InstagramHandle,
-		IsAppropriate: false,
+		IsAppropriate: isAppropriate,
 		IsInternal:    false,
 		IsOwnerOnly:   false,
 		IsVerified:    false,

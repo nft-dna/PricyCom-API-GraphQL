@@ -2,8 +2,9 @@
 package svc
 
 import (
-	eth "github.com/ethereum/go-ethereum/core/types"
 	"time"
+
+	eth "github.com/ethereum/go-ethereum/core/types"
 )
 
 const (
@@ -31,8 +32,10 @@ const (
 
 	// blkScannerHysteresis represent the number of blocks we let slide
 	// until we switch back to active scan state.
-	blkScannerHysteresis = 10
+	//blkScannerHysteresis = 10
 )
+
+var blkScannerHysteresis = uint64(10)
 
 // blkScanner represents a scanner of historical data from the blockchain.
 type blkScanner struct {
@@ -87,7 +90,9 @@ func (bs *blkScanner) name() string {
 func (bs *blkScanner) init() {
 	bs.inObservedBlocks = bs.mgr.logObserver.outObservedBlocks
 	bs.inRescanBlocks = bs.mgr.collectionValidator.outRescanQueue
-
+	if cfg.Node.BlkScannerHysteresis > 0 {
+		blkScannerHysteresis = (uint64)(cfg.Node.BlkScannerHysteresis)
+	}
 	bs.current, bs.target = bs.start(), bs.top()
 	bs.mgr.add(bs)
 }
@@ -214,7 +219,7 @@ func (bs *blkScanner) checkIdle() {
 	}
 
 	diff := int64(bs.target) - int64(bs.current)
-	if diff >= blkScannerHysteresis {
+	if diff >= int64(blkScannerHysteresis) {
 		bs.state = blkIsScanning
 		bs.scanTicker.Reset(scanTickFrequency)
 		log.Noticef("scanner head at #%d of #%d with %d diff", bs.current, bs.target, diff)

@@ -13,9 +13,10 @@ import (
 	"artion-api-graphql/internal/repository/uri"
 	"artion-api-graphql/internal/types"
 	"fmt"
+	"sync"
+
 	"github.com/ethereum/go-ethereum/common"
 	"golang.org/x/sync/singleflight"
-	"sync"
 )
 
 // config represents the configuration setup used by the repository
@@ -37,9 +38,11 @@ var instanceMux sync.Mutex
 
 // Proxy is the implementation of the Repository interface
 type Proxy struct {
-	rpc       *rpc.Opera
-	uri       *uri.Downloader
-	pinner    *pinner.Pinner
+	rpc *rpc.Opera
+	uri *uri.Downloader
+
+	pinner *pinner.Pinner
+
 	db        *db.MongoDbBridge
 	shared    *db.SharedMongoDbBridge
 	cache     *cache.MemCache

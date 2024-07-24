@@ -19,21 +19,31 @@ var log logger.Logger
 // Pinner allows to pin files to Pinata IPFS service
 type Pinner struct {
 	pinataBearer string
+	// MM
+	emulateOnSharedDb bool
 }
 
 // New provides new Pinner instance.
 func New(cfg *config.Config) *Pinner {
-	if cfg.Ipfs.GatewayBearer == "" {
+	// MM
+	//if cfg.Ipfs.GatewayBearer == "" {
+	if cfg.Ipfs.GatewayBearer == "" && cfg.Ipfs.EmulateOnSharedDb == false {
 		panic("unable to init Pinner - Pinata bearer token not configured")
 	}
 	return &Pinner{
-		pinataBearer: cfg.Ipfs.GatewayBearer,
+		pinataBearer:      cfg.Ipfs.GatewayBearer,
+		emulateOnSharedDb: cfg.Ipfs.EmulateOnSharedDb,
 	}
 }
 
 // SetLogger sets the repository logger to be used to collect logging info.
 func SetLogger(l logger.Logger) {
 	log = l.ModuleLogger("pinner")
+}
+
+// MM
+func (p Pinner) EmulateOnSharedDb() bool {
+	return p.emulateOnSharedDb
 }
 
 // PinFile uploads the file to Pinata

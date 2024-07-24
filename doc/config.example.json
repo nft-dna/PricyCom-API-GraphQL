@@ -5,13 +5,17 @@
       "*"
     ],
     "write_timeout": 30,
-    "resolver_timeout": 240
+    "resolver_timeout": 240,
+    "metadata_worker_threads": 10,
+    "add_collection_as_appropriate": false
   },
   "log": {
     "level": "Info"
   },
   "node": {
-    "url": "https://turbo.magma-rpc.com/"
+    "url": "https://turbo.magma-rpc.com/",
+    "token": "ETH",
+    "blk_scanner_hysteresis": 10
   },
   "db": {
     "url": "mongodb://127.0.0.1:27017",
@@ -26,7 +30,8 @@
     "gateway": "https://artion.mypinata.cloud",
     "gateway_bearer": "xyz.abc.def",
     "skip_http_gateways": true,
-    "file_cache_dir": "/tmp/artion/"
+    "file_cache_dir": "/tmp/artion/",
+    "emulate_on_shared_db": false 
   },
   "auth": {
     "bearer_secret": "0x0123456789",

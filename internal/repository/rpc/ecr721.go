@@ -6,12 +6,14 @@ import (
 	"artion-api-graphql/internal/repository/rpc/contracts"
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
 	"strings"
+
+	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 // defaultMintingTestTokenUrl is the URL we used to test NFT minting calls.
@@ -33,7 +35,18 @@ func (o *Opera) Erc721StartingBlockNumber(adr *common.Address) (uint64, error) {
 	// iterate over transfers from zero address (e.g. mint calls)
 	iter, err := erc.FilterTransfer(nil, []common.Address{{}}, nil, nil)
 	if err != nil {
-		return 0, err
+
+		// MM timeot on Sepolia 'open' rpc
+		filterOps := bind.FilterOpts{
+			Context: context.Background(),
+			Start:   o.minBlockNumber,
+			End:     nil,
+		}
+		iter, err = erc.FilterTransfer(&filterOps, []common.Address{{}}, nil, nil)
+		if err != nil {
+
+			return 0, err
+		}
 	}
 
 	var blk uint64

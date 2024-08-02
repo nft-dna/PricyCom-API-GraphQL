@@ -1,0 +1,47 @@
+{
+  "server": {
+    "bind": "0.0.0.0:8080",
+    "cors": [
+      "*",
+      "127.0.0.1"
+    ],
+    "write_timeout": 30,
+    "resolver_timeout": 240,
+    "metadata_worker_threads": 1,
+    "add_collection_as_appropriate": true
+  },
+  "log": {
+    "level": "Info"
+  },
+  "node": {
+    "url": "https://turbo.magma-rpc.com/",
+    "token": "LAVA",
+    "blk_scanner_hysteresis": 1
+  },
+  "db": {
+    "url": "mongodb://127.0.0.1:27017",
+    "db": "artion"
+  },
+  "shared_db": {
+    "url": "mongodb://127.0.0.1:27017",
+    "db": "artion_shared"
+  },
+  "ipfs": {
+    "url": "localhost:5001",
+    "gateway": "https://artion.mypinata.cloud",
+    "gateway_bearer": "xyz.abc.def",
+    "skip_http_gateways": true,
+    "file_cache_dir": "/tmp/artion/",
+    "emulate_on_shared_db": true   
+  },
+  "auth": {
+    "bearer_secret": "0x0123456789",
+    "nonce_secret": "0xABCDEF"
+  },
+  "notification": {
+    "sendgrid": {
+      "domain": "https://api.sendgrid.com",
+      "key": "SendGrid-API-authentication-key"
+    }
+  }
+}

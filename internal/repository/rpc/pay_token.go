@@ -15,7 +15,7 @@ import (
 func (o *Opera) ListPayTokens() (payTokens []types.PayToken, err error) {
 	filterOps := bind.FilterOpts{
 		Context: context.Background(),
-		Start:   0,
+		Start:   o.minBlockNumber,
 		End:     nil,
 	}
 	itr, err := o.tokenRegistryContract.FilterTokenAdded(&filterOps)

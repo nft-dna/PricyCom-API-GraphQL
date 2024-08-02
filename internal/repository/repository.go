@@ -176,7 +176,8 @@ func (p *Proxy) registerContracts() {
 	var contractTypes = []string{"auction", "market", "rng", "token_registry"}
 
 	for _, ct := range contractTypes {
-		err := p.rpc.RegisterContract(ct, p.ObservedContractAddressByType(ct))
+		addr, blk := p.ObservedContractAddressByType(ct)
+		err := p.rpc.RegisterContract(ct, addr, blk)
 		if err != nil {
 			log.Panicf("mandatory contract %s not available", ct)
 		}

@@ -131,8 +131,12 @@ func (mwt *nftMetadataWorkerThread) update(tok *types.Token) {
 	// get image type (skip if the image URI has not changed)
 	if md.Image != nil && *md.Image != tok.ImageURI {
 		img, err := repo.GetImage(*md.Image)
-		if err != nil {
-			log.Warningf("NFT image [%s] failed on %s/%s; %s", *md.Image, tok.Contract.String(), tok.TokenId.String(), err.Error())
+		if err != nil || img == nil {
+			if err != nil {
+				log.Warningf("NFT image [%s] failed on %s/%s; %s", *md.Image, tok.Contract.String(), tok.TokenId.String(), err.Error())
+			} else {
+				log.Warningf("NFT image [%s] not found on %s/%s", *md.Image, tok.Contract.String(), tok.TokenId.String())
+			}
 			mwt.tryLegacyUpdate(tok)
 
 			handleTokenMetaUpdateFailure(tok)

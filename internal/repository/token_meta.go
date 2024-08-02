@@ -96,7 +96,14 @@ func (p *Proxy) UploadTokenData(metadata types.JsonMetadata, image types.Image) 
 		return "", fmt.Errorf("uploading token image failed; %s", err)
 	}
 
-	imageUri := "https://artion.mypinata.cloud/ipfs/" + cid
+	// MM should use ipfs/gateway config (or relative api links when emulate_on_shared_db is enabled)
+	//imageUri := "https://artion.mypinata.cloud/ipfs/" + cid
+	baseUri := "https://artion.mypinata.cloud/ipfs/"
+	if p.pinner.EmulateOnSharedDb() {
+		baseUri = "/volcano-api/metadata/" // ?!..
+	}
+	imageUri := baseUri + cid
+
 	metadata.Image = &imageUri
 
 	data, err := json.Marshal(metadata)
@@ -108,7 +115,9 @@ func (p *Proxy) UploadTokenData(metadata types.JsonMetadata, image types.Image) 
 	if err != nil {
 		return "", fmt.Errorf("uploading token meta failed; %s", err)
 	}
-	return "https://artion.mypinata.cloud/ipfs/" + cid, nil
+	// MM
+	// return "https://artion.mypinata.cloud/ipfs/" + cid, nil
+	return baseUri + cid, nil
 }
 
 // pinFile requests pinning of the given file generating IPFS CID of the stored file.
@@ -175,7 +184,11 @@ func (p *Proxy) getFileFromUri(uri string) (data []byte, mimetype string, err er
 		if p.pinner.EmulateOnSharedDb() {
 			image, err := p.shared.GetImage(getCidFromIpfsUri(ipfsUri))
 			if err == nil {
-				return image.Data, image.Type.Mimetype(), nil
+				if image == nil {
+					return nil, "", fmt.Errorf("not found image file %s on shared_db", uri)
+				} else {
+					return image.Data, image.Type.Mimetype(), nil
+				}
 			} else {
 				return nil, "", fmt.Errorf("failed to retrieve image file %s from shared_db; %s", uri, err.Error())
 			}

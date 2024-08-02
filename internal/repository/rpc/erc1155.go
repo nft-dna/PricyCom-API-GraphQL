@@ -6,12 +6,14 @@ import (
 	"artion-api-graphql/internal/repository/rpc/contracts"
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
 	"strings"
+
+	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 // Erc1155BalanceOf extracts balance of a NFT for an owner.
@@ -95,7 +97,18 @@ func (o *Opera) Erc1155StartingBlockNumber(adr *common.Address) (uint64, error) 
 func (o *Opera) Erc1155FirstMintBlock(erc *contracts.Erc1155) (uint64, error) {
 	iter, err := erc.FilterTransferSingle(nil, nil, []common.Address{{}}, nil)
 	if err != nil {
-		return 0, err
+
+		// MM timeout on Sepolia 'open' rpc
+		filterOps := bind.FilterOpts{
+			Context: context.Background(),
+			Start:   o.minBlockNumber,
+			End:     nil,
+		}
+		iter, err = erc.FilterTransferSingle(&filterOps, nil, []common.Address{{}}, nil)
+		if err != nil {
+
+			return 0, err
+		}
 	}
 
 	var blk uint64
@@ -114,7 +127,18 @@ func (o *Opera) Erc1155FirstMintBlock(erc *contracts.Erc1155) (uint64, error) {
 func (o *Opera) Erc1155FirstMintBatchBlock(erc *contracts.Erc1155) (uint64, error) {
 	iter, err := erc.FilterTransferBatch(nil, nil, []common.Address{{}}, nil)
 	if err != nil {
-		return 0, err
+
+		// MM timeout on Sepolia 'open' rpc
+		filterOps := bind.FilterOpts{
+			Context: context.Background(),
+			Start:   o.minBlockNumber,
+			End:     nil,
+		}
+		iter, err = erc.FilterTransferBatch(&filterOps, nil, []common.Address{{}}, nil)
+		if err != nil {
+
+			return 0, err
+		}
 	}
 
 	var blk uint64

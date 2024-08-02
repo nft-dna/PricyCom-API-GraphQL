@@ -4,6 +4,7 @@ package db
 import (
 	"artion-api-graphql/internal/types"
 	"context"
+
 	"github.com/ethereum/go-ethereum/common"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -19,6 +20,9 @@ const (
 
 	// fiContractType is the name of the field keeping the contract type.
 	fiContractType = "type"
+
+	//MM
+	fiContractBlockNumber = "block"
 )
 
 // AddObservedContract adds the specified observed contract record to the collection.
@@ -36,31 +40,34 @@ func (db *MongoDbBridge) AddObservedContract(oc *types.ObservedContract) error {
 }
 
 // ObservedContractAddressByType provides address of an observed contract by its type, if available.
-func (db *MongoDbBridge) ObservedContractAddressByType(t string) (*common.Address, error) {
+func (db *MongoDbBridge) ObservedContractAddressByType(t string) (*common.Address, uint64, error) {
 	col := db.client.Database(db.dbName).Collection(coObservedContracts)
 	sr := col.FindOne(
 		context.Background(),
 		bson.D{{Key: "type", Value: t}},
-		options.FindOne().SetProjection(bson.D{{Key: "_id", Value: 1}}),
+		options.FindOne(), //.SetProjection(bson.D{{Key: "_id", Value: 1}}),
 	)
 
 	if sr.Err() != nil {
 		if sr.Err() == mongo.ErrNoDocuments {
 			log.Warningf("contract of type %s not found", t)
-			return nil, sr.Err()
+			return nil, 0, sr.Err()
 		}
 		log.Errorf("failed to lookup contract of type %s; %s", t, sr.Err().Error())
-		return nil, sr.Err()
+		return nil, 0, sr.Err()
 	}
 
-	var row struct {
-		ID common.Address `bson:"_id"`
-	}
+	//var row struct {
+	//	ID          common.Address `bson:"_id"`
+	//}
+	var row types.ObservedContract
+
 	if err := sr.Decode(&row); err != nil {
 		log.Errorf("failed to decode contract address of type %s; %s", t, sr.Err().Error())
-		return nil, sr.Err()
+		return nil, 0, sr.Err()
 	}
-	return &row.ID, nil
+	//return &row.ID, nil
+	return &row.Address, row.BlockNumber, nil
 }
 
 // isObservedContractKnown checks if the given observed contract is already stored in the database.
@@ -215,5 +222,5 @@ func (sdb *SharedMongoDbBridge) ObservedCollections() ([]common.Address, error) 
 
 		list = append(list, row.Adr)
 	}
- 	return list, nil
+	return list, nil
 }

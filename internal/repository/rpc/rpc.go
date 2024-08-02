@@ -10,12 +10,13 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	"sync"
+
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	eth "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	client "github.com/ethereum/go-ethereum/rpc"
-	"sync"
 )
 
 //go:embed contracts/abi/*.json
@@ -48,34 +49,40 @@ type Opera struct {
 	headers chan *eth.Header
 
 	// decode ABI structures
-	abiVolcano721   *abi.ABI
-	abiVolcano1155  *abi.ABI
+	abiVolcano721  *abi.ABI
+	abiVolcano1155 *abi.ABI
 	abiMarketplace *abi.ABI
 
 	// contracts
-	auctionContractsProps      map[common.Address]types.AuctionProps
-	auctionContracts           map[common.Address]IAuctionContract
-	marketplaceContracts       map[common.Address]IMarketplaceContract
-	payTokenPriceContract      IMarketplaceContract // for token royalty or pay token price
-	tokenRegistryContract      *contracts.VolcanoTokenRegistry
-	royaltyRegistryContract    *contracts.FantomRoyaltyRegistry
-	rngFeedContract            *contracts.RandomNumberOracle
+	auctionContractsProps   map[common.Address]types.AuctionProps
+	auctionContracts        map[common.Address]IAuctionContract
+	marketplaceContracts    map[common.Address]IMarketplaceContract
+	payTokenPriceContract   IMarketplaceContract // for token royalty or pay token price
+	tokenRegistryContract   *contracts.VolcanoTokenRegistry
+	royaltyRegistryContract *contracts.FantomRoyaltyRegistry
+	rngFeedContract         *contracts.RandomNumberOracle
 
 	basicContracts types.Contracts
+
+	minBlockNumber uint64
 }
 
 // RegisterContract adds a new contract address to the RPC provider.
-func (o *Opera) RegisterContract(ct string, addr *common.Address) (err error) {
+func (o *Opera) RegisterContract(ct string, addr *common.Address, blockNum uint64) (err error) {
 	// address provided?
 	if nil == addr {
 		return fmt.Errorf("empty address on %s", ct)
+	}
+
+	if (o.minBlockNumber == 0 || o.minBlockNumber > blockNum) && blockNum > 0 {
+		o.minBlockNumber = blockNum
 	}
 
 	// load the contract instance
 	switch ct {
 
 	case "auction":
-		var ac AuctionContractV2 
+		var ac AuctionContractV2
 		ac.auctionV2Contract, err = contracts.NewVolcanoAuction(*addr, o.ftm)
 		if err == nil {
 			log.Noticef("loaded auction contract at %s", addr.String())
@@ -144,8 +151,8 @@ func New() *Opera {
 		headers:  make(chan *eth.Header, headerObserverCapacity),
 
 		auctionContractsProps: make(map[common.Address]types.AuctionProps),
-		auctionContracts:     make(map[common.Address]IAuctionContract),
-		marketplaceContracts: make(map[common.Address]IMarketplaceContract),
+		auctionContracts:      make(map[common.Address]IAuctionContract),
+		marketplaceContracts:  make(map[common.Address]IMarketplaceContract),
 	}
 
 	// load and parse ABIs

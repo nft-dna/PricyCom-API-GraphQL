@@ -4,12 +4,13 @@ import (
 	"artion-api-graphql/internal/config"
 	"artion-api-graphql/internal/logger"
 	"artion-api-graphql/internal/types"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/onsi/gomega"
 	"math/big"
 	"testing"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/onsi/gomega"
 )
 
 func initTesting() *Opera {
@@ -27,7 +28,7 @@ func initTesting() *Opera {
 
 	opera := New()
 	addr := common.HexToAddress("0x951Cc69504d39b3eDb155CA99f555E47E044c2F1")
-	_ = opera.RegisterContract("auction", &addr)
+	_ = opera.RegisterContract("auction", &addr, 0)
 	return opera
 }
 
@@ -66,4 +67,3 @@ func TestAuctionsExtending2(t *testing.T) {
 	g.Expect(time.Time(auction.StartTime).Unix()).To(gomega.Equal(int64(1633946515)))
 	//g.Expect(time.Time(auction.EndTime).Unix()).To(gomega.Equal(int64(0))) // invalid
 }
-

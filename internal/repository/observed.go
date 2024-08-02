@@ -59,15 +59,15 @@ func (p *Proxy) ObservedContractsAddressList() []common.Address {
 }
 
 // ObservedContractAddressByType provides address of an observed contract by its type, if available.
-func (p *Proxy) ObservedContractAddressByType(t string) *common.Address {
-	adr, err := p.db.ObservedContractAddressByType(t)
+func (p *Proxy) ObservedContractAddressByType(t string) (*common.Address, uint64) {
+	adr, blk, err := p.db.ObservedContractAddressByType(t)
 	if err != nil {
 		log.Errorf("contract lookup failed for %s, %s", t, err.Error())
-		return nil
+		return nil, 0
 	}
 
 	log.Noticef("%s contract is %s", t, adr.String())
-	return adr
+	return adr, blk
 }
 
 // NFTContractsTypeMap provides a map of observed contract addresses to corresponding

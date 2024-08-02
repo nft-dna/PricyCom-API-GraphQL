@@ -51,6 +51,6 @@
   "name": "RoyaltyRegistry",
   "type": "royalty_registry",
   "created": {"$date": {"$numberLong": "1000"}},
-  "block": {"$numberLong":  "1"},
+  "block": {"$numberLong":  "0"},
   "trx": "0x7c09ab25ded60ce646622673ee78693dba6d1331d816e08b142ba549c3e0628b"
 }

@@ -107,7 +107,7 @@ func (o *Opera) RegisterContract(ct string, addr *common.Address, blockNum uint6
 		}
 		o.basicContracts.Marketplace = *addr
 		o.payTokenPriceContract = &mc
-		log.Warningf("setting basic marketplace to %s", ct, addr.String())
+		log.Warningf("setting basic %s to %s", ct, addr.String())
 
 	case "rng":
 		o.rngFeedContract, err = contracts.NewRandomNumberOracle(*addr, o.ftm)

@@ -1,4 +1,4 @@
 {
   "_id": "lastSeenBlock",
-  "block": {"$numberLong":  "6212500"}
+  "block": {"$numberLong":  "6422500"}
 }

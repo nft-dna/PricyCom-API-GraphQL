@@ -112,6 +112,9 @@ type Mutation {
     # Increment amount of views of the token.
     incrementTokenViews(contract: Address!, tokenId: BigInt!): Boolean!
 
+    # Refresh metadata of the token.
+    refreshTokenMetadata(contract: Address!, tokenId: BigInt!): Boolean!       
+
     # Approve the in-review collection (moderators only)
     approveCollection(contract: Address!): Boolean!
 

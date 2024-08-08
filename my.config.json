@@ -7,7 +7,7 @@
     ],
     "write_timeout": 30,
     "resolver_timeout": 240,
-    "metadata_worker_threads": 1,
+    "metadata_worker_threads": 30,
     "add_collection_as_appropriate": true
   },
   "log": {
@@ -21,11 +21,11 @@
   },
   "db": {
     "url": "mongodb://127.0.0.1:27017",
-    "db": "artion"
+    "db": "volcano"
   },
   "shared_db": {
     "url": "mongodb://127.0.0.1:27017",
-    "db": "artion_shared"
+    "db": "volcano_shared"
   },
   "ipfs": {
     "url": "localhost:5001",

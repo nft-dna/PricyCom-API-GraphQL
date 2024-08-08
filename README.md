@@ -22,15 +22,16 @@ Before first start you need to initialize the MongoDB database.
 If you want to use other than the official contracts on mainnet, you will need to update `observed.json` appropriately first.
 
 ```bash
-mongoimport --db=artion --collection=observed --file=doc/db/observed.json
-mongoimport --db=artion --collection=status --file=doc/db/status.json
+mongoimport --db=volcano --collection=observed --file=doc/db/observed.json
+mongoimport --db=volcano --collection=status --file=doc/db/status.json
 ```
 
 For the shared MongoDB database:
 
 ```bash
-mongoimport --db=artion_shared --collection=colcats --file=doc/db/colcats.json
-mongoimport --db=artion_shared --collection=collections --file=doc/db/collections.json
+mongoimport --db=volcano_shared --collection=colcats --file=doc/db/colcats.json
+mongoimport --db=volcano_shared --collection=collections --file=doc/db/collections.json
+mongoimport --db=volcano_shared --collection=moderators --file=doc/db/moderators.json
 ```
 
 When configured, run the Artion api server:

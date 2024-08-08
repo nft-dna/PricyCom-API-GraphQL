@@ -19,11 +19,11 @@
   },
   "db": {
     "url": "mongodb://127.0.0.1:27017",
-    "db": "artion"
+    "db": "volcano"
   },
   "shared_db": {
     "url": "mongodb://127.0.0.1:27017",
-    "db": "artion_shared"
+    "db": "volcano_shared"
   },
   "ipfs": {
     "url": "localhost:5001",

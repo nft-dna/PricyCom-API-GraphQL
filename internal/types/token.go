@@ -3,12 +3,13 @@ package types
 
 import (
 	"crypto/sha256"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"math/big"
 	"math/rand"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 const (
@@ -127,5 +128,11 @@ func (t *Token) ScheduleMetaUpdateOnFailure() {
 // ScheduleMetaUpdateOnSuccess sets new metadata update time successful metadata update.
 func (t *Token) ScheduleMetaUpdateOnSuccess() {
 	t.MetaUpdate = Time(time.Now().Add(time.Duration(rand.Int63n(24*7)*int64(time.Hour)) + TokenSuccessMetadataUpdateDelay))
+	t.MetaFailures = 0
+}
+
+// ScheduleMetaRefresh sets istantly new metadata update time.
+func (t *Token) ScheduleMetaRefresh() {
+	t.MetaUpdate = Time(time.Now())
 	t.MetaFailures = 0
 }

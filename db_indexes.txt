@@ -1,0 +1,25 @@
+db.volcano.createIndex( {  
+"categories": "text",
+"collectionName": "text",
+"description": "text",
+"discord": "text",
+"email": "text",
+"erc721Address": "text",
+"mediumHandle": "text",
+"owner": "text",
+"siteUrl": "text",
+"telegram": "text",
+"twitterHandle": "text" })
+
+db.volcano_shared.createIndex( {  
+"categories": "text",
+"collectionName": "text",
+"description": "text",
+"discord": "text",
+"email": "text",
+"erc721Address": "text",
+"mediumHandle": "text",
+"owner": "text",
+"siteUrl": "text",
+"telegram": "text",
+"twitterHandle": "text" })

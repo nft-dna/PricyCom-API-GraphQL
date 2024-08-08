@@ -7,12 +7,13 @@ import (
 	"artion-api-graphql/internal/types/sorting"
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 // Token object is constructed from query, data from db are loaded on demand into "dbToken" field.
@@ -26,9 +27,9 @@ type TokenEdge struct {
 
 // TokenConnection represents scrollable tokens list connector.
 type TokenConnection struct {
-	Edges      []TokenEdge
-	PageInfo   PageInfo
-	filter     *types.TokenFilter
+	Edges    []TokenEdge
+	PageInfo PageInfo
+	filter   *types.TokenFilter
 }
 
 // NewToken creates a new instance of the resolvable Token.
@@ -393,4 +394,27 @@ func (rs *RootResolver) IncrementTokenViews(args struct {
 }) (bool, error) {
 	err := repository.R().IncrementTokenViews(args.Contract, big.Int(args.TokenId))
 	return err == nil, err
+}
+
+// MM
+// RefreshTokenMetadata refresh metadata of the token.
+func (rs *RootResolver) RefreshTokenMetadata(args struct {
+	Contract common.Address
+	TokenId  hexutil.Big
+}) (bool, error) {
+	//err := repository.R().RefreshTokenMetadata(args.Contract, big.Int(args.TokenId))
+	//return err == nil, err
+	tok, err := repository.R().Token(&args.Contract, &args.TokenId)
+	if tok == nil {
+		return false, fmt.Errorf("unable to get token in db; %s", err)
+	}
+	tok.ScheduleMetaRefresh()
+	if e := repository.R().UpdateTokenMetadataRefreshSchedule(tok); e != nil {
+		log.Errorf("token schedule update failed;", e.Error())
+	}
+
+	log.Infof("next update #%d of %s/%s at %s",
+		tok.MetaFailures, tok.Contract.String(), tok.TokenId.String(),
+		time.Time(tok.MetaUpdate).Format(time.Stamp))
+	return true, nil
 }

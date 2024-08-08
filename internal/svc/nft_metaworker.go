@@ -10,6 +10,7 @@ import (
 
 // nftMetadataWorkerThreads is the number of threads working on NFT metadata updates.
 var nftMetadataWorkerThreads = 10
+var nftMetadataWorkerThreadsMax = 30
 
 // nftMetadataWorker represents a service responsible for processing NFT token metadata
 // update queue from the metadata updater service.
@@ -40,7 +41,7 @@ type nftMetadataWorkerThread struct {
 func newNFTMetadataWorker(mgr *Manager) *nftMetadataWorker {
 	return &nftMetadataWorker{
 		mgr:     mgr,
-		workers: make([]*nftMetadataWorkerThread, nftMetadataWorkerThreads),
+		workers: make([]*nftMetadataWorkerThread, nftMetadataWorkerThreadsMax),
 		wg:      new(sync.WaitGroup),
 	}
 }
@@ -54,6 +55,9 @@ func (mw *nftMetadataWorker) name() string {
 func (mw *nftMetadataWorker) init() {
 	if cfg.Server.MetadataWorkerThreads > 0 {
 		nftMetadataWorkerThreads = (int)(cfg.Server.MetadataWorkerThreads)
+		if nftMetadataWorkerThreads > nftMetadataWorkerThreadsMax {
+			nftMetadataWorkerThreads = nftMetadataWorkerThreadsMax
+		}
 	}
 	// prep the threads
 	for i := 0; i < nftMetadataWorkerThreads; i++ {

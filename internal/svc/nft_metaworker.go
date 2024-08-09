@@ -39,9 +39,15 @@ type nftMetadataWorkerThread struct {
 
 // newNFTMetadataUpdater creates a new instance of the NFT metadata worker service.
 func newNFTMetadataWorker(mgr *Manager) *nftMetadataWorker {
+	if cfg.Server.MetadataWorkerThreads > 0 {
+		nftMetadataWorkerThreads = (int)(cfg.Server.MetadataWorkerThreads)
+		if nftMetadataWorkerThreads > nftMetadataWorkerThreadsMax {
+			nftMetadataWorkerThreads = nftMetadataWorkerThreadsMax
+		}
+	}
 	return &nftMetadataWorker{
 		mgr:     mgr,
-		workers: make([]*nftMetadataWorkerThread, nftMetadataWorkerThreadsMax),
+		workers: make([]*nftMetadataWorkerThread, nftMetadataWorkerThreads),
 		wg:      new(sync.WaitGroup),
 	}
 }
@@ -53,12 +59,6 @@ func (mw *nftMetadataWorker) name() string {
 
 // init initializes the block scanner and registers it with the manager.
 func (mw *nftMetadataWorker) init() {
-	if cfg.Server.MetadataWorkerThreads > 0 {
-		nftMetadataWorkerThreads = (int)(cfg.Server.MetadataWorkerThreads)
-		if nftMetadataWorkerThreads > nftMetadataWorkerThreadsMax {
-			nftMetadataWorkerThreads = nftMetadataWorkerThreadsMax
-		}
-	}
 	// prep the threads
 	for i := 0; i < nftMetadataWorkerThreads; i++ {
 		mw.workers[i] = &nftMetadataWorkerThread{
@@ -115,6 +115,10 @@ func (mwt *nftMetadataWorkerThread) run(id int) {
 // update the given NFT metadata from external metadata source.
 func (mwt *nftMetadataWorkerThread) update(tok *types.Token) {
 	// get metadata
+	if tok.Contract.String() == "0x4E206D6C51aF035BFFD7B5106d104F0D2bD8FB8b" {
+		log.Warningf("NFT update on observed collection %s/%s; %s", tok.Contract.String(), tok.TokenId.String())
+	}
+
 	if tok.Uri == "" {
 		log.Infof("token %s/%s metadata URI not available", tok.Contract.String(), tok.TokenId.String())
 		mwt.tryLegacyUpdate(tok)

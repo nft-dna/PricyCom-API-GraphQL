@@ -396,7 +396,7 @@ func (rs *RootResolver) IncrementTokenViews(args struct {
 	return err == nil, err
 }
 
-// MM
+// MM RefreshTokenMetadata fnctionality added
 // RefreshTokenMetadata refresh metadata of the token.
 func (rs *RootResolver) RefreshTokenMetadata(args struct {
 	Contract common.Address
@@ -408,13 +408,32 @@ func (rs *RootResolver) RefreshTokenMetadata(args struct {
 	if tok == nil {
 		return false, fmt.Errorf("unable to get token in db; %s", err)
 	}
-	tok.ScheduleMetaRefresh()
-	if e := repository.R().UpdateTokenMetadataRefreshSchedule(tok); e != nil {
-		log.Errorf("token schedule update failed;", e.Error())
+
+	// get token URI
+	newUri := ""
+	if repository.R().IsErc721Contract(&args.Contract) {
+		newUri, err = repository.R().Erc721TokenUri(&args.Contract, (*big.Int)(&args.TokenId))
+		if err != nil {
+			return false, fmt.Errorf("RefreshTokenMetadata could not get Erc721 token URI for %s / #%d; %s", args.Contract.String(), (*big.Int)(&args.TokenId).Uint64(), err.Error())
+
+		}
+	} else {
+		newUri, err = repository.R().Erc1155TokenUri(&args.Contract, (*big.Int)(&args.TokenId))
+		if err != nil {
+			return false, fmt.Errorf("RefreshTokenMetadata could not get Erc721 token URI for %s / #%d; %s", args.Contract.String(), (*big.Int)(&args.TokenId).Uint64(), err.Error())
+		}
 	}
 
-	log.Infof("next update #%d of %s/%s at %s",
+	tok.Uri = newUri
+	tok.ScheduleMetaRefresh()
+
+	if e := repository.R().RefreshTokenMetadataSchedule(tok); e != nil {
+		return false, fmt.Errorf("refresh token schedule update failed; %s", e.Error())
+	}
+
+	log.Infof("next metadata refresh #%d of %s/%s (id %s) at %s",
 		tok.MetaFailures, tok.Contract.String(), tok.TokenId.String(),
+		types.TokenID(&tok.Contract, (*big.Int)(&tok.TokenId)).String(),
 		time.Time(tok.MetaUpdate).Format(time.Stamp))
 	return true, nil
 }

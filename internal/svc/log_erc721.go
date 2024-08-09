@@ -5,11 +5,12 @@ import (
 	"artion-api-graphql/internal/repository"
 	"artion-api-graphql/internal/types"
 	"bytes"
+	"math/big"
+	"time"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"math/big"
-	"time"
 )
 
 // zeroAddress represents an empty address.
@@ -45,6 +46,11 @@ func erc721TokenMinted(evt *eth.Log, _ *logObserver) {
 
 	// store the extra data
 	tok.CreatedBy = args[3].(common.Address)
+	// MM
+	tok.Symbol, err = repo.CollectionSymbol(&evt.Address)
+	if err != nil {
+		log.Errorf("%s symbol not known; %s", evt.Address.String(), err.Error())
+	}
 
 	if err := repo.TokenLikesViewsRefresh(tok); err != nil {
 		log.Errorf("could not load token views/likes %s/%s; %s", tok.TokenId.String(), tok.Contract.String(), err)
@@ -78,6 +84,11 @@ func erc721TokenMustExist(contract *common.Address, tokenID *big.Int, blk *eth.H
 
 	// add details
 	tok.CreatedBy = repo.MustTransactionSender(evt.TxHash)
+	// MM
+	tok.Symbol, err = repo.CollectionSymbol(contract)
+	if err != nil {
+		log.Errorf("%s symbol not known; %s", contract.String(), err.Error())
+	}
 	tok.IsColBanned = !repo.IsCollectionAppropriate(contract)
 
 	if err := repo.TokenLikesViewsRefresh(tok); err != nil {
@@ -131,26 +142,26 @@ func erc721TokenTransfer(evt *eth.Log, lo *logObserver) {
 	}
 
 	/*
-	if isToEscrow { // set as in escrow
-		if err := updateERC721Owner(evt.Address, tokenID, from, 1, &to, blk.Time); err != nil {
-			log.Errorf("could not set ERC-721 NFT ownership escrow; %s", err.Error())
+		if isToEscrow { // set as in escrow
+			if err := updateERC721Owner(evt.Address, tokenID, from, 1, &to, blk.Time); err != nil {
+				log.Errorf("could not set ERC-721 NFT ownership escrow; %s", err.Error())
+			}
 		}
-	}
 
-	if isFromEscrow { // decrease owned quantity for escrow (we don't know real "from" - it is the escrow in the event)
-		if err := repo.DeleteOwnershipInEscrow(evt.Address, tokenID, from); err != nil {
-			log.Errorf("could not delete escrow ownership of ERC-721 NFT; %s", err.Error())
+		if isFromEscrow { // decrease owned quantity for escrow (we don't know real "from" - it is the escrow in the event)
+			if err := repo.DeleteOwnershipInEscrow(evt.Address, tokenID, from); err != nil {
+				log.Errorf("could not delete escrow ownership of ERC-721 NFT; %s", err.Error())
+			}
 		}
-	}
 
-	// decrease owned quantity for sender
-	if !isToEscrow && !isFromEscrow && !isMint {
-		// ERC-721 tokens don't have quantity; the amount is always 1
-		// we can just clear previous owner here by setting qty to zero
-		if err := updateERC721Owner(evt.Address, tokenID, from, 0, nil, blk.Time); err != nil {
-			log.Errorf("could not clear ERC-721 NFT ownership; %s", err.Error())
+		// decrease owned quantity for sender
+		if !isToEscrow && !isFromEscrow && !isMint {
+			// ERC-721 tokens don't have quantity; the amount is always 1
+			// we can just clear previous owner here by setting qty to zero
+			if err := updateERC721Owner(evt.Address, tokenID, from, 0, nil, blk.Time); err != nil {
+				log.Errorf("could not clear ERC-721 NFT ownership; %s", err.Error())
+			}
 		}
-	}
 	*/
 
 	if isBurn {
@@ -251,15 +262,15 @@ func setAuctionsListingsActive(contract *common.Address, tokenID *big.Int, from 
 		log.Errorf("unable to update listing active status on ownership change; %s", err.Error())
 	}
 	//if !repository.R().IsEscrowContract(*to) { // only if this is not move into escrow
-		if err := repository.R().SetListingActive(contract, tokenID, to, true); err != nil {
-			log.Errorf("unable to update listing active status on ownership change; %s", err.Error())
-		}
-		if err := repository.R().SetAuctionActive(contract, tokenID, from, false); err != nil {
-			log.Errorf("unable to update auction active status on ownership change; %s", err.Error())
-		}
-		if err := repository.R().SetAuctionActive(contract, tokenID, to, true); err != nil {
-			log.Errorf("unable to update auction active status on ownership change; %s", err.Error())
-		}
+	if err := repository.R().SetListingActive(contract, tokenID, to, true); err != nil {
+		log.Errorf("unable to update listing active status on ownership change; %s", err.Error())
+	}
+	if err := repository.R().SetAuctionActive(contract, tokenID, from, false); err != nil {
+		log.Errorf("unable to update auction active status on ownership change; %s", err.Error())
+	}
+	if err := repository.R().SetAuctionActive(contract, tokenID, to, true); err != nil {
+		log.Errorf("unable to update auction active status on ownership change; %s", err.Error())
+	}
 	//}
 
 	// update the token price and in-listing/in-auction status after listings/auction changes

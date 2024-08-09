@@ -4,11 +4,12 @@ package repository
 import (
 	"artion-api-graphql/internal/types"
 	"artion-api-graphql/internal/types/sorting"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
 	"strings"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 // Token reads NFT detail from the persistent database.
@@ -88,6 +89,12 @@ func (p *Proxy) StoreToken(token *types.Token) error {
 // UpdateTokenMetadata updates basic metadata of the NFT token.
 func (p *Proxy) UpdateTokenMetadata(nft *types.Token) error {
 	return p.db.UpdateTokenMetadata(nft)
+}
+
+// MM
+// RefreshTokenMetadataSchedule sets the NFT metadata update schedule time.
+func (p *Proxy) RefreshTokenMetadataSchedule(nft *types.Token) error {
+	return p.db.RefreshTokenMetadataSchedule(nft)
 }
 
 // UpdateTokenMetadataRefreshSchedule sets the NFT metadata update schedule time.

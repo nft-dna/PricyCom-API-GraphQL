@@ -4,11 +4,12 @@ package svc
 import (
 	"artion-api-graphql/internal/types"
 	"bytes"
+	"math/big"
+	"time"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"math/big"
-	"time"
 )
 
 // erc1155TokenTransfer handles single ERC1155 NFT token transfer
@@ -114,6 +115,12 @@ func addERC1155Token(adr *common.Address, tokenID *big.Int, creator *common.Addr
 	tok.CreatedBy = *creator
 
 	log.Infof("ERC-1155 token #%s found at %s", tok.TokenId.String(), tok.Contract.String())
+
+	// MM
+	tok.Symbol, err = repo.CollectionSymbol(adr)
+	if err != nil {
+		log.Errorf("%s symbol not known; %s", adr.String(), err.Error())
+	}
 
 	if err := repo.TokenLikesViewsRefresh(tok); err != nil {
 		log.Errorf("could not load token views/likes %s/%s; %s", tok.TokenId.String(), tok.Contract.String(), err)

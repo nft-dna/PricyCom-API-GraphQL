@@ -53,7 +53,7 @@ func (p *Proxy) UploadCollectionApplication(app types.CollectionApplication, ima
 			return fmt.Errorf("uploading collection image failed; %s", err)
 		}
 	}
-	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate)
+	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, false)
 	return p.shared.InsertLegacyCollection(collection)
 }
 

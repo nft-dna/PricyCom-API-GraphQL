@@ -3,6 +3,7 @@ package svc
 
 import (
 	"artion-api-graphql/internal/types"
+
 	"github.com/ethereum/go-ethereum/common"
 	eth "github.com/ethereum/go-ethereum/core/types"
 )
@@ -53,7 +54,9 @@ func newLogObserver(mgr *Manager) *logObserver {
 		outObservedBlocks: make(chan uint64, observedBlocksCapacity),
 		topics: map[common.Hash]EventHandler{
 			/* Factory::event ContractCreated(address creator, address nft) */
-			common.HexToHash("0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b"): newNFTContract,
+			//common.HexToHash("0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b"): newNFTContract,
+			// MM Factory::event ContractCreated(address creator, address nft, bool _isPrivate)
+			common.HexToHash("0xbbe78d8749296d5db350f8a76bbc6f2f85649a62516790be41dc6a67393aecde"): newNFTContract,
 
 			/* erc721::event Minted(uint256 tokenId, address beneficiary, string tokenUri, address minter) */
 			common.HexToHash("0x997115af5924f5e38964c6d65c804d4cb85129b65e62eb20a8ca6329dbe57e18"): erc721TokenMinted,

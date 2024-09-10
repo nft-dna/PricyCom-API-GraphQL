@@ -3,17 +3,21 @@ package svc
 
 import (
 	"artion-api-graphql/internal/types"
+	"time"
+
 	"github.com/ethereum/go-ethereum/common"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"time"
 )
 
 // newNFTContract handles log event for new factory deployed ERC721/ERC1155 contract.
 // Factory::event ContractCreated(address creator, address nft)
+// MM Factory::event ContractCreated(address creator, address nft, bool isPrivate)
 func newNFTContract(evt *eth.Log, lo *logObserver) {
 	// sanity check: no additional topics; 2 x Address = 2 x 32 bytes
-	if len(evt.Data) != 64 || len(evt.Topics) != 1 {
-		log.Errorf("not Factory::ContractCreated() event #%d/#%d; expected 64 bytes of data, %d given; expected 1 topic, %d given",
+	//if len(evt.Data) != 64 || len(evt.Topics) != 1 {
+	// sanity check: no additional topics; 3 x Address = 3 x 32 bytes
+	if len(evt.Data) != 96 || len(evt.Topics) != 1 {
+		log.Errorf("not Factory::ContractCreated() event #%d/#%d; expected 96 bytes of data, %d given; expected 1 topic, %d given",
 			evt.BlockNumber, evt.Index, len(evt.Data), len(evt.Topics))
 		return
 	}

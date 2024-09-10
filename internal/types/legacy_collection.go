@@ -80,7 +80,7 @@ func DecodeCollectionApplication(data []byte) (*CollectionApplication, error) {
 	return &out, nil
 }
 
-func (app CollectionApplication) ToCollection(image string, owner *common.Address, isAppropriate bool) LegacyCollection {
+func (app CollectionApplication) ToCollection(image string, owner *common.Address, isAppropriate bool, isInternal bool) LegacyCollection {
 	categoriesStr := make([]string, len(app.Categories))
 	for i, categoryId := range app.Categories {
 		categoriesStr[i] = strconv.Itoa(int(categoryId))
@@ -102,7 +102,7 @@ func (app CollectionApplication) ToCollection(image string, owner *common.Addres
 		TwitterUrl:    app.TwitterHandle,
 		Instagram:     app.InstagramHandle,
 		IsAppropriate: isAppropriate,
-		IsInternal:    false,
+		IsInternal:    isInternal,
 		IsOwnerOnly:   false,
 		IsVerified:    false,
 		IsReviewed:    false,

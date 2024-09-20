@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.21;
 
 // IPriceOracleProxy defines an interface of a price oracle proxy contract
 // used to provide up-to-date information about the value of supported tokens.

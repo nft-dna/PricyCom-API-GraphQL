@@ -7,7 +7,7 @@
     ],
     "write_timeout": 30,
     "resolver_timeout": 240,
-    "metadata_worker_threads": 10,
+    "metadata_worker_threads": 1,
     "add_collection_as_appropriate": true
   },
   "log": {

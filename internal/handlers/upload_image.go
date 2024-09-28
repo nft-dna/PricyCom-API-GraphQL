@@ -7,11 +7,12 @@ import (
 	"artion-api-graphql/internal/types"
 	"bytes"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"io"
 	"mime/multipart"
 	"net/http"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 type uploadProcessor func(identity common.Address, image types.Image, req *http.Request) (string, error)
@@ -154,6 +155,30 @@ func StoreCollection(identity common.Address, image types.Image, req *http.Reque
 	}
 
 	err = repository.R().UploadCollectionApplication(*app, image, identity)
+	if err != nil {
+		return "", fmt.Errorf("collection upload failed; %s", err)
+	}
+
+	return "OK", nil
+}
+
+func StoreMemeToken(identity common.Address, image types.Image, req *http.Request) (string, error) {
+	applicationJson := req.FormValue("data")
+	if applicationJson == "" {
+		return "", fmt.Errorf("no collection registration application sent")
+	}
+
+	app, err := types.DecodeCollectionApplication([]byte(applicationJson))
+	if err != nil {
+		return "", fmt.Errorf("failed to parse collection registration application json; %s", err)
+	}
+
+	err = repository.R().CanRegisterMemeToken(&app.Contract, &identity)
+	if err != nil {
+		return "", err
+	}
+
+	err = repository.R().UploadMemeTokenApplication(*app, image, identity)
 	if err != nil {
 		return "", fmt.Errorf("collection upload failed; %s", err)
 	}

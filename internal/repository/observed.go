@@ -111,6 +111,8 @@ func (p *Proxy) addObservedCollection(adr *common.Address) {
 		blk, err = p.Erc721StartingBlockNumber(adr)
 	case types.ContractTypeERC1155:
 		blk, err = p.Erc1155StartingBlockNumber(adr)
+	case types.ContractTypeERC20:
+		blk, err = p.Erc20StartingBlockNumber(adr)
 	default:
 		err = fmt.Errorf("unknown contract type")
 	}

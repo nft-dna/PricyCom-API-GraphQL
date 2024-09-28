@@ -133,6 +133,7 @@ func (app *apiServer) setupHandlers(mux *http.ServeMux) {
 	mux.Handle("/upload-image/user-banner", handlers.AuthHandler(handlers.UploadImageHandler(app.log, handlers.StoreUserBanner), app.log))
 	mux.Handle("/upload-image/token", handlers.AuthHandler(handlers.UploadImageHandler(app.log, handlers.StoreToken), app.log))
 	mux.Handle("/upload-image/collection", handlers.AuthHandler(handlers.UploadImageHandler(app.log, handlers.StoreCollection), app.log))
+	mux.Handle("/upload-image/memetoken", handlers.AuthHandler(handlers.UploadImageHandler(app.log, handlers.StoreMemeToken), app.log))
 }
 
 // observeSignals setups terminate signals observation.

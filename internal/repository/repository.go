@@ -55,6 +55,7 @@ type Proxy struct {
 	// notificationQueue processing channel
 	notificationQueue  chan types.Notification
 	newCollectionQueue chan common.Address
+	newMemeTokenQueue  chan common.Address
 }
 
 // R provides access to the singleton instance of the Repository.

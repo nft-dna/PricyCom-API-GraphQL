@@ -11,15 +11,18 @@ const (
 
 	// ContractTypeERC1155 represents an NFT contract type ERC-1155
 	ContractTypeERC1155 = "erc1155"
+
+	// ContractTypeERC20 represents a Meme Token ERC-20
+	ContractTypeERC20 = "erc20"
 )
 
 // ObservedContract represents a contract observed by the API server.
 type ObservedContract struct {
-	Address     common.Address  `bson:"_id"`
-	Name        string          `bson:"name"`
-	Type        string          `bson:"type"`
-	Created     Time            `bson:"created"`
-	Creator     common.Address  `bson:"creator"`
-	BlockNumber uint64          `bson:"block"`
-	DeployedBy  common.Hash     `bson:"trx"`
+	Address     common.Address `bson:"_id"`
+	Name        string         `bson:"name"`
+	Type        string         `bson:"type"`
+	Created     Time           `bson:"created"`
+	Creator     common.Address `bson:"creator"`
+	BlockNumber uint64         `bson:"block"`
+	DeployedBy  common.Hash    `bson:"trx"`
 }

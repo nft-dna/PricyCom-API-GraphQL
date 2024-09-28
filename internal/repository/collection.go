@@ -5,8 +5,9 @@ import (
 	"artion-api-graphql/internal/types"
 	"bytes"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 // addCollectionQueueCapacity is the capacity of the queue being filled with
@@ -82,8 +83,8 @@ func (p *Proxy) CollectionOwner(contract *common.Address) *common.Address {
 
 // CanRegisterCollection checks if the given collection can be registered.
 func (p *Proxy) CanRegisterCollection(contract *common.Address, user *common.Address) error {
-	if !p.IsErc721Contract(contract) {
-		return fmt.Errorf("the contract is not ERC-721")
+	if !p.IsErc721Contract(contract) && !p.IsErc1155Contract(contract) {
+		return fmt.Errorf("the contract is not ERC-721 or ERC-1155")
 	}
 
 	owner := p.rpc.CollectionOwner(contract)

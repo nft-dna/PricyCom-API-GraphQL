@@ -29,6 +29,12 @@ type Query {
     # List collections (all, search name or filter mintable by given user).
     collections(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!
 
+    # Get memetoken by address.
+    memeToken(contract: Address!): Collection
+
+    # List memetokens (all, search name or filter mintable by given user).
+    memeTokens(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!    
+
     # Get token by address and id.
     token(contract: Address!, tokenId: BigInt!): Token
 
@@ -77,8 +83,15 @@ type Query {
     # List collections which was banned by a moderator. (moderators only)
     bannedCollections(search: String, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!
 
+    # List memetokens to be reviewed by a moderator. (moderators only)
+    memeTokensInReview(search: String, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!
+
+    # List memetokens which was banned by a moderator. (moderators only)
+    bannedMemeTokens(search: String, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!    
+
     # List tokens which was banned by a moderator. (moderators only)
     bannedTokens(first: Int, after: Cursor, last: Int, before: Cursor): BannedNftConnection!
+    
 }
 
 # Mutation endpoints for modifying the data
@@ -130,6 +143,18 @@ type Mutation {
 
     # Unban the collection (moderators only)
     unbanCollection(contract: Address!): Boolean!
+
+    # Approve the in-review memetoken (moderators only)
+    approveMemeToken(contract: Address!): Boolean!
+
+    # Decline the in-review memetoken (moderators only)
+    declineMemeToken(contract: Address!): Boolean!
+
+    # Ban the memetoken (moderators only)
+    banMemeToken(contract: Address!): Boolean!
+
+    # Unban the memetoken (moderators only)
+    unbanMemeToken(contract: Address!): Boolean!    
 
     # Ban the token (moderators only)
     banToken(contract: Address!, tokenId: BigInt!): Boolean!

@@ -9,6 +9,94 @@ import (
 	eth "github.com/ethereum/go-ethereum/core/types"
 )
 
+func newTokenContract(evt *eth.Log, lo *logObserver) {
+	// MM todo ERC20 TokenCreated event
+
+	if len(evt.Data) != 64 || len(evt.Topics) != 1 {
+		log.Errorf("not Factory::ContractCreated() event #%d/#%d; expected 64 bytes of data, %d given; expected 1 topic, %d given",
+			evt.BlockNumber, evt.Index, len(evt.Data), len(evt.Topics))
+		return
+	}
+
+	// make meme token address
+	ca := common.Address{}
+	ca.SetBytes(evt.Data[32:64])
+	meme := types.Collection{
+		Address:  ca,
+		IsActive: true,
+	}
+	log.Infof("found (newTokenContract) MEME contract %s", ca.String())
+
+	if err := extendMemeTokenDetails(&meme, evt, lo); err != nil {
+		log.Criticalf("failed to load meme collection %s; %s", meme.Address.String(), err.Error())
+		return
+	}
+
+	if err := repo.StoreMemeToken(&meme); err != nil {
+		log.Criticalf("can not store meme collection %s; %s", meme.Address.String(), err.Error())
+		return
+	}
+
+	// add observed contract based on the collection
+	addObservedContract(&meme, evt)
+	log.Infof("new meme collection %s found at %s", meme.Name, meme.Address.String())
+}
+
+func extendMemeTokenDetails(meme *types.Collection, evt *eth.Log, _ *logObserver) (err error) {
+	// NFT contract type is derived from the factory contract type
+	/*nft.Type, err = repo.NFTContractType(&evt.Address)
+	if err != nil {
+		log.Errorf("contract %s type not known; %s", evt.Address.String(), err.Error())
+		return err
+	}
+	log.Debugf("NFT contract %s is %s", nft.Address.String(), nft.Type)
+	*/
+	meme.Type = types.ContractTypeERC20
+
+	blk, err := repo.GetHeader(evt.BlockNumber)
+	if err != nil {
+		log.Errorf("header #%d not available; %s", evt.BlockNumber, err.Error())
+		return err
+	}
+	meme.Created = types.Time(time.Unix(int64(blk.Time), 0))
+
+	return extendMemeTokenMetadata(meme)
+}
+
+func extendMemeTokenMetadata(meme *types.Collection) (err error) {
+	meme.Name, err = repo.MemeTokenName(&meme.Address)
+	if err != nil {
+		log.Errorf("%s %s name not known; %s", meme.Type, meme.Address.String(), err.Error())
+		return err
+	}
+	log.Debugf("NFT contract %s name: %s", meme.Address.String(), meme.Name)
+
+	meme.Symbol, err = repo.MemeTokenSymbol(&meme.Address)
+	if err != nil {
+		log.Errorf("%s %s symbol not known; %s", meme.Type, meme.Address.String(), err.Error())
+		return err
+	}
+	log.Debugf("NFT contract %s symbol: %s", meme.Address.String(), meme.Symbol)
+
+	/*
+		legacyCollection, err := repo.GetLegacyMemeToken(nft.Address)
+		if err != nil {
+			log.Errorf("%s %s unable to load off-chain data; %s", nft.Type, nft.Address.String(), err.Error())
+			return err
+		}
+
+		if nil != legacyCollection {
+			nft.Categories, err = legacyCollection.CategoriesAsInt()
+			if err != nil {
+				log.Errorf("%s %s unable to decode categories; %s", nft.Type, nft.Address.String(), err.Error())
+				return err
+			}
+		}
+	*/
+
+	return nil
+}
+
 // newNFTContract handles log event for new factory deployed ERC721/ERC1155 contract.
 // Factory::event ContractCreated(address creator, address nft)
 // MM Factory::event ContractCreated(address creator, address nft, bool isPrivate)
@@ -24,12 +112,12 @@ func newNFTContract(evt *eth.Log, lo *logObserver) {
 
 	// make NFT address
 	ca := common.Address{}
-	ca.SetBytes(evt.Data[32:])
+	ca.SetBytes(evt.Data[32:64])
 	nft := types.Collection{
 		Address:  ca,
 		IsActive: true,
 	}
-	log.Debugf("found NFT contract %s", ca.String())
+	log.Infof("found (newNFTContract) NFT contract %s", ca.String())
 
 	// load NFT details
 	if err := extendNFTCollectionDetails(&nft, evt, lo); err != nil {

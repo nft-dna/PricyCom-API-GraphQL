@@ -58,8 +58,15 @@ func newLogObserver(mgr *Manager) *logObserver {
 			// MM Factory::event ContractCreated(address creator, address nft, bool _isPrivate)
 			common.HexToHash("0xbbe78d8749296d5db350f8a76bbc6f2f85649a62516790be41dc6a67393aecde"): newNFTContract,
 
+			/* erc20::event TokenCreated(address,address)*/
+			common.HexToHash("0xd5f9bdf12adf29dab0248c349842c3822d53ae2bb4f36352f301630d018c8139"): newTokenContract,
+
 			/* erc721::event Minted(uint256 tokenId, address beneficiary, string tokenUri, address minter) */
 			common.HexToHash("0x997115af5924f5e38964c6d65c804d4cb85129b65e62eb20a8ca6329dbe57e18"): erc721TokenMinted,
+
+			/* erc1155::event Minted(uint256,uint256,address,string,bytes,address) */
+			//common.HexToHash("0xd1390903c6e0d21c236d4f87b8f6b8ed0c107dd8ab79fc5aeb0b654bb99039bd"): erc1155TokenMinted,
+			// handled by erc1155TokenTransfer having zero address as from address
 
 			/* erc721::event Transfer(address indexed from, address indexed to, uint256 indexed tokenId) */
 			common.HexToHash("0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"): erc721TokenTransfer,

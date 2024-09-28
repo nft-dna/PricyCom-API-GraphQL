@@ -4,10 +4,11 @@ import (
 	"artion-api-graphql/internal/repository"
 	"artion-api-graphql/internal/types"
 	"artion-api-graphql/internal/types/sorting"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 // Collection represents a resolvable collection of NFT tokens.
@@ -33,6 +34,13 @@ func (rs *RootResolver) Collection(args struct {
 	return NewCollection(&args.Contract)
 }
 
+// MemeToken resolves an Meme Token for the given contract address.
+func (rs *RootResolver) MemeToken(args struct {
+	Contract common.Address
+}) (*Collection, error) {
+	return NewMemeToken(&args.Contract)
+}
+
 // AdvertisedCollection is the address of the NFT collection to be advertised.
 var advertisedCollection = common.HexToAddress("0x5dbc2a8b01b7e37dfd7850237a3330c9939d6457")
 
@@ -41,9 +49,17 @@ func (rs *RootResolver) AdvertisedCollection() (*Collection, error) {
 	return NewCollection(&advertisedCollection) // TODO: random favourite collection?
 }
 
+// AdvertisedCollection is the address of the NFT collection to be advertised.
+var advertisedMemeToken = common.HexToAddress("0x5dbc2a8b01b7e37dfd7850237a3330c9939d6457")
+
+// AdvertisedCollection resolves an NFT collection to be advertised on the home page.
+func (rs *RootResolver) AdvertisedMemeToken() (*Collection, error) {
+	return NewMemeToken(&advertisedCollection) // TODO: random favourite collection?
+}
+
 // Collections resolve a list of NFT Collection for the given criteria.
 func (rs *RootResolver) Collections(args struct {
-	Search *string
+	Search     *string
 	MintableBy *common.Address
 	PaginationInput
 }) (con *CollectionConnection, err error) {
@@ -63,9 +79,40 @@ func (rs *RootResolver) Collections(args struct {
 	return NewCollectionConnection(list)
 }
 
+// MemeTokens resolve a list of Meme Token for the given criteria.
+func (rs *RootResolver) MemeTokens(args struct {
+	Search     *string
+	MintableBy *common.Address
+	PaginationInput
+}) (con *CollectionConnection, err error) {
+	cursor, count, backward, err := args.ToRepositoryInput()
+	if err != nil {
+		return nil, err
+	}
+
+	list, err := repository.R().ListLegacyMemeTokens(types.CollectionFilter{
+		Search:     args.Search,
+		MintableBy: args.MintableBy,
+	}, cursor, count, backward)
+	if err != nil {
+		return nil, err
+	}
+
+	return NewCollectionConnection(list)
+}
+
 // NewCollection loads a Collection structure for the given address.
 func NewCollection(adr *common.Address) (*Collection, error) {
 	col, err := repository.R().GetLegacyCollection(*adr)
+	if err != nil {
+		return nil, err
+	}
+	return (*Collection)(col), nil
+}
+
+// NewMemeToken loads a Collection structure for the given address.
+func NewMemeToken(adr *common.Address) (*Collection, error) {
+	col, err := repository.R().GetLegacyMemeToken(*adr)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +175,7 @@ func (t *Collection) Royalty() string {
 
 func (t *Collection) Discord() string {
 	if idx := strings.Index(t.DiscordUrl, "discord.gg/"); idx != -1 {
-		return "https://discord.gg/" + t.DiscordUrl[idx + 11:]
+		return "https://discord.gg/" + t.DiscordUrl[idx+11:]
 	}
 	if t.DiscordUrl != "" {
 		return "https://discord.gg/" + t.DiscordUrl
@@ -148,7 +195,7 @@ func (t *Collection) Site() string {
 
 func (t *Collection) Telegram() string {
 	if idx := strings.Index(t.TelegramUrl, "t.me/"); idx != -1 {
-		return "https://t.me/" + t.TelegramUrl[idx + 5:]
+		return "https://t.me/" + t.TelegramUrl[idx+5:]
 	}
 	if strings.HasPrefix(t.TelegramUrl, "@") && len(t.TelegramUrl) > 1 {
 		return "https://t.me/" + t.TelegramUrl[1:]
@@ -161,7 +208,7 @@ func (t *Collection) Telegram() string {
 
 func (t *Collection) Twitter() string {
 	if idx := strings.Index(t.TwitterUrl, "twitter.com/"); idx != -1 {
-		return "https://twitter.com/" + t.TwitterUrl[idx + 12:]
+		return "https://twitter.com/" + t.TwitterUrl[idx+12:]
 	}
 	if strings.HasPrefix(t.TwitterUrl, "@") {
 		return "https://twitter.com/" + t.TwitterUrl[1:]

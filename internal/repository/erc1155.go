@@ -2,8 +2,9 @@
 package repository
 
 import (
-	"github.com/ethereum/go-ethereum/common"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 const (
@@ -32,4 +33,9 @@ func (p *Proxy) IsErc1155Contract(adr *common.Address) bool {
 // Erc1155StartingBlockNumber provides the first important block number for the ERC-1155 contract.
 func (p *Proxy) Erc1155StartingBlockNumber(adr *common.Address) (uint64, error) {
 	return p.rpc.Erc1155StartingBlockNumber(adr)
+}
+
+// Erc120StartingBlockNumber provides the first important block number for the ERC-20 contract.
+func (p *Proxy) Erc20StartingBlockNumber(adr *common.Address) (uint64, error) {
+	return p.rpc.Erc20StartingBlockNumber(adr)
 }

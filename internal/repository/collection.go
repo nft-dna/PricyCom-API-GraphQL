@@ -84,7 +84,7 @@ func (p *Proxy) CollectionOwner(contract *common.Address) *common.Address {
 // CanRegisterCollection checks if the given collection can be registered.
 func (p *Proxy) CanRegisterCollection(contract *common.Address, user *common.Address) error {
 	if !p.IsErc721Contract(contract) && !p.IsErc1155Contract(contract) {
-		return fmt.Errorf("the contract is not ERC-721 or ERC-1155")
+		return fmt.Errorf("the contract is not ERC-721 nor ERC-1155")
 	}
 
 	owner := p.rpc.CollectionOwner(contract)

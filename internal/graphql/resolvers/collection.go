@@ -22,8 +22,21 @@ type CollectionConnection struct {
 	PageInfo   PageInfo
 }
 
+// MemeTokenConnection represents a resolvable connection
+// between MemeToken list and its edges.
+type MemeTokenConnection struct {
+	Edges      []MemeTokenEdge
+	TotalCount hexutil.Big
+	PageInfo   PageInfo
+}
+
 // CollectionEdge represents an edge on Collection list.
 type CollectionEdge struct {
+	Node *Collection
+}
+
+// MemeTokenEdge represents an edge on Collection list.
+type MemeTokenEdge struct {
 	Node *Collection
 }
 
@@ -84,7 +97,7 @@ func (rs *RootResolver) MemeTokens(args struct {
 	Search     *string
 	MintableBy *common.Address
 	PaginationInput
-}) (con *CollectionConnection, err error) {
+}) (con *MemeTokenConnection, err error) {
 	cursor, count, backward, err := args.ToRepositoryInput()
 	if err != nil {
 		return nil, err
@@ -98,7 +111,7 @@ func (rs *RootResolver) MemeTokens(args struct {
 		return nil, err
 	}
 
-	return NewCollectionConnection(list)
+	return NewMemeTokenConnection(list)
 }
 
 // NewCollection loads a Collection structure for the given address.
@@ -124,11 +137,50 @@ func (edge CollectionEdge) Cursor() (types.Cursor, error) {
 	return sorting.LegacyCollectionSortingName.GetCursor((*types.LegacyCollection)(edge.Node))
 }
 
+// Cursor generates new unique identifier of the collection list edge.
+func (edge MemeTokenEdge) Cursor() (types.Cursor, error) {
+	return sorting.LegacyCollectionSortingName.GetCursor((*types.LegacyCollection)(edge.Node))
+}
+
 // NewCollectionConnection creates a new connection of a Collection list.
 func NewCollectionConnection(list *types.LegacyCollectionList) (*CollectionConnection, error) {
 	// create new connection
 	con := &CollectionConnection{
 		Edges:      make([]CollectionEdge, len(list.Collection)),
+		TotalCount: (hexutil.Big)(*big.NewInt(list.TotalCount)),
+		PageInfo:   PageInfo{},
+	}
+
+	// connect edges
+	for i := 0; i < len(list.Collection); i++ {
+		con.Edges[i].Node = (*Collection)(list.Collection[i])
+	}
+
+	// setup page info
+	con.PageInfo.HasNextPage = list.HasNext
+	con.PageInfo.HasPreviousPage = list.HasPrev
+	if len(list.Collection) > 0 {
+		startCur, err := con.Edges[0].Cursor()
+		if err != nil {
+			return nil, err
+		}
+
+		endCur, err := con.Edges[len(con.Edges)-1].Cursor()
+		if err != nil {
+			return nil, err
+		}
+
+		con.PageInfo.StartCursor = &startCur
+		con.PageInfo.EndCursor = &endCur
+	}
+	return con, nil
+}
+
+// NewMemeTokenConnection creates a new connection of a Collection list.
+func NewMemeTokenConnection(list *types.LegacyCollectionList) (*MemeTokenConnection, error) {
+	// create new connection
+	con := &MemeTokenConnection{
+		Edges:      make([]MemeTokenEdge, len(list.Collection)),
 		TotalCount: (hexutil.Big)(*big.NewInt(list.TotalCount)),
 		PageInfo:   PageInfo{},
 	}

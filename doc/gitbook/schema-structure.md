@@ -33,7 +33,7 @@ type Query {
     memeToken(contract: Address!): Collection
 
     # List memetokens (all, search name or filter mintable by given user).
-    memeTokens(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!    
+    memeTokens(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): MemeTokenConnection!    
 
     # Get token by address and id.
     token(contract: Address!, tokenId: BigInt!): Token
@@ -84,10 +84,10 @@ type Query {
     bannedCollections(search: String, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!
 
     # List memetokens to be reviewed by a moderator. (moderators only)
-    memeTokensInReview(search: String, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!
+    memeTokensInReview(search: String, first: Int, after: Cursor, last: Int, before: Cursor): MemeTokenConnection!
 
     # List memetokens which was banned by a moderator. (moderators only)
-    bannedMemeTokens(search: String, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!    
+    bannedMemeTokens(search: String, first: Int, after: Cursor, last: Int, before: Cursor): MemeTokenConnection!    
 
     # List tokens which was banned by a moderator. (moderators only)
     bannedTokens(first: Int, after: Cursor, last: Int, before: Cursor): BannedNftConnection!

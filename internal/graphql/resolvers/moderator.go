@@ -165,7 +165,7 @@ func (rs *RootResolver) MemeTokensInReview(ctx context.Context, args struct {
 func (rs *RootResolver) BannedMemeTokens(ctx context.Context, args struct {
 	Search *string
 	PaginationInput
-}) (con *CollectionConnection, err error) {
+}) (con *MemeTokenConnection, err error) {
 	err = requireModerator(ctx)
 	if err != nil {
 		return nil, err
@@ -184,7 +184,7 @@ func (rs *RootResolver) BannedMemeTokens(ctx context.Context, args struct {
 		return nil, err
 	}
 
-	return NewCollectionConnection(list)
+	return NewMemeTokenConnection(list)
 }
 
 // ApproveMemeToken sets the collection as approved.

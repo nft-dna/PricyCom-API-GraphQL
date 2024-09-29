@@ -53,13 +53,17 @@ func newLogObserver(mgr *Manager) *logObserver {
 		outNftTokens:      make(chan *types.Token, nftQueueCapacity),
 		outObservedBlocks: make(chan uint64, observedBlocksCapacity),
 		topics: map[common.Hash]EventHandler{
+
+			/* erc20::event TokenCreated(address,address)*/
+			common.HexToHash("0xd5f9bdf12adf29dab0248c349842c3822d53ae2bb4f36352f301630d018c8139"): newTokenContract,
+
+			/* erc20::event BlockMinted(address)*/
+			common.HexToHash("0x0e9a1ec107d573764d20047a2ac52b16c549f7366e25e13cc1c8437d3fe98b5d"): memeTokenBlockMinted,
+
 			/* Factory::event ContractCreated(address creator, address nft) */
 			//common.HexToHash("0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b"): newNFTContract,
 			// MM Factory::event ContractCreated(address creator, address nft, bool _isPrivate)
 			common.HexToHash("0xbbe78d8749296d5db350f8a76bbc6f2f85649a62516790be41dc6a67393aecde"): newNFTContract,
-
-			/* erc20::event TokenCreated(address,address)*/
-			common.HexToHash("0xd5f9bdf12adf29dab0248c349842c3822d53ae2bb4f36352f301630d018c8139"): newTokenContract,
 
 			/* erc721::event Minted(uint256 tokenId, address beneficiary, string tokenUri, address minter) */
 			common.HexToHash("0x997115af5924f5e38964c6d65c804d4cb85129b65e62eb20a8ca6329dbe57e18"): erc721TokenMinted,

@@ -5,7 +5,9 @@ package rpc
 import (
 	"artion-api-graphql/internal/repository/rpc/contracts"
 	"context"
+	"math/big"
 
+	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 )
@@ -46,4 +48,84 @@ func (o *Opera) Erc20StartingBlockNumber(adr *common.Address) (uint64, error) {
 		log.Errorf("could not close filter iterator; %s", err.Error())
 	}
 	return blk, nil
+}
+
+func (o *Opera) Erc20InitialReserves(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc20Abi().Pack("initialReserves")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc20MintBlocksAmount(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc20Abi().Pack("mintBlocksAmount")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc20MintBlocksFee(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc20Abi().Pack("mintBlocksFee")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc20MintBlocksMaxSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc20Abi().Pack("mintBlocksMaxSupply")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
 }

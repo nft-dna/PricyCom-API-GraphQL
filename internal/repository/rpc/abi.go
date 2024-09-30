@@ -13,3 +13,8 @@ func (o *Opera) Erc721Abi() *abi.ABI {
 func (o *Opera) Erc1155Abi() *abi.ABI {
 	return o.abiVolcano1155
 }
+
+// Erc20Abi provides access to decoded ABI of Volcano ERC-20 contract.
+func (o *Opera) Erc20Abi() *abi.ABI {
+	return o.abiVolcano20
+}

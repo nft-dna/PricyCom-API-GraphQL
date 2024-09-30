@@ -22,6 +22,126 @@ const defaultMintingTestTokenUrl = "https://minter.artion.io/default/access/mint
 // defaultMintingTestFee is the default fee we try on minting test (10 FTM).
 var defaultMintingTestFee = hexutil.MustDecodeBig("0x8AC7230489E80000")
 
+func (o *Opera) Erc721IsPrivate(contract *common.Address, block *big.Int) (bool, error) {
+	// prepare params
+	input, err := o.Erc721Abi().Pack("isprivate")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return false, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return false, err
+	}
+	return *abi.ConvertType(data[0], new(bool)).(*bool), nil
+}
+
+func (o *Opera) Erc721UseBaseUri(contract *common.Address, block *big.Int) (bool, error) {
+	// prepare params
+	input, err := o.Erc721Abi().Pack("useBaseUri")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return false, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return false, err
+	}
+	return *abi.ConvertType(data[0], new(bool)).(*bool), nil
+}
+
+func (o *Opera) Erc721MaxSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc721Abi().Pack("maxSupply")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc721MintStartTime(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc721Abi().Pack("mintStartTime")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc721MintStopTime(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc721Abi().Pack("mintStopTime")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc721RevealTime(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc721Abi().Pack("revealTime")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
 // Erc721StartingBlockNumber provides the first important block number for the ERC-721 contract.
 // We try to get the first Transfer() event on the contract,
 // anything before it is irrelevant for this API.

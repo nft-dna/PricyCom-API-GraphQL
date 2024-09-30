@@ -104,3 +104,67 @@ func (p *Proxy) IsApprovedForAll(contract *common.Address, owner *common.Address
 	}
 	return isApproved, err
 }
+
+func (p *Proxy) CollectionErc721UseBaseUri(adr *common.Address) (bool, error) {
+	return p.rpc.Erc721UseBaseUri(adr, nil)
+}
+
+func (p *Proxy) CollectionErc1155MaxItemSupply(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc1155MaxItemSupply(adr, nil)
+}
+
+func (p *Proxy) CollectionErc721IsPrivate(adr *common.Address) (bool, error) {
+	return p.rpc.Erc721IsPrivate(adr, nil)
+}
+
+func (p *Proxy) CollectionErc1155IsPrivate(adr *common.Address) (bool, error) {
+	return p.rpc.Erc1155IsPrivate(adr, nil)
+}
+
+func (p *Proxy) CollectionErc721MaxSupply(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc721MaxSupply(adr, nil)
+}
+
+func (p *Proxy) CollectionErc1155MaxSupply(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc1155MaxSupply(adr, nil)
+}
+
+func (p *Proxy) CollectionErc721MintStartTime(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc721MintStartTime(adr, nil)
+}
+
+func (p *Proxy) CollectionErc1155MintStartTime(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc1155MintStartTime(adr, nil)
+}
+
+func (p *Proxy) CollectionErc721MintStopTime(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc721MintStopTime(adr, nil)
+}
+
+func (p *Proxy) CollectionErc1155MintStopTime(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc1155MintStopTime(adr, nil)
+}
+
+func (p *Proxy) CollectionErc721RevealTime(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc721RevealTime(adr, nil)
+}
+
+func (p *Proxy) CollectionErc1155RevealTime(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc1155RevealTime(adr, nil)
+}
+
+func (p *Proxy) CollectionErc20InitialReserves(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc20InitialReserves(adr, nil)
+}
+
+func (p *Proxy) CollectionErc20BlocksAmount(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc20MintBlocksAmount(adr, nil)
+}
+
+func (p *Proxy) CollectionErc20BlocksFee(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc20MintBlocksFee(adr, nil)
+}
+
+func (p *Proxy) CollectionErc20BlocksMaxSupply(adr *common.Address) (*big.Int, error) {
+	return p.rpc.Erc20MintBlocksMaxSupply(adr, nil)
+}

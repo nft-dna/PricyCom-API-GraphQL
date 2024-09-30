@@ -37,6 +37,126 @@ func (o *Opera) Erc1155BalanceOf(contract *common.Address, tokenId *big.Int, own
 	return new(big.Int).SetBytes(data), nil
 }
 
+func (o *Opera) Erc1155IsPrivate(contract *common.Address, block *big.Int) (bool, error) {
+	// prepare params
+	input, err := o.Erc1155Abi().Pack("isprivate")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return false, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return false, err
+	}
+	return *abi.ConvertType(data[0], new(bool)).(*bool), nil
+}
+
+func (o *Opera) Erc1155MaxSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc1155Abi().Pack("maxSupply")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc1155MaxItemSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc1155Abi().Pack("maxItemSupply")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc1155MintStartTime(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc1155Abi().Pack("mintStartTime")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc1155MintStopTime(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc1155Abi().Pack("mintStopTime")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc1155RevealTime(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc1155Abi().Pack("revealTime")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
 // Erc1155TokenUri gets a token specific URI address from ERC-1155 contract using uri() call.
 func (o *Opera) Erc1155TokenUri(contract *common.Address, tokenId *big.Int) (string, error) {
 	// prepare params

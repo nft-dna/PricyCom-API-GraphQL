@@ -3,6 +3,7 @@ package svc
 
 import (
 	"artion-api-graphql/internal/types"
+	"math/big"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -13,7 +14,7 @@ func newTokenContract(evt *eth.Log, lo *logObserver) {
 	// MM todo ERC20 TokenCreated event
 
 	if len(evt.Data) != 64 || len(evt.Topics) != 1 {
-		log.Errorf("not Factory::ContractCreated() event #%d/#%d; expected 64 bytes of data, %d given; expected 1 topic, %d given",
+		log.Errorf("not Factory::TokenCreated() event #%d/#%d; expected 64 bytes of data, %d given; expected 1 topic, %d given",
 			evt.BlockNumber, evt.Index, len(evt.Data), len(evt.Topics))
 		return
 	}
@@ -112,7 +113,41 @@ func extenMemeTokenMintDetails(nft *types.Collection) (err error) {
 		MintEndTime:   time.Time{}, // actually unused here..
 		RevealTime:    time.Time{}, // unused here..
 	}
-	// MM: TODO ..
+
+	nft.MemeDetails = types.MemeTokenDetails{
+		InitialReserves: big.Int{},
+		BlocksAmount:    0,
+		BlocksFee:       big.Int{},
+		BlocksMaxSupply: 0,
+	}
+
+	biVal, err := repo.CollectionErc20InitialReserves(&nft.Address)
+	if err != nil {
+		log.Errorf("%s %s initialReserves not known; %s", nft.Type, nft.Address.String(), err.Error())
+	} else {
+		nft.MemeDetails.InitialReserves = *biVal
+	}
+
+	bVal, err := repo.CollectionErc20BlocksAmount(&nft.Address)
+	if err != nil {
+		log.Errorf("%s %s blocksAmount not known; %s", nft.Type, nft.Address.String(), err.Error())
+	} else {
+		nft.MemeDetails.BlocksAmount = bVal.Uint64()
+	}
+
+	biVal, err = repo.CollectionErc20BlocksFee(&nft.Address)
+	if err != nil {
+		log.Errorf("%s %s blocksFee not known; %s", nft.Type, nft.Address.String(), err.Error())
+	} else {
+		nft.MemeDetails.BlocksFee = *biVal
+	}
+
+	bVal, err = repo.CollectionErc20BlocksMaxSupply(&nft.Address)
+	if err != nil {
+		log.Errorf("%s %s blocksMaxSupply not known; %s", nft.Type, nft.Address.String(), err.Error())
+	} else {
+		nft.MemeDetails.BlocksMaxSupply = bVal.Uint64()
+	}
 
 	return nil
 }
@@ -225,7 +260,84 @@ func extendNFTCollectionMintDetails(nft *types.Collection) (err error) {
 		MintEndTime:   time.Time{},
 		RevealTime:    time.Time{},
 	}
-	// MM: TODO ..
+
+	nft.MemeDetails = types.MemeTokenDetails{
+		InitialReserves: big.Int{},
+		BlocksAmount:    0,
+		BlocksFee:       big.Int{},
+		BlocksMaxSupply: 0,
+	}
+
+	if nft.Type == types.ContractTypeERC1155 {
+		nft.MintDetails.PublicMint, err = repo.CollectionErc1155IsPrivate(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s isPrivate not known; %s", nft.Type, nft.Address.String(), err.Error())
+		}
+		maxItemCount, err := repo.CollectionErc1155MaxItemSupply(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s isPrivate not known; %s", nft.Type, nft.Address.String(), err.Error())
+		} else {
+			nft.MintDetails.MaxItemCount = maxItemCount.Uint64()
+		}
+		maxSupply, err := repo.CollectionErc1155MaxSupply(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s maxSupply not known; %s", nft.Type, nft.Address.String(), err.Error())
+		} else {
+			nft.MintDetails.MaxItems = maxSupply.Uint64()
+		}
+		mTime, err := repo.CollectionErc1155MintStartTime(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s mintStartTime not known; %s", nft.Type, nft.Address.String(), err.Error())
+		} else {
+			nft.MintDetails.MintStartTime = time.Unix(mTime.Int64(), 0)
+		}
+		mTime, err = repo.CollectionErc1155MintStopTime(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s mintEndTime not known; %s", nft.Type, nft.Address.String(), err.Error())
+		} else {
+			nft.MintDetails.MintEndTime = time.Unix(mTime.Int64(), 0)
+		}
+		mTime, err = repo.CollectionErc1155RevealTime(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s revealTime not known; %s", nft.Type, nft.Address.String(), err.Error())
+		} else {
+			nft.MintDetails.RevealTime = time.Unix(mTime.Int64(), 0)
+		}
+
+	} else {
+		nft.MintDetails.PublicMint, err = repo.CollectionErc721IsPrivate(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s isPrivate not known; %s", nft.Type, nft.Address.String(), err.Error())
+		}
+		nft.MintDetails.HasBaseUri, err = repo.CollectionErc721UseBaseUri(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s useBaseUri not known; %s", nft.Type, nft.Address.String(), err.Error())
+		}
+		maxSupply, err := repo.CollectionErc721MaxSupply(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s maxSupply not known; %s", nft.Type, nft.Address.String(), err.Error())
+		} else {
+			nft.MintDetails.MaxItems = maxSupply.Uint64()
+		}
+		mTime, err := repo.CollectionErc721MintStartTime(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s mintStartTime not known; %s", nft.Type, nft.Address.String(), err.Error())
+		} else {
+			nft.MintDetails.MintStartTime = time.Unix(mTime.Int64(), 0)
+		}
+		mTime, err = repo.CollectionErc721MintStopTime(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s mintEndTime not known; %s", nft.Type, nft.Address.String(), err.Error())
+		} else {
+			nft.MintDetails.MintEndTime = time.Unix(mTime.Int64(), 0)
+		}
+		mTime, err = repo.CollectionErc721RevealTime(&nft.Address)
+		if err != nil {
+			log.Errorf("%s %s revealTime not known; %s", nft.Type, nft.Address.String(), err.Error())
+		} else {
+			nft.MintDetails.RevealTime = time.Unix(mTime.Int64(), 0)
+		}
+	}
 
 	return nil
 }

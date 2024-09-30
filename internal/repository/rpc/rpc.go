@@ -51,6 +51,7 @@ type Opera struct {
 	// decode ABI structures
 	abiVolcano721  *abi.ABI
 	abiVolcano1155 *abi.ABI
+	abiVolcano20   *abi.ABI
 	abiMarketplace *abi.ABI
 
 	// contracts
@@ -189,6 +190,11 @@ func loadABI(o *Opera) (err error) {
 	}
 
 	o.abiVolcano1155, err = loadABIFile("contracts/abi/VolcanoERC1155Tradable.json")
+	if err != nil {
+		return err
+	}
+
+	o.abiVolcano20, err = loadABIFile("contracts/abi/VolcanoERC20Tradable.json")
 	if err != nil {
 		return err
 	}

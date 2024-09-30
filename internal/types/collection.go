@@ -2,6 +2,7 @@
 package types
 
 import (
+	"math/big"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -11,11 +12,18 @@ type CollectionMintDetails struct {
 	PublicMint    bool      `bson:"publicMint"`
 	IsErc1155     bool      `bson:"isErc1155"`
 	HasBaseUri    bool      `bson:"hasBaseUri"`
-	MaxItems      int32     `bson:"maxItems"`
-	MaxItemCount  int32     `bson:"maxItemCount"`
+	MaxItems      uint64    `bson:"maxItems"`
+	MaxItemCount  uint64    `bson:"maxItemCount"`
 	MintStartTime time.Time `bson:"mintStartTime"`
 	MintEndTime   time.Time `bson:"mintEndTime"`
 	RevealTime    time.Time `bson:"revealTime"`
+}
+
+type MemeTokenDetails struct {
+	InitialReserves big.Int `bson:"initialReserves"`
+	BlocksAmount    uint64  `bson:"blocksAmount"`
+	BlocksFee       big.Int `bson:"blocksFee"`
+	BlocksMaxSupply uint64  `bson:"blocksMaxSupply"`
 }
 
 // Collection represents an Artion token collection, represented by an NFT contract.
@@ -32,4 +40,5 @@ type Collection struct {
 	//
 	IsOurFactory bool                  `bson:"verified_by"`
 	MintDetails  CollectionMintDetails `bson:"mintDetails"`
+	MemeDetails  MemeTokenDetails      `bson:"memetDetails"`
 }

@@ -126,7 +126,7 @@ func (db *MongoDbBridge) ObservedContractsAddressList() []common.Address /*Contr
 	col := db.client.Database(db.dbName).Collection(coObservedContracts)
 
 	list := make([]common.Address /*ContractInfo*/, 0)
-	fi, err := col.Find(context.Background(), bson.D{}, options.Find().SetProjection(bson.D{{Key: fiContractAddress, Value: true} /*,{Key: fiContractBlockNumber, Value: 0}*/}))
+	fi, err := col.Find(context.Background(), bson.D{}, options.Find().SetProjection(bson.D{{Key: fiContractAddress, Value: true} /*,{Key: fiContractBlockNumber, Value: 1}*/}))
 	if err != nil {
 		log.Errorf("can not pull observed contracts; %s", err.Error())
 		return list
@@ -205,7 +205,7 @@ func (sdb *SharedMongoDbBridge) ObservedCollections() ([]ContractInfo, error) {
 	col := sdb.client.Database(sdb.dbName).Collection(coLegacyCollection)
 	cur, err := col.Find(context.Background(),
 		bson.D{{Key: fiLegacyCollectionIsAppropriate, Value: true}},
-		options.Find().SetProjection(bson.D{{Key: fiLegacyCollectionAddress, Value: 1}, {Key: fiContractBlockNumber, Value: 0}}),
+		options.Find().SetProjection(bson.D{{Key: fiLegacyCollectionAddress, Value: 1} /*, {Key: fiContractBlockNumber, Value: 1}*/}),
 	)
 	if err != nil {
 		return nil, err

@@ -60,7 +60,7 @@ func (c *MemCache) InvalidateLegacyMemeToken(contract common.Address) {
 		log.Errorf("could not clear legacy collection cache; %s", err.Error())
 	}
 
-	err = c.cache.Delete(legacyCollectionsListKey)
+	err = c.cache.Delete(legacyMemeTokensListKey)
 	if err != nil && err != bigcache.ErrEntryNotFound {
 		log.Errorf("could not clear legacy collection list cache; %s", err.Error())
 	}
@@ -88,7 +88,7 @@ func (c *MemCache) GetLegacyMemeTokenList(loader func() (*types.LegacyCollection
 		log.Errorf("can not encode legacy collection list into cache; %s", err)
 		return lc, err
 	}
-	err = c.cache.Set(legacyCollectionsListKey, data)
+	err = c.cache.Set(legacyMemeTokensListKey, data)
 	if err != nil {
 		log.Errorf("could not store legacy collection list into cache; %s", err.Error())
 	}

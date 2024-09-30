@@ -9,11 +9,23 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+/*
+type LegacyCollectionMintDetails struct {
+	IsErc1155     bool      `bson:"isErc1155"`
+	HasBaseUri    bool      `bson:"hasBaseUri"`
+	MaxItems      int32     `bson:"maxItems"`
+	MaxItemCount  int32     `bson:"maxItemCount"`
+	MintStartTime time.Time `bson:"mintStartTime"`
+	MintEndTime   time.Time `bson:"mintEndTime"`
+	RevealTime    time.Time `bson:"revealTime"`
+}
+*/
+
 // LegacyCollection represents token collection from old Artion.
 // Keeps off-chain data about the collection.
 type LegacyCollection struct {
 	Id                primitive.ObjectID `bson:"_id"`
-	Address           common.Address     `bson:"erc721Address"` // unique index
+	Address           common.Address     `bson:"erc721Address"` // unique index // should be changed to a 'generic' ercAddress
 	Name              string             `bson:"collectionName"`
 	Description       string             `bson:"description"`
 	CategoriesStr     []string           `bson:"categories"`
@@ -34,6 +46,8 @@ type LegacyCollection struct {
 	IsVerified        bool               `bson:"isVerified"`        // is boosted by admin? (moderator is not sufficient)
 	IsReviewed        bool               `bson:"status"`            // false = in review, true = approved (removed on reject)
 	AppropriateUpdate time.Time          `bson:"appropriateUpdate"` // when was "isAppropriate" changed last time?
+	// isInternal collections (mintable by marketplace users)
+	//MintDetails LegacyCollectionMintDetails `bson:"mintDetails"`
 }
 
 // CategoriesAsInt provides a list of category ID-s
@@ -80,11 +94,24 @@ func DecodeCollectionApplication(data []byte) (*CollectionApplication, error) {
 	return &out, nil
 }
 
-func (app CollectionApplication) ToCollection(image string, owner *common.Address, isAppropriate bool, isInternal bool) LegacyCollection {
+func (app CollectionApplication) ToCollection(image string, owner *common.Address, isAppropriate bool, isInternal bool /*, mdet *LegacyCollectionMintDetails*/) LegacyCollection {
 	categoriesStr := make([]string, len(app.Categories))
 	for i, categoryId := range app.Categories {
 		categoriesStr[i] = strconv.Itoa(int(categoryId))
 	}
+	/*
+		if mdet == nil {
+			mdet = &LegacyCollectionMintDetails{
+				IsErc1155:     false,
+				HasBaseUri:    false,
+				MaxItems:      0,
+				MaxItemCount:  0,
+				MintStartTime: time.Time{},
+				MintEndTime:   time.Time{},
+				RevealTime:    time.Time{},
+			}
+		}
+	*/
 	return LegacyCollection{
 		Address:       app.Contract,
 		Name:          app.Name,
@@ -106,5 +133,6 @@ func (app CollectionApplication) ToCollection(image string, owner *common.Addres
 		IsOwnerOnly:   false,
 		IsVerified:    false,
 		IsReviewed:    false,
+		//MintDetails:   *mdet,
 	}
 }

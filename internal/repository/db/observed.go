@@ -25,6 +25,11 @@ const (
 	fiContractBlockNumber = "block"
 )
 
+type ContractInfo struct {
+	Addr  common.Address
+	Block uint64
+}
+
 // AddObservedContract adds the specified observed contract record to the collection.
 func (db *MongoDbBridge) AddObservedContract(oc *types.ObservedContract) error {
 	col := db.client.Database(db.dbName).Collection(coObservedContracts)
@@ -117,11 +122,11 @@ func (db *MongoDbBridge) MinObservedBlockNumber(def uint64) uint64 {
 
 // ObservedContractsAddressList provides list of addresses of all observed contracts
 // stored in the persistent database.
-func (db *MongoDbBridge) ObservedContractsAddressList() []common.Address {
+func (db *MongoDbBridge) ObservedContractsAddressList() []common.Address /*ContractInfo*/ {
 	col := db.client.Database(db.dbName).Collection(coObservedContracts)
 
-	list := make([]common.Address, 0)
-	fi, err := col.Find(context.Background(), bson.D{}, options.Find().SetProjection(bson.D{{Key: fiContractAddress, Value: true}}))
+	list := make([]common.Address /*ContractInfo*/, 0)
+	fi, err := col.Find(context.Background(), bson.D{}, options.Find().SetProjection(bson.D{{Key: fiContractAddress, Value: true} /*,{Key: fiContractBlockNumber, Value: 0}*/}))
 	if err != nil {
 		log.Errorf("can not pull observed contracts; %s", err.Error())
 		return list
@@ -134,18 +139,20 @@ func (db *MongoDbBridge) ObservedContractsAddressList() []common.Address {
 	}()
 
 	var row struct {
-		Addr string `bson:"_id"`
+		Addr string `bson:"_id"` //;
+		//Blk uint64 `bson:"block"`
 	}
 	for fi.Next(context.Background()) {
 		if err := fi.Decode(&row); err != nil {
 			log.Errorf("failed to decode observed contract; %s", err.Error())
 			break
 		}
-		list = append(list, common.HexToAddress(row.Addr))
+		list = append(list, common.HexToAddress(row.Addr) /*ContractInfo{common.HexToAddress(row.Addr), row.Blk}*/)
 	}
 	return list
 }
 
+/*
 // NFTContractsTypeMap provides a map of observed contract addresses to corresponding
 // contract type for ERC721 and ERC1155 contracts including their factory.
 // In case of a factory contract, we need the deployed NFT type for processing.
@@ -191,13 +198,14 @@ func (db *MongoDbBridge) NFTContractsTypeMap() map[common.Address]string {
 	log.Noticef("%d NFT contracts known", len(list))
 	return list
 }
+*/
 
 // ObservedCollections provides list of addresses of observed collections known to Artion API.
-func (sdb *SharedMongoDbBridge) ObservedCollections() ([]common.Address, error) {
+func (sdb *SharedMongoDbBridge) ObservedCollections() ([]ContractInfo, error) {
 	col := sdb.client.Database(sdb.dbName).Collection(coLegacyCollection)
 	cur, err := col.Find(context.Background(),
 		bson.D{{Key: fiLegacyCollectionIsAppropriate, Value: true}},
-		options.Find().SetProjection(bson.D{{Key: fiLegacyCollectionAddress, Value: 1}}),
+		options.Find().SetProjection(bson.D{{Key: fiLegacyCollectionAddress, Value: 1}, {Key: fiContractBlockNumber, Value: 0}}),
 	)
 	if err != nil {
 		return nil, err
@@ -209,10 +217,11 @@ func (sdb *SharedMongoDbBridge) ObservedCollections() ([]common.Address, error) 
 		}
 	}()
 
-	list := make([]common.Address, 0)
+	list := make([]ContractInfo, 0)
 	for cur.Next(context.Background()) {
 		var row struct {
-			Adr common.Address `bson:"erc721Address"`
+			Adr common.Address `bson:"erc721Address"` // should be changed to a 'generic' ercAddress
+			Blk uint64         `bson:"block"`
 		}
 
 		if err := cur.Decode(&row); err != nil {
@@ -220,7 +229,7 @@ func (sdb *SharedMongoDbBridge) ObservedCollections() ([]common.Address, error) 
 			return nil, err
 		}
 
-		list = append(list, row.Adr)
+		list = append(list, ContractInfo{row.Adr, row.Blk})
 	}
 	return list, nil
 }

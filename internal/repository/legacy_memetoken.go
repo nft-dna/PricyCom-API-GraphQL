@@ -53,7 +53,7 @@ func (p *Proxy) UploadMemeTokenApplication(app types.CollectionApplication, imag
 			return fmt.Errorf("uploading collection image failed; %s", err)
 		}
 	}
-	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, false)
+	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, false /*, nil*/)
 	return p.shared.InsertLegacyMemeToken(collection)
 }
 

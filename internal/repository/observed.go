@@ -47,7 +47,7 @@ func (p *Proxy) addObservedContract(adr *common.Address, ct string) {
 	p.observedContracts = append(p.observedContracts, *adr)
 
 	// an NFT contract? add it to the types map as well
-	if ct == types.ContractTypeERC721 || ct == types.ContractTypeERC1155 {
+	if ct == types.ContractTypeERC721 || ct == types.ContractTypeERC1155 || ct == types.ContractTypeERC20 {
 		p.nftTypes[*adr] = ct
 	}
 }
@@ -70,12 +70,14 @@ func (p *Proxy) ObservedContractAddressByType(t string) (*common.Address, uint64
 	return adr, blk
 }
 
+/*
 // NFTContractsTypeMap provides a map of observed contract addresses to corresponding
 // contract type for ERC721 and ERC1155 contracts including their factory.
 // In case of a factory contract, we need the deployed NFT type for processing.
 func (p *Proxy) NFTContractsTypeMap() map[common.Address]string {
 	return p.db.NFTContractsTypeMap()
 }
+*/
 
 // MinObservedBlockNumber provides the lowest observed block number.
 func (p *Proxy) MinObservedBlockNumber(def uint64) uint64 {
@@ -90,35 +92,37 @@ func (p *Proxy) loadObservedCollections() {
 		return
 	}
 
-	for _, adr := range cl {
-		if !p.IsObservedContract(&adr) {
-			p.addObservedCollection(&adr)
+	for _, cin := range cl {
+		if !p.IsObservedContract(&cin.Addr) {
+			p.addObservedCollection(&cin.Addr, cin.Block)
 		}
 	}
 }
 
 // addObservedCollection adds new observed NFT collection.
-func (p *Proxy) addObservedCollection(adr *common.Address) {
+func (p *Proxy) addObservedCollection(adr *common.Address, blk uint64) {
 	ct, err := p.NFTContractType(adr)
 	if err != nil {
 		log.Warningf("contract can not be observed; %s", err.Error())
 		return
 	}
 
-	var blk uint64
-	switch ct {
-	case types.ContractTypeERC721:
-		blk, err = p.Erc721StartingBlockNumber(adr)
-	case types.ContractTypeERC1155:
-		blk, err = p.Erc1155StartingBlockNumber(adr)
-	case types.ContractTypeERC20:
-		blk, err = p.Erc20StartingBlockNumber(adr)
-	default:
-		err = fmt.Errorf("unknown contract type")
-	}
-	if err != nil {
-		log.Warningf("contract %s can not be added; %s", adr.String(), err.Error())
-		return
+	//var blk uint64
+	if blk == 0 {
+		switch ct {
+		case types.ContractTypeERC721:
+			blk, err = p.Erc721StartingBlockNumber(adr)
+		case types.ContractTypeERC1155:
+			blk, err = p.Erc1155StartingBlockNumber(adr)
+		case types.ContractTypeERC20:
+			blk, err = p.Erc20StartingBlockNumber(adr)
+		default:
+			err = fmt.Errorf("unknown contract type")
+		}
+		if err != nil {
+			log.Warningf("contract %s can not be added; %s", adr.String(), err.Error())
+			return
+		}
 	}
 
 	head, err := p.GetHeader(blk)

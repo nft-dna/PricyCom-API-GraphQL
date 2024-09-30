@@ -19,7 +19,7 @@ const (
 	coLegacyCollection = "collections"
 
 	// fiCollectionAddress is the name of the field keeping the NFT contract address.
-	fiLegacyCollectionAddress = "erc721Address"
+	fiLegacyCollectionAddress = "erc721Address" // should be changed to a 'generic' ercAddress
 
 	fiLegacyCollectionName              = "collectionName"
 	fiLegacyCollectionDescription       = "description"
@@ -41,6 +41,16 @@ const (
 	fiLegacyCollectionIsOwnerOnly       = "isOwnerble"
 	fiLegacyCollectionIsVerified        = "isVerified"
 	fiLegacyCollectionIsReviewed        = "status"
+	/*
+		// isInternal collections (mintable by marketplace users)
+		fiLegacyCollectionIsErc1155     = "isErc1155"
+		fiLegacyCollectionHasBaseUri    = "hasBaseUri"
+		fiLegacyCollectionMaxItems      = "maxItems"
+		fiLegacyCollectionMaxItemCount  = "maxItemCount"
+		fiLegacyCollectionMintStartTime = "mintStartTime"
+		fiLegacyCollectionMintEndTime   = "mintEndTime"
+		fiLegacyCollectionRevealTime    = "revealTime"
+	*/
 )
 
 func (sdb *SharedMongoDbBridge) GetLegacyCollection(address common.Address) (collection *types.LegacyCollection, err error) {
@@ -91,6 +101,15 @@ func (sdb *SharedMongoDbBridge) InsertLegacyCollection(c types.LegacyCollection)
 			{Key: fiLegacyCollectionIsVerified, Value: c.IsVerified},
 			{Key: fiLegacyCollectionIsReviewed, Value: c.IsReviewed},
 			{Key: fiLegacyCollectionAppropriateUpdate, Value: time.Now()},
+			/*
+				{Key: fiLegacyCollectionIsErc1155, Value: c.MintDetails.IsErc1155},
+				{Key: fiLegacyCollectionHasBaseUri, Value: c.MintDetails.HasBaseUri},
+				{Key: fiLegacyCollectionMaxItems, Value: c.MintDetails.MaxItems},
+				{Key: fiLegacyCollectionMaxItemCount, Value: c.MintDetails.MaxItemCount},
+				{Key: fiLegacyCollectionMintStartTime, Value: c.MintDetails.MintStartTime},
+				{Key: fiLegacyCollectionMintEndTime, Value: c.MintDetails.MintEndTime},
+				{Key: fiLegacyCollectionRevealTime, Value: c.MintDetails.RevealTime},
+			*/
 		},
 	); err != nil {
 		log.Errorf("can not insert LegacyCollection; %s", err)

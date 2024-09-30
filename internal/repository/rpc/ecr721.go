@@ -62,6 +62,7 @@ func (o *Opera) Erc721StartingBlockNumber(adr *common.Address) (uint64, error) {
 
 // CanMintErc721 checks if the given user can mint a new token on the given NFT contract.
 func (o *Opera) CanMintErc721(contract *common.Address, user *common.Address, fee *big.Int) (bool, error) {
+	// MM: TODO.. adjust to newer Factory contract
 	data, err := o.abiVolcano721.Pack("mint", *user, defaultMintingTestTokenUrl)
 	if err != nil {
 		return false, err

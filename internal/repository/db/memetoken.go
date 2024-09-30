@@ -22,7 +22,7 @@ const (
 // StoreCollection adds the specified NFT collection contract record if it does not exist yet.
 func (db *MongoDbBridge) StoreMemeToken(nft *types.Collection) error {
 	col := db.client.Database(db.dbName).Collection(coMemeToken)
-	if db.isCollectionKnown(col, nft) {
+	if db.isMemeTokenKnown(col, nft) {
 		return nil
 	}
 
@@ -33,7 +33,7 @@ func (db *MongoDbBridge) StoreMemeToken(nft *types.Collection) error {
 	return nil
 }
 
-// isCollectionKnown checks if the given meme token collection is already stored in the database.
+// isMemeTokenKnown checks if the given meme token collection is already stored in the database.
 func (db *MongoDbBridge) isMemeTokenKnown(col *mongo.Collection, nft *types.Collection) bool {
 	return db.exists(col, &bson.D{{Key: fiMemeTokenAddress, Value: nft.Address.String()}})
 }
@@ -75,12 +75,12 @@ func (db *MongoDbBridge) listMemeTokens(filter bson.D, cursor types.Cursor, coun
 
 	ld, err := db.findPaginated(col, filter, cursor, count, sorting.CollectionSortingNone, backward)
 	if err != nil {
-		log.Errorf("error loading Collections list; %s", err.Error())
+		log.Errorf("error loading Meme Tokens list; %s", err.Error())
 		return nil, err
 	}
 
 	// close the cursor as we leave
-	defer closeFindCursor("ListCollections", ld)
+	defer closeFindCursor("ListMemeTokens", ld)
 
 	for ld.Next(ctx) {
 		if len(list.Collection) < count {

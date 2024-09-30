@@ -22,8 +22,9 @@ func newTokenContract(evt *eth.Log, lo *logObserver) {
 	ca := common.Address{}
 	ca.SetBytes(evt.Data[32:64])
 	meme := types.Collection{
-		Address:  ca,
-		IsActive: true,
+		Address:      ca,
+		IsActive:     true,
+		IsOurFactory: true,
 	}
 	log.Infof("found (newTokenContract) MEME contract %s", ca.String())
 
@@ -78,21 +79,40 @@ func extendMemeTokenMetadata(meme *types.Collection) (err error) {
 	}
 	log.Debugf("NFT contract %s symbol: %s", meme.Address.String(), meme.Symbol)
 
-	/*
-		legacyCollection, err := repo.GetLegacyMemeToken(nft.Address)
+	legacyCollection, err := repo.GetLegacyMemeToken(meme.Address)
+	if err != nil {
+		log.Errorf("%s %s unable to load off-chain data; %s", meme.Type, meme.Address.String(), err.Error())
+		return err
+	}
+
+	if nil != legacyCollection {
+		meme.Categories, err = legacyCollection.CategoriesAsInt()
 		if err != nil {
-			log.Errorf("%s %s unable to load off-chain data; %s", nft.Type, nft.Address.String(), err.Error())
+			log.Errorf("%s %s unable to decode categories; %s", meme.Type, meme.Address.String(), err.Error())
 			return err
 		}
+	}
 
-		if nil != legacyCollection {
-			nft.Categories, err = legacyCollection.CategoriesAsInt()
-			if err != nil {
-				log.Errorf("%s %s unable to decode categories; %s", nft.Type, nft.Address.String(), err.Error())
-				return err
-			}
-		}
-	*/
+	if err = extenMemeTokenMintDetails(meme); err != nil {
+		log.Criticalf("failed to extend Meme Token MintDetails %s; %s", meme.Address.String(), err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func extenMemeTokenMintDetails(nft *types.Collection) (err error) {
+	nft.MintDetails = types.CollectionMintDetails{
+		PublicMint:    true,        // NB: also need to set fiLegacyCollectionIsOwnerOnly when registering
+		IsErc1155:     false,       // unused here..
+		HasBaseUri:    false,       // unused here..
+		MaxItems:      0,           // TODO: set MaxBlocks
+		MaxItemCount:  0,           // unused here..
+		MintStartTime: time.Time{}, // actually unused here..
+		MintEndTime:   time.Time{}, // actually unused here..
+		RevealTime:    time.Time{}, // unused here..
+	}
+	// MM: TODO ..
 
 	return nil
 }
@@ -114,8 +134,9 @@ func newNFTContract(evt *eth.Log, lo *logObserver) {
 	ca := common.Address{}
 	ca.SetBytes(evt.Data[32:64])
 	nft := types.Collection{
-		Address:  ca,
-		IsActive: true,
+		Address:      ca,
+		IsActive:     true,
+		IsOurFactory: true,
 	}
 	log.Infof("found (newNFTContract) NFT contract %s", ca.String())
 
@@ -184,6 +205,27 @@ func extendCollectionMetadata(nft *types.Collection) (err error) {
 			return err
 		}
 	}
+
+	if err = extendNFTCollectionMintDetails(nft); err != nil {
+		log.Criticalf("failed to extend NFT Collection MintDetails %s; %s", nft.Address.String(), err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func extendNFTCollectionMintDetails(nft *types.Collection) (err error) {
+	nft.MintDetails = types.CollectionMintDetails{
+		PublicMint:    false,                                   // NB: also need to set fiLegacyCollectionIsOwnerOnly when registering
+		IsErc1155:     (nft.Type == types.ContractTypeERC1155), // instead of erc721
+		HasBaseUri:    false,
+		MaxItems:      0,
+		MaxItemCount:  0,
+		MintStartTime: time.Time{},
+		MintEndTime:   time.Time{},
+		RevealTime:    time.Time{},
+	}
+	// MM: TODO ..
 
 	return nil
 }

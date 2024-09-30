@@ -194,7 +194,7 @@ func loadABI(o *Opera) (err error) {
 		return err
 	}
 
-	o.abiVolcano20, err = loadABIFile("contracts/abi/VolcanoERC20Tradable.json")
+	o.abiVolcano20, err = loadABIFile("contracts/abi/VolcanoERC20Token.json")
 	if err != nil {
 		return err
 	}

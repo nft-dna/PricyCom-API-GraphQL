@@ -537,12 +537,12 @@
       ],
       "name": "createOffer",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "payable",
       "type": "function"
     },
     {
       "inputs": [],
-      "name": "feeReceipient",
+      "name": "feeRecipient",
       "outputs": [
         {
           "internalType": "address payable",
@@ -1012,5 +1012,9 @@
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
     }
-]
+  ]

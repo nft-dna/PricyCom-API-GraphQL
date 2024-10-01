@@ -59,7 +59,20 @@
     },
     {
       "inputs": [],
-      "name": "erc721factory",
+      "name": "erc20Factory",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "erc721Factory",
       "outputs": [
         {
           "internalType": "address",
@@ -99,32 +112,6 @@
     {
       "inputs": [],
       "name": "priceFeed",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "privateErc1155Factory",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "privateErc721Factory",
       "outputs": [
         {
           "internalType": "address",
@@ -211,11 +198,11 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_privateErc1155Factory",
+          "name": "_erc20Factory",
           "type": "address"
         }
       ],
-      "name": "updateErc1155FactoryPrivate",
+      "name": "updateErc20Factory",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -229,19 +216,6 @@
         }
       ],
       "name": "updateErc721Factory",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_privateErc721Factory",
-          "type": "address"
-        }
-      ],
-      "name": "updateErc721FactoryPrivate",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -285,4 +259,4 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-]
+  ]

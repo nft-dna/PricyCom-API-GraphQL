@@ -29,9 +29,22 @@ var (
 	_ = abi.ConvertType
 )
 
+// VolcanoERC1155TradablecontractERC1155Options is an auto generated low-level Go binding around an user-defined struct.
+type VolcanoERC1155TradablecontractERC1155Options struct {
+	BaseUri        string
+	UsebaseUriOnly bool
+	BaseUriExt     string
+	MaxItems       *big.Int
+	MaxItemSupply  *big.Int
+	MintStartTime  *big.Int
+	MintStopTime   *big.Int
+	RevealTime     *big.Int
+	PreRevealUri   string
+}
+
 // VolcanoERC1155TradableMetaData contains all meta data concerning the VolcanoERC1155Tradable contract.
 var VolcanoERC1155TradableMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"_auction\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_marketplace\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_bundleMarketplace\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_mintFee\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_creatorFee\",\"type\":\"uint256\"},{\"internalType\":\"addresspayable\",\"name\":\"_feeReceipient\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"_isprivate\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"ApprovalForAll\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"beneficiary\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"minter\",\"type\":\"address\"}],\"name\":\"Minted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"},{\"indexed\":false,\"internalType\":\"uint256[]\",\"name\":\"values\",\"type\":\"uint256[]\"}],\"name\":\"TransferBatch\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"TransferSingle\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"string\",\"name\":\"value\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"URI\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"addresspayable\",\"name\":\"feeRecipient\",\"type\":\"address\"}],\"name\":\"UpdateFeeRecipient\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"creatorFee\",\"type\":\"uint256\"}],\"name\":\"UpdatecreatorFee\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"accounts\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"}],\"name\":\"balanceOfBatch\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"burn\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256[]\",\"name\":\"values\",\"type\":\"uint256[]\"}],\"name\":\"burnBatch\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"creatorFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"exists\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeReceipient\",\"outputs\":[{\"internalType\":\"addresspayable\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_operator\",\"type\":\"address\"}],\"name\":\"isApprovedForAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isOperator\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"uri\",\"type\":\"bytes\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"mintFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256[]\",\"name\":\"amounts\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"safeBatchTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"setApprovalForAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"addresspayable\",\"name\":\"_feeReceipient\",\"type\":\"address\"}],\"name\":\"updateFeeRecipient\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_creatorFee\",\"type\":\"uint256\"}],\"name\":\"updatecreatorFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"uri\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"_auction\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_marketplace\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_bundleMarketplace\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_factory\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_mintCreatorFee\",\"type\":\"uint256\"},{\"internalType\":\"uint96\",\"name\":\"_creatorFeePerc\",\"type\":\"uint96\"},{\"internalType\":\"addresspayable\",\"name\":\"_feeRecipient\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"_isprivate\",\"type\":\"bool\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"baseUri\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"usebaseUriOnly\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"baseUriExt\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"maxItems\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxItemSupply\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"mintStartTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"mintStopTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"revealTime\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"preRevealUri\",\"type\":\"string\"}],\"internalType\":\"structVolcanoERC1155Tradable.contractERC1155Options\",\"name\":\"_options\",\"type\":\"tuple\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"ApprovalForAll\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"beneficiary\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"uri\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"minter\",\"type\":\"address\"}],\"name\":\"Minted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"},{\"indexed\":false,\"internalType\":\"uint256[]\",\"name\":\"values\",\"type\":\"uint256[]\"}],\"name\":\"TransferBatch\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"TransferSingle\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"string\",\"name\":\"value\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"URI\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint96\",\"name\":\"creatorFeePerc\",\"type\":\"uint96\"}],\"name\":\"UpdateCreatorFee\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"addresspayable\",\"name\":\"feeRecipient\",\"type\":\"address\"}],\"name\":\"UpdateFeeRecipient\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"accounts\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"}],\"name\":\"balanceOfBatch\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"burn\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256[]\",\"name\":\"values\",\"type\":\"uint256[]\"}],\"name\":\"burnBatch\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"contractURI\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"creatorFeePerc\",\"outputs\":[{\"internalType\":\"uint96\",\"name\":\"\",\"type\":\"uint96\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"exists\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeRecipient\",\"outputs\":[{\"internalType\":\"addresspayable\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_operator\",\"type\":\"address\"}],\"name\":\"isApprovedForAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isOperator\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isprivate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"maxItemSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"maxSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"mintCreatorFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"mintStartTime\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"mintStopTime\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"revealTime\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"salePrice\",\"type\":\"uint256\"}],\"name\":\"royaltyInfo\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256[]\",\"name\":\"amounts\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"safeBatchTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"setApprovalForAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"}],\"name\":\"toHexString\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_uri\",\"type\":\"string\"}],\"name\":\"updateContractURI\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint96\",\"name\":\"_creatorFeePerc\",\"type\":\"uint96\"}],\"name\":\"updateCreatorFeePerc\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"addresspayable\",\"name\":\"_feeRecipient\",\"type\":\"address\"}],\"name\":\"updateFeeRecipient\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"uri\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // VolcanoERC1155TradableABI is the input ABI used to generate the binding from.
@@ -242,12 +255,43 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) BalanceOfBat
 	return _VolcanoERC1155Tradable.Contract.BalanceOfBatch(&_VolcanoERC1155Tradable.CallOpts, accounts, ids)
 }
 
-// CreatorFee is a free data retrieval call binding the contract method 0xe88958dc.
+// ContractURI is a free data retrieval call binding the contract method 0xe8a3d485.
 //
-// Solidity: function creatorFee() view returns(uint256)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) CreatorFee(opts *bind.CallOpts) (*big.Int, error) {
+// Solidity: function contractURI() view returns(string)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) ContractURI(opts *bind.CallOpts) (string, error) {
 	var out []interface{}
-	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "creatorFee")
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "contractURI")
+
+	if err != nil {
+		return *new(string), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(string)).(*string)
+
+	return out0, err
+
+}
+
+// ContractURI is a free data retrieval call binding the contract method 0xe8a3d485.
+//
+// Solidity: function contractURI() view returns(string)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) ContractURI() (string, error) {
+	return _VolcanoERC1155Tradable.Contract.ContractURI(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// ContractURI is a free data retrieval call binding the contract method 0xe8a3d485.
+//
+// Solidity: function contractURI() view returns(string)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) ContractURI() (string, error) {
+	return _VolcanoERC1155Tradable.Contract.ContractURI(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// CreatorFeePerc is a free data retrieval call binding the contract method 0xa7050d63.
+//
+// Solidity: function creatorFeePerc() view returns(uint96)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) CreatorFeePerc(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "creatorFeePerc")
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -259,18 +303,18 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) CreatorFee(opts *bi
 
 }
 
-// CreatorFee is a free data retrieval call binding the contract method 0xe88958dc.
+// CreatorFeePerc is a free data retrieval call binding the contract method 0xa7050d63.
 //
-// Solidity: function creatorFee() view returns(uint256)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) CreatorFee() (*big.Int, error) {
-	return _VolcanoERC1155Tradable.Contract.CreatorFee(&_VolcanoERC1155Tradable.CallOpts)
+// Solidity: function creatorFeePerc() view returns(uint96)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) CreatorFeePerc() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.CreatorFeePerc(&_VolcanoERC1155Tradable.CallOpts)
 }
 
-// CreatorFee is a free data retrieval call binding the contract method 0xe88958dc.
+// CreatorFeePerc is a free data retrieval call binding the contract method 0xa7050d63.
 //
-// Solidity: function creatorFee() view returns(uint256)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) CreatorFee() (*big.Int, error) {
-	return _VolcanoERC1155Tradable.Contract.CreatorFee(&_VolcanoERC1155Tradable.CallOpts)
+// Solidity: function creatorFeePerc() view returns(uint96)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) CreatorFeePerc() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.CreatorFeePerc(&_VolcanoERC1155Tradable.CallOpts)
 }
 
 // Exists is a free data retrieval call binding the contract method 0x4f558e79.
@@ -304,12 +348,12 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) Exists(id *b
 	return _VolcanoERC1155Tradable.Contract.Exists(&_VolcanoERC1155Tradable.CallOpts, id)
 }
 
-// FeeReceipient is a free data retrieval call binding the contract method 0x3740ebb3.
+// FeeRecipient is a free data retrieval call binding the contract method 0x46904840.
 //
-// Solidity: function feeReceipient() view returns(address)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) FeeReceipient(opts *bind.CallOpts) (common.Address, error) {
+// Solidity: function feeRecipient() view returns(address)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) FeeRecipient(opts *bind.CallOpts) (common.Address, error) {
 	var out []interface{}
-	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "feeReceipient")
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "feeRecipient")
 
 	if err != nil {
 		return *new(common.Address), err
@@ -321,18 +365,18 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) FeeReceipient(opts 
 
 }
 
-// FeeReceipient is a free data retrieval call binding the contract method 0x3740ebb3.
+// FeeRecipient is a free data retrieval call binding the contract method 0x46904840.
 //
-// Solidity: function feeReceipient() view returns(address)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) FeeReceipient() (common.Address, error) {
-	return _VolcanoERC1155Tradable.Contract.FeeReceipient(&_VolcanoERC1155Tradable.CallOpts)
+// Solidity: function feeRecipient() view returns(address)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) FeeRecipient() (common.Address, error) {
+	return _VolcanoERC1155Tradable.Contract.FeeRecipient(&_VolcanoERC1155Tradable.CallOpts)
 }
 
-// FeeReceipient is a free data retrieval call binding the contract method 0x3740ebb3.
+// FeeRecipient is a free data retrieval call binding the contract method 0x46904840.
 //
-// Solidity: function feeReceipient() view returns(address)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) FeeReceipient() (common.Address, error) {
-	return _VolcanoERC1155Tradable.Contract.FeeReceipient(&_VolcanoERC1155Tradable.CallOpts)
+// Solidity: function feeRecipient() view returns(address)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) FeeRecipient() (common.Address, error) {
+	return _VolcanoERC1155Tradable.Contract.FeeRecipient(&_VolcanoERC1155Tradable.CallOpts)
 }
 
 // IsApprovedForAll is a free data retrieval call binding the contract method 0xe985e9c5.
@@ -366,12 +410,43 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) IsApprovedFo
 	return _VolcanoERC1155Tradable.Contract.IsApprovedForAll(&_VolcanoERC1155Tradable.CallOpts, _owner, _operator)
 }
 
-// MintFee is a free data retrieval call binding the contract method 0x13966db5.
+// Isprivate is a free data retrieval call binding the contract method 0xfcbbbd1a.
 //
-// Solidity: function mintFee() view returns(uint256)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) MintFee(opts *bind.CallOpts) (*big.Int, error) {
+// Solidity: function isprivate() view returns(bool)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) Isprivate(opts *bind.CallOpts) (bool, error) {
 	var out []interface{}
-	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "mintFee")
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "isprivate")
+
+	if err != nil {
+		return *new(bool), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
+
+	return out0, err
+
+}
+
+// Isprivate is a free data retrieval call binding the contract method 0xfcbbbd1a.
+//
+// Solidity: function isprivate() view returns(bool)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) Isprivate() (bool, error) {
+	return _VolcanoERC1155Tradable.Contract.Isprivate(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// Isprivate is a free data retrieval call binding the contract method 0xfcbbbd1a.
+//
+// Solidity: function isprivate() view returns(bool)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) Isprivate() (bool, error) {
+	return _VolcanoERC1155Tradable.Contract.Isprivate(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// MaxItemSupply is a free data retrieval call binding the contract method 0xdd8d4434.
+//
+// Solidity: function maxItemSupply() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) MaxItemSupply(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "maxItemSupply")
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -383,18 +458,142 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) MintFee(opts *bind.
 
 }
 
-// MintFee is a free data retrieval call binding the contract method 0x13966db5.
+// MaxItemSupply is a free data retrieval call binding the contract method 0xdd8d4434.
 //
-// Solidity: function mintFee() view returns(uint256)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) MintFee() (*big.Int, error) {
-	return _VolcanoERC1155Tradable.Contract.MintFee(&_VolcanoERC1155Tradable.CallOpts)
+// Solidity: function maxItemSupply() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) MaxItemSupply() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.MaxItemSupply(&_VolcanoERC1155Tradable.CallOpts)
 }
 
-// MintFee is a free data retrieval call binding the contract method 0x13966db5.
+// MaxItemSupply is a free data retrieval call binding the contract method 0xdd8d4434.
 //
-// Solidity: function mintFee() view returns(uint256)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) MintFee() (*big.Int, error) {
-	return _VolcanoERC1155Tradable.Contract.MintFee(&_VolcanoERC1155Tradable.CallOpts)
+// Solidity: function maxItemSupply() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) MaxItemSupply() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.MaxItemSupply(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// MaxSupply is a free data retrieval call binding the contract method 0xd5abeb01.
+//
+// Solidity: function maxSupply() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) MaxSupply(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "maxSupply")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// MaxSupply is a free data retrieval call binding the contract method 0xd5abeb01.
+//
+// Solidity: function maxSupply() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) MaxSupply() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.MaxSupply(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// MaxSupply is a free data retrieval call binding the contract method 0xd5abeb01.
+//
+// Solidity: function maxSupply() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) MaxSupply() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.MaxSupply(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// MintCreatorFee is a free data retrieval call binding the contract method 0x9237d5a5.
+//
+// Solidity: function mintCreatorFee() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) MintCreatorFee(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "mintCreatorFee")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// MintCreatorFee is a free data retrieval call binding the contract method 0x9237d5a5.
+//
+// Solidity: function mintCreatorFee() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) MintCreatorFee() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.MintCreatorFee(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// MintCreatorFee is a free data retrieval call binding the contract method 0x9237d5a5.
+//
+// Solidity: function mintCreatorFee() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) MintCreatorFee() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.MintCreatorFee(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// MintStartTime is a free data retrieval call binding the contract method 0x931e2e49.
+//
+// Solidity: function mintStartTime() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) MintStartTime(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "mintStartTime")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// MintStartTime is a free data retrieval call binding the contract method 0x931e2e49.
+//
+// Solidity: function mintStartTime() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) MintStartTime() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.MintStartTime(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// MintStartTime is a free data retrieval call binding the contract method 0x931e2e49.
+//
+// Solidity: function mintStartTime() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) MintStartTime() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.MintStartTime(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// MintStopTime is a free data retrieval call binding the contract method 0x95c8b27a.
+//
+// Solidity: function mintStopTime() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) MintStopTime(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "mintStopTime")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// MintStopTime is a free data retrieval call binding the contract method 0x95c8b27a.
+//
+// Solidity: function mintStopTime() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) MintStopTime() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.MintStopTime(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// MintStopTime is a free data retrieval call binding the contract method 0x95c8b27a.
+//
+// Solidity: function mintStopTime() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) MintStopTime() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.MintStopTime(&_VolcanoERC1155Tradable.CallOpts)
 }
 
 // Name is a free data retrieval call binding the contract method 0x06fdde03.
@@ -459,6 +658,69 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) Owner() (com
 	return _VolcanoERC1155Tradable.Contract.Owner(&_VolcanoERC1155Tradable.CallOpts)
 }
 
+// RevealTime is a free data retrieval call binding the contract method 0xba829d71.
+//
+// Solidity: function revealTime() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) RevealTime(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "revealTime")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// RevealTime is a free data retrieval call binding the contract method 0xba829d71.
+//
+// Solidity: function revealTime() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) RevealTime() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.RevealTime(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// RevealTime is a free data retrieval call binding the contract method 0xba829d71.
+//
+// Solidity: function revealTime() view returns(uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) RevealTime() (*big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.RevealTime(&_VolcanoERC1155Tradable.CallOpts)
+}
+
+// RoyaltyInfo is a free data retrieval call binding the contract method 0x2a55205a.
+//
+// Solidity: function royaltyInfo(uint256 tokenId, uint256 salePrice) view returns(address, uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) RoyaltyInfo(opts *bind.CallOpts, tokenId *big.Int, salePrice *big.Int) (common.Address, *big.Int, error) {
+	var out []interface{}
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "royaltyInfo", tokenId, salePrice)
+
+	if err != nil {
+		return *new(common.Address), *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
+	out1 := *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
+
+	return out0, out1, err
+
+}
+
+// RoyaltyInfo is a free data retrieval call binding the contract method 0x2a55205a.
+//
+// Solidity: function royaltyInfo(uint256 tokenId, uint256 salePrice) view returns(address, uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) RoyaltyInfo(tokenId *big.Int, salePrice *big.Int) (common.Address, *big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.RoyaltyInfo(&_VolcanoERC1155Tradable.CallOpts, tokenId, salePrice)
+}
+
+// RoyaltyInfo is a free data retrieval call binding the contract method 0x2a55205a.
+//
+// Solidity: function royaltyInfo(uint256 tokenId, uint256 salePrice) view returns(address, uint256)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) RoyaltyInfo(tokenId *big.Int, salePrice *big.Int) (common.Address, *big.Int, error) {
+	return _VolcanoERC1155Tradable.Contract.RoyaltyInfo(&_VolcanoERC1155Tradable.CallOpts, tokenId, salePrice)
+}
+
 // SupportsInterface is a free data retrieval call binding the contract method 0x01ffc9a7.
 //
 // Solidity: function supportsInterface(bytes4 interfaceId) view returns(bool)
@@ -521,6 +783,37 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) Symbol() (st
 	return _VolcanoERC1155Tradable.Contract.Symbol(&_VolcanoERC1155Tradable.CallOpts)
 }
 
+// ToHexString is a free data retrieval call binding the contract method 0x63e1cbea.
+//
+// Solidity: function toHexString(uint256 value, uint256 length) pure returns(string)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) ToHexString(opts *bind.CallOpts, value *big.Int, length *big.Int) (string, error) {
+	var out []interface{}
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "toHexString", value, length)
+
+	if err != nil {
+		return *new(string), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(string)).(*string)
+
+	return out0, err
+
+}
+
+// ToHexString is a free data retrieval call binding the contract method 0x63e1cbea.
+//
+// Solidity: function toHexString(uint256 value, uint256 length) pure returns(string)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) ToHexString(value *big.Int, length *big.Int) (string, error) {
+	return _VolcanoERC1155Tradable.Contract.ToHexString(&_VolcanoERC1155Tradable.CallOpts, value, length)
+}
+
+// ToHexString is a free data retrieval call binding the contract method 0x63e1cbea.
+//
+// Solidity: function toHexString(uint256 value, uint256 length) pure returns(string)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) ToHexString(value *big.Int, length *big.Int) (string, error) {
+	return _VolcanoERC1155Tradable.Contract.ToHexString(&_VolcanoERC1155Tradable.CallOpts, value, length)
+}
+
 // TotalSupply is a free data retrieval call binding the contract method 0xbd85b039.
 //
 // Solidity: function totalSupply(uint256 id) view returns(uint256)
@@ -554,10 +847,10 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) TotalSupply(
 
 // Uri is a free data retrieval call binding the contract method 0x0e89341c.
 //
-// Solidity: function uri(uint256 ) view returns(string)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) Uri(opts *bind.CallOpts, arg0 *big.Int) (string, error) {
+// Solidity: function uri(uint256 tokenId) view returns(string)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) Uri(opts *bind.CallOpts, tokenId *big.Int) (string, error) {
 	var out []interface{}
-	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "uri", arg0)
+	err := _VolcanoERC1155Tradable.contract.Call(opts, &out, "uri", tokenId)
 
 	if err != nil {
 		return *new(string), err
@@ -571,16 +864,16 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCaller) Uri(opts *bind.Call
 
 // Uri is a free data retrieval call binding the contract method 0x0e89341c.
 //
-// Solidity: function uri(uint256 ) view returns(string)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) Uri(arg0 *big.Int) (string, error) {
-	return _VolcanoERC1155Tradable.Contract.Uri(&_VolcanoERC1155Tradable.CallOpts, arg0)
+// Solidity: function uri(uint256 tokenId) view returns(string)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) Uri(tokenId *big.Int) (string, error) {
+	return _VolcanoERC1155Tradable.Contract.Uri(&_VolcanoERC1155Tradable.CallOpts, tokenId)
 }
 
 // Uri is a free data retrieval call binding the contract method 0x0e89341c.
 //
-// Solidity: function uri(uint256 ) view returns(string)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) Uri(arg0 *big.Int) (string, error) {
-	return _VolcanoERC1155Tradable.Contract.Uri(&_VolcanoERC1155Tradable.CallOpts, arg0)
+// Solidity: function uri(uint256 tokenId) view returns(string)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableCallerSession) Uri(tokenId *big.Int) (string, error) {
+	return _VolcanoERC1155Tradable.Contract.Uri(&_VolcanoERC1155Tradable.CallOpts, tokenId)
 }
 
 // Burn is a paid mutator transaction binding the contract method 0xf5298aca.
@@ -627,23 +920,23 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactorSession) BurnBatc
 
 // Mint is a paid mutator transaction binding the contract method 0x94d008ef.
 //
-// Solidity: function mint(address account, uint256 amount, bytes uri) payable returns()
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactor) Mint(opts *bind.TransactOpts, account common.Address, amount *big.Int, uri []byte) (*types.Transaction, error) {
-	return _VolcanoERC1155Tradable.contract.Transact(opts, "mint", account, amount, uri)
+// Solidity: function mint(address account, uint256 amount, bytes data) payable returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactor) Mint(opts *bind.TransactOpts, account common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.contract.Transact(opts, "mint", account, amount, data)
 }
 
 // Mint is a paid mutator transaction binding the contract method 0x94d008ef.
 //
-// Solidity: function mint(address account, uint256 amount, bytes uri) payable returns()
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) Mint(account common.Address, amount *big.Int, uri []byte) (*types.Transaction, error) {
-	return _VolcanoERC1155Tradable.Contract.Mint(&_VolcanoERC1155Tradable.TransactOpts, account, amount, uri)
+// Solidity: function mint(address account, uint256 amount, bytes data) payable returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) Mint(account common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.Contract.Mint(&_VolcanoERC1155Tradable.TransactOpts, account, amount, data)
 }
 
 // Mint is a paid mutator transaction binding the contract method 0x94d008ef.
 //
-// Solidity: function mint(address account, uint256 amount, bytes uri) payable returns()
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactorSession) Mint(account common.Address, amount *big.Int, uri []byte) (*types.Transaction, error) {
-	return _VolcanoERC1155Tradable.Contract.Mint(&_VolcanoERC1155Tradable.TransactOpts, account, amount, uri)
+// Solidity: function mint(address account, uint256 amount, bytes data) payable returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactorSession) Mint(account common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.Contract.Mint(&_VolcanoERC1155Tradable.TransactOpts, account, amount, data)
 }
 
 // RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
@@ -751,46 +1044,67 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactorSession) Transfer
 	return _VolcanoERC1155Tradable.Contract.TransferOwnership(&_VolcanoERC1155Tradable.TransactOpts, newOwner)
 }
 
-// UpdateFeeRecipient is a paid mutator transaction binding the contract method 0xf160d369.
+// UpdateContractURI is a paid mutator transaction binding the contract method 0x7e5b1e24.
 //
-// Solidity: function updateFeeRecipient(address _feeReceipient) returns()
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactor) UpdateFeeRecipient(opts *bind.TransactOpts, _feeReceipient common.Address) (*types.Transaction, error) {
-	return _VolcanoERC1155Tradable.contract.Transact(opts, "updateFeeRecipient", _feeReceipient)
+// Solidity: function updateContractURI(string _uri) returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactor) UpdateContractURI(opts *bind.TransactOpts, _uri string) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.contract.Transact(opts, "updateContractURI", _uri)
+}
+
+// UpdateContractURI is a paid mutator transaction binding the contract method 0x7e5b1e24.
+//
+// Solidity: function updateContractURI(string _uri) returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) UpdateContractURI(_uri string) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.Contract.UpdateContractURI(&_VolcanoERC1155Tradable.TransactOpts, _uri)
+}
+
+// UpdateContractURI is a paid mutator transaction binding the contract method 0x7e5b1e24.
+//
+// Solidity: function updateContractURI(string _uri) returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactorSession) UpdateContractURI(_uri string) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.Contract.UpdateContractURI(&_VolcanoERC1155Tradable.TransactOpts, _uri)
+}
+
+// UpdateCreatorFeePerc is a paid mutator transaction binding the contract method 0x19794ea6.
+//
+// Solidity: function updateCreatorFeePerc(uint96 _creatorFeePerc) returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactor) UpdateCreatorFeePerc(opts *bind.TransactOpts, _creatorFeePerc *big.Int) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.contract.Transact(opts, "updateCreatorFeePerc", _creatorFeePerc)
+}
+
+// UpdateCreatorFeePerc is a paid mutator transaction binding the contract method 0x19794ea6.
+//
+// Solidity: function updateCreatorFeePerc(uint96 _creatorFeePerc) returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) UpdateCreatorFeePerc(_creatorFeePerc *big.Int) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.Contract.UpdateCreatorFeePerc(&_VolcanoERC1155Tradable.TransactOpts, _creatorFeePerc)
+}
+
+// UpdateCreatorFeePerc is a paid mutator transaction binding the contract method 0x19794ea6.
+//
+// Solidity: function updateCreatorFeePerc(uint96 _creatorFeePerc) returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactorSession) UpdateCreatorFeePerc(_creatorFeePerc *big.Int) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.Contract.UpdateCreatorFeePerc(&_VolcanoERC1155Tradable.TransactOpts, _creatorFeePerc)
 }
 
 // UpdateFeeRecipient is a paid mutator transaction binding the contract method 0xf160d369.
 //
-// Solidity: function updateFeeRecipient(address _feeReceipient) returns()
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) UpdateFeeRecipient(_feeReceipient common.Address) (*types.Transaction, error) {
-	return _VolcanoERC1155Tradable.Contract.UpdateFeeRecipient(&_VolcanoERC1155Tradable.TransactOpts, _feeReceipient)
+// Solidity: function updateFeeRecipient(address _feeRecipient) returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactor) UpdateFeeRecipient(opts *bind.TransactOpts, _feeRecipient common.Address) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.contract.Transact(opts, "updateFeeRecipient", _feeRecipient)
 }
 
 // UpdateFeeRecipient is a paid mutator transaction binding the contract method 0xf160d369.
 //
-// Solidity: function updateFeeRecipient(address _feeReceipient) returns()
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactorSession) UpdateFeeRecipient(_feeReceipient common.Address) (*types.Transaction, error) {
-	return _VolcanoERC1155Tradable.Contract.UpdateFeeRecipient(&_VolcanoERC1155Tradable.TransactOpts, _feeReceipient)
+// Solidity: function updateFeeRecipient(address _feeRecipient) returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) UpdateFeeRecipient(_feeRecipient common.Address) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.Contract.UpdateFeeRecipient(&_VolcanoERC1155Tradable.TransactOpts, _feeRecipient)
 }
 
-// UpdatecreatorFee is a paid mutator transaction binding the contract method 0xdb9e33f1.
+// UpdateFeeRecipient is a paid mutator transaction binding the contract method 0xf160d369.
 //
-// Solidity: function updatecreatorFee(uint256 _creatorFee) returns()
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactor) UpdatecreatorFee(opts *bind.TransactOpts, _creatorFee *big.Int) (*types.Transaction, error) {
-	return _VolcanoERC1155Tradable.contract.Transact(opts, "updatecreatorFee", _creatorFee)
-}
-
-// UpdatecreatorFee is a paid mutator transaction binding the contract method 0xdb9e33f1.
-//
-// Solidity: function updatecreatorFee(uint256 _creatorFee) returns()
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableSession) UpdatecreatorFee(_creatorFee *big.Int) (*types.Transaction, error) {
-	return _VolcanoERC1155Tradable.Contract.UpdatecreatorFee(&_VolcanoERC1155Tradable.TransactOpts, _creatorFee)
-}
-
-// UpdatecreatorFee is a paid mutator transaction binding the contract method 0xdb9e33f1.
-//
-// Solidity: function updatecreatorFee(uint256 _creatorFee) returns()
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactorSession) UpdatecreatorFee(_creatorFee *big.Int) (*types.Transaction, error) {
-	return _VolcanoERC1155Tradable.Contract.UpdatecreatorFee(&_VolcanoERC1155Tradable.TransactOpts, _creatorFee)
+// Solidity: function updateFeeRecipient(address _feeRecipient) returns()
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableTransactorSession) UpdateFeeRecipient(_feeRecipient common.Address) (*types.Transaction, error) {
+	return _VolcanoERC1155Tradable.Contract.UpdateFeeRecipient(&_VolcanoERC1155Tradable.TransactOpts, _feeRecipient)
 }
 
 // VolcanoERC1155TradableApprovalForAllIterator is returned from FilterApprovalForAll and is used to iterate over the raw logs and unpacked data for ApprovalForAll events raised by the VolcanoERC1155Tradable contract.
@@ -1019,14 +1333,15 @@ type VolcanoERC1155TradableMinted struct {
 	TokenId     *big.Int
 	Amount      *big.Int
 	Beneficiary common.Address
+	Uri         string
 	Data        []byte
 	Minter      common.Address
 	Raw         types.Log // Blockchain specific contextual infos
 }
 
-// FilterMinted is a free log retrieval operation binding the contract event 0xa05dcf699199edd2e0c4fc8d2b6369fcd8e116de9db8e8e81c61b83bef07409f.
+// FilterMinted is a free log retrieval operation binding the contract event 0xd1390903c6e0d21c236d4f87b8f6b8ed0c107dd8ab79fc5aeb0b654bb99039bd.
 //
-// Solidity: event Minted(uint256 tokenId, uint256 amount, address beneficiary, bytes data, address minter)
+// Solidity: event Minted(uint256 tokenId, uint256 amount, address beneficiary, string uri, bytes data, address minter)
 func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) FilterMinted(opts *bind.FilterOpts) (*VolcanoERC1155TradableMintedIterator, error) {
 
 	logs, sub, err := _VolcanoERC1155Tradable.contract.FilterLogs(opts, "Minted")
@@ -1036,9 +1351,9 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) FilterMinted(opts
 	return &VolcanoERC1155TradableMintedIterator{contract: _VolcanoERC1155Tradable.contract, event: "Minted", logs: logs, sub: sub}, nil
 }
 
-// WatchMinted is a free log subscription operation binding the contract event 0xa05dcf699199edd2e0c4fc8d2b6369fcd8e116de9db8e8e81c61b83bef07409f.
+// WatchMinted is a free log subscription operation binding the contract event 0xd1390903c6e0d21c236d4f87b8f6b8ed0c107dd8ab79fc5aeb0b654bb99039bd.
 //
-// Solidity: event Minted(uint256 tokenId, uint256 amount, address beneficiary, bytes data, address minter)
+// Solidity: event Minted(uint256 tokenId, uint256 amount, address beneficiary, string uri, bytes data, address minter)
 func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) WatchMinted(opts *bind.WatchOpts, sink chan<- *VolcanoERC1155TradableMinted) (event.Subscription, error) {
 
 	logs, sub, err := _VolcanoERC1155Tradable.contract.WatchLogs(opts, "Minted")
@@ -1073,9 +1388,9 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) WatchMinted(opts 
 	}), nil
 }
 
-// ParseMinted is a log parse operation binding the contract event 0xa05dcf699199edd2e0c4fc8d2b6369fcd8e116de9db8e8e81c61b83bef07409f.
+// ParseMinted is a log parse operation binding the contract event 0xd1390903c6e0d21c236d4f87b8f6b8ed0c107dd8ab79fc5aeb0b654bb99039bd.
 //
-// Solidity: event Minted(uint256 tokenId, uint256 amount, address beneficiary, bytes data, address minter)
+// Solidity: event Minted(uint256 tokenId, uint256 amount, address beneficiary, string uri, bytes data, address minter)
 func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) ParseMinted(log types.Log) (*VolcanoERC1155TradableMinted, error) {
 	event := new(VolcanoERC1155TradableMinted)
 	if err := _VolcanoERC1155Tradable.contract.UnpackLog(event, "Minted", log); err != nil {
@@ -1711,6 +2026,140 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) ParseURI(log type
 	return event, nil
 }
 
+// VolcanoERC1155TradableUpdateCreatorFeeIterator is returned from FilterUpdateCreatorFee and is used to iterate over the raw logs and unpacked data for UpdateCreatorFee events raised by the VolcanoERC1155Tradable contract.
+type VolcanoERC1155TradableUpdateCreatorFeeIterator struct {
+	Event *VolcanoERC1155TradableUpdateCreatorFee // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *VolcanoERC1155TradableUpdateCreatorFeeIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(VolcanoERC1155TradableUpdateCreatorFee)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(VolcanoERC1155TradableUpdateCreatorFee)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *VolcanoERC1155TradableUpdateCreatorFeeIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *VolcanoERC1155TradableUpdateCreatorFeeIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// VolcanoERC1155TradableUpdateCreatorFee represents a UpdateCreatorFee event raised by the VolcanoERC1155Tradable contract.
+type VolcanoERC1155TradableUpdateCreatorFee struct {
+	CreatorFeePerc *big.Int
+	Raw            types.Log // Blockchain specific contextual infos
+}
+
+// FilterUpdateCreatorFee is a free log retrieval operation binding the contract event 0xc3d04e260fe05d096e73692c9096281fdaf2535704474c7a7bcc02ca2f1def15.
+//
+// Solidity: event UpdateCreatorFee(uint96 creatorFeePerc)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) FilterUpdateCreatorFee(opts *bind.FilterOpts) (*VolcanoERC1155TradableUpdateCreatorFeeIterator, error) {
+
+	logs, sub, err := _VolcanoERC1155Tradable.contract.FilterLogs(opts, "UpdateCreatorFee")
+	if err != nil {
+		return nil, err
+	}
+	return &VolcanoERC1155TradableUpdateCreatorFeeIterator{contract: _VolcanoERC1155Tradable.contract, event: "UpdateCreatorFee", logs: logs, sub: sub}, nil
+}
+
+// WatchUpdateCreatorFee is a free log subscription operation binding the contract event 0xc3d04e260fe05d096e73692c9096281fdaf2535704474c7a7bcc02ca2f1def15.
+//
+// Solidity: event UpdateCreatorFee(uint96 creatorFeePerc)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) WatchUpdateCreatorFee(opts *bind.WatchOpts, sink chan<- *VolcanoERC1155TradableUpdateCreatorFee) (event.Subscription, error) {
+
+	logs, sub, err := _VolcanoERC1155Tradable.contract.WatchLogs(opts, "UpdateCreatorFee")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(VolcanoERC1155TradableUpdateCreatorFee)
+				if err := _VolcanoERC1155Tradable.contract.UnpackLog(event, "UpdateCreatorFee", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseUpdateCreatorFee is a log parse operation binding the contract event 0xc3d04e260fe05d096e73692c9096281fdaf2535704474c7a7bcc02ca2f1def15.
+//
+// Solidity: event UpdateCreatorFee(uint96 creatorFeePerc)
+func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) ParseUpdateCreatorFee(log types.Log) (*VolcanoERC1155TradableUpdateCreatorFee, error) {
+	event := new(VolcanoERC1155TradableUpdateCreatorFee)
+	if err := _VolcanoERC1155Tradable.contract.UnpackLog(event, "UpdateCreatorFee", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
 // VolcanoERC1155TradableUpdateFeeRecipientIterator is returned from FilterUpdateFeeRecipient and is used to iterate over the raw logs and unpacked data for UpdateFeeRecipient events raised by the VolcanoERC1155Tradable contract.
 type VolcanoERC1155TradableUpdateFeeRecipientIterator struct {
 	Event *VolcanoERC1155TradableUpdateFeeRecipient // Event containing the contract specifics and raw log
@@ -1839,140 +2288,6 @@ func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) WatchUpdateFeeRec
 func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) ParseUpdateFeeRecipient(log types.Log) (*VolcanoERC1155TradableUpdateFeeRecipient, error) {
 	event := new(VolcanoERC1155TradableUpdateFeeRecipient)
 	if err := _VolcanoERC1155Tradable.contract.UnpackLog(event, "UpdateFeeRecipient", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
-}
-
-// VolcanoERC1155TradableUpdatecreatorFeeIterator is returned from FilterUpdatecreatorFee and is used to iterate over the raw logs and unpacked data for UpdatecreatorFee events raised by the VolcanoERC1155Tradable contract.
-type VolcanoERC1155TradableUpdatecreatorFeeIterator struct {
-	Event *VolcanoERC1155TradableUpdatecreatorFee // Event containing the contract specifics and raw log
-
-	contract *bind.BoundContract // Generic contract to use for unpacking event data
-	event    string              // Event name to use for unpacking event data
-
-	logs chan types.Log        // Log channel receiving the found contract events
-	sub  ethereum.Subscription // Subscription for errors, completion and termination
-	done bool                  // Whether the subscription completed delivering logs
-	fail error                 // Occurred error to stop iteration
-}
-
-// Next advances the iterator to the subsequent event, returning whether there
-// are any more events found. In case of a retrieval or parsing error, false is
-// returned and Error() can be queried for the exact failure.
-func (it *VolcanoERC1155TradableUpdatecreatorFeeIterator) Next() bool {
-	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(VolcanoERC1155TradableUpdatecreatorFee)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(VolcanoERC1155TradableUpdatecreatorFee)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
-}
-
-// Error returns any retrieval or parsing error occurred during filtering.
-func (it *VolcanoERC1155TradableUpdatecreatorFeeIterator) Error() error {
-	return it.fail
-}
-
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *VolcanoERC1155TradableUpdatecreatorFeeIterator) Close() error {
-	it.sub.Unsubscribe()
-	return nil
-}
-
-// VolcanoERC1155TradableUpdatecreatorFee represents a UpdatecreatorFee event raised by the VolcanoERC1155Tradable contract.
-type VolcanoERC1155TradableUpdatecreatorFee struct {
-	CreatorFee *big.Int
-	Raw        types.Log // Blockchain specific contextual infos
-}
-
-// FilterUpdatecreatorFee is a free log retrieval operation binding the contract event 0x32eed3b64a471f6f08ecc3e7518c80900dcf82d0f725084f95f168c25f18f299.
-//
-// Solidity: event UpdatecreatorFee(uint256 creatorFee)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) FilterUpdatecreatorFee(opts *bind.FilterOpts) (*VolcanoERC1155TradableUpdatecreatorFeeIterator, error) {
-
-	logs, sub, err := _VolcanoERC1155Tradable.contract.FilterLogs(opts, "UpdatecreatorFee")
-	if err != nil {
-		return nil, err
-	}
-	return &VolcanoERC1155TradableUpdatecreatorFeeIterator{contract: _VolcanoERC1155Tradable.contract, event: "UpdatecreatorFee", logs: logs, sub: sub}, nil
-}
-
-// WatchUpdatecreatorFee is a free log subscription operation binding the contract event 0x32eed3b64a471f6f08ecc3e7518c80900dcf82d0f725084f95f168c25f18f299.
-//
-// Solidity: event UpdatecreatorFee(uint256 creatorFee)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) WatchUpdatecreatorFee(opts *bind.WatchOpts, sink chan<- *VolcanoERC1155TradableUpdatecreatorFee) (event.Subscription, error) {
-
-	logs, sub, err := _VolcanoERC1155Tradable.contract.WatchLogs(opts, "UpdatecreatorFee")
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(VolcanoERC1155TradableUpdatecreatorFee)
-				if err := _VolcanoERC1155Tradable.contract.UnpackLog(event, "UpdatecreatorFee", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
-}
-
-// ParseUpdatecreatorFee is a log parse operation binding the contract event 0x32eed3b64a471f6f08ecc3e7518c80900dcf82d0f725084f95f168c25f18f299.
-//
-// Solidity: event UpdatecreatorFee(uint256 creatorFee)
-func (_VolcanoERC1155Tradable *VolcanoERC1155TradableFilterer) ParseUpdatecreatorFee(log types.Log) (*VolcanoERC1155TradableUpdatecreatorFee, error) {
-	event := new(VolcanoERC1155TradableUpdatecreatorFee)
-	if err := _VolcanoERC1155Tradable.contract.UnpackLog(event, "UpdatecreatorFee", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

@@ -1,0 +1,20 @@
+[
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_seed",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_rnd",
+          "type": "uint256"
+        }
+      ],
+      "name": "consumeRandomNumber",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]

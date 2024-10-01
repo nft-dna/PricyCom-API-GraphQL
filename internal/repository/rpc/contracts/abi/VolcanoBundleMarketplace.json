@@ -442,7 +442,7 @@
     },
     {
       "inputs": [],
-      "name": "feeReceipient",
+      "name": "feeRecipient",
       "outputs": [
         {
           "internalType": "address payable",
@@ -833,4 +833,4 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-]
+  ]

@@ -2,19 +2,14 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_auction",
-          "type": "address"
+          "internalType": "uint96",
+          "name": "_erc20MintFeePerc",
+          "type": "uint96"
         },
         {
-          "internalType": "address",
-          "name": "_marketplace",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_bundleMarketplace",
-          "type": "address"
+          "internalType": "uint96",
+          "name": "_erc20MintTokenFeePerc",
+          "type": "uint96"
         },
         {
           "internalType": "address payable",
@@ -27,57 +22,13 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
-          "name": "_platformMintFee",
-          "type": "uint256"
+          "internalType": "address payable",
+          "name": "_routerAddress",
+          "type": "address"
         }
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "platform",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "nft",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "bool",
-          "name": "isprivate",
-          "type": "bool"
-        }
-      ],
-      "name": "ContractCreated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "caller",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "nft",
-          "type": "address"
-        }
-      ],
-      "name": "ContractDisabled",
-      "type": "event"
     },
     {
       "anonymous": false,
@@ -99,30 +50,42 @@
       "type": "event"
     },
     {
-      "inputs": [],
-      "name": "auction",
-      "outputs": [
+      "anonymous": false,
+      "inputs": [
         {
+          "indexed": false,
           "internalType": "address",
-          "name": "",
+          "name": "caller",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "token",
           "type": "address"
         }
       ],
-      "stateMutability": "view",
-      "type": "function"
+      "name": "TokenCreated",
+      "type": "event"
     },
     {
-      "inputs": [],
-      "name": "bundleMarketplace",
-      "outputs": [
+      "anonymous": false,
+      "inputs": [
         {
+          "indexed": false,
           "internalType": "address",
-          "name": "",
+          "name": "caller",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "token",
           "type": "address"
         }
       ],
-      "stateMutability": "view",
-      "type": "function"
+      "name": "TokenDisabled",
+      "type": "event"
     },
     {
       "inputs": [
@@ -137,79 +100,37 @@
           "type": "string"
         },
         {
-          "internalType": "bool",
-          "name": "_private",
-          "type": "bool"
+          "internalType": "string",
+          "name": "_uri",
+          "type": "string"
         },
         {
-          "internalType": "uint256",
-          "name": "_mintFee",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint96",
-          "name": "_creatorFeePerc",
-          "type": "uint96"
-        },
-        {
-          "internalType": "address payable",
-          "name": "_feeRecipient",
+          "internalType": "address",
+          "name": "_initialReceiver",
           "type": "address"
         },
         {
-          "components": [
-            {
-              "internalType": "string",
-              "name": "baseUri",
-              "type": "string"
-            },
-            {
-              "internalType": "bool",
-              "name": "usebaseUriOnly",
-              "type": "bool"
-            },
-            {
-              "internalType": "string",
-              "name": "baseUriExt",
-              "type": "string"
-            },
-            {
-              "internalType": "uint256",
-              "name": "maxItems",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "maxItemSupply",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "mintStartTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "mintStopTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "revealTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "string",
-              "name": "preRevealUri",
-              "type": "string"
-            }
-          ],
-          "internalType": "struct VolcanoERC1155Tradable.contractERC1155Options",
-          "name": "_options",
-          "type": "tuple"
+          "internalType": "uint256",
+          "name": "_initialAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_capAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_mintBlocks",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_mintBlocksFee",
+          "type": "uint256"
         }
       ],
-      "name": "createNFTContract",
+      "name": "createTokenContract",
       "outputs": [
         {
           "internalType": "address",
@@ -231,6 +152,32 @@
       "name": "disableTokenContract",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "erc20MintFeePerc",
+      "outputs": [
+        {
+          "internalType": "uint96",
+          "name": "",
+          "type": "uint96"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "erc20MintTokenFeePerc",
+      "outputs": [
+        {
+          "internalType": "uint96",
+          "name": "",
+          "type": "uint96"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -269,32 +216,18 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "tokenContractAddress",
           "type": "address"
-        }
-      ],
-      "name": "isprivate",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "marketplace",
-      "outputs": [
+        },
         {
           "internalType": "address",
-          "name": "",
+          "name": "to",
           "type": "address"
         }
       ],
-      "stateMutability": "view",
+      "name": "mintTokenBlock",
+      "outputs": [],
+      "stateMutability": "payable",
       "type": "function"
     },
     {
@@ -324,29 +257,11 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "platformMintFee",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "address",
           "name": "tokenContractAddress",
           "type": "address"
-        },
-        {
-          "internalType": "bool",
-          "name": "_isprivate",
-          "type": "bool"
         }
       ],
       "name": "registerTokenContract",
@@ -359,6 +274,19 @@
       "name": "renounceOwnership",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "routerAddress",
+      "outputs": [
+        {
+          "internalType": "address payable",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -377,12 +305,12 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_auction",
-          "type": "address"
+          "internalType": "uint96",
+          "name": "_erc20MintFeePerc",
+          "type": "uint96"
         }
       ],
-      "name": "updateAuction",
+      "name": "updateErc20MintFeePerc",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -390,12 +318,12 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_bundleMarketplace",
-          "type": "address"
+          "internalType": "uint96",
+          "name": "_erc20MintTokenFeePerc",
+          "type": "uint96"
         }
       ],
-      "name": "updateBundleMarketplace",
+      "name": "updateErc20MintTokenFeePerc",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -416,19 +344,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_marketplace",
-          "type": "address"
-        }
-      ],
-      "name": "updateMarketplace",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "_platformContractFee",
           "type": "uint256"
@@ -442,12 +357,12 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "_platformMintFee",
-          "type": "uint256"
+          "internalType": "address payable",
+          "name": "_routerAddress",
+          "type": "address"
         }
       ],
-      "name": "updatePlatformMintFee",
+      "name": "updateRouterAddress",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

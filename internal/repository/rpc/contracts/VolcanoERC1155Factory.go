@@ -29,9 +29,24 @@ var (
 	_ = abi.ConvertType
 )
 
+/*
+// VolcanoERC1155TradablecontractERC1155Options is an auto generated low-level Go binding around an user-defined struct.
+type VolcanoERC1155TradablecontractERC1155Options struct {
+	BaseUri        string
+	UsebaseUriOnly bool
+	BaseUriExt     string
+	MaxItems       *big.Int
+	MaxItemSupply  *big.Int
+	MintStartTime  *big.Int
+	MintStopTime   *big.Int
+	RevealTime     *big.Int
+	PreRevealUri   string
+}
+*/
+
 // VolcanoERC1155FactoryMetaData contains all meta data concerning the VolcanoERC1155Factory contract.
 var VolcanoERC1155FactoryMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_auction\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_marketplace\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_bundleMarketplace\",\"type\":\"address\"},{\"internalType\":\"addresspayable\",\"name\":\"_feeRecipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_platformFee\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"nft\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isprivate\",\"type\":\"bool\"}],\"name\":\"ContractCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"nft\",\"type\":\"address\"}],\"name\":\"ContractDisabled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"auction\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"bundleMarketplace\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"_private\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"_mintFee\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_creatorFee\",\"type\":\"uint256\"},{\"internalType\":\"addresspayable\",\"name\":\"_feeRecipient\",\"type\":\"address\"}],\"name\":\"createNFTContract\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenContractAddress\",\"type\":\"address\"}],\"name\":\"disableTokenContract\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"exists\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeRecipient\",\"outputs\":[{\"internalType\":\"addresspayable\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"isprivate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"marketplace\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"platformFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenContractAddress\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"_isprivate\",\"type\":\"bool\"}],\"name\":\"registerTokenContract\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_auction\",\"type\":\"address\"}],\"name\":\"updateAuction\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_bundleMarketplace\",\"type\":\"address\"}],\"name\":\"updateBundleMarketplace\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"addresspayable\",\"name\":\"_feeRecipient\",\"type\":\"address\"}],\"name\":\"updateFeeRecipient\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_marketplace\",\"type\":\"address\"}],\"name\":\"updateMarketplace\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_platformFee\",\"type\":\"uint256\"}],\"name\":\"updatePlatformFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_auction\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_marketplace\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_bundleMarketplace\",\"type\":\"address\"},{\"internalType\":\"addresspayable\",\"name\":\"_feeRecipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_platformContractFee\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_platformMintFee\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"platform\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"nft\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isprivate\",\"type\":\"bool\"}],\"name\":\"ContractCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"nft\",\"type\":\"address\"}],\"name\":\"ContractDisabled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"auction\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"bundleMarketplace\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"_private\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"_mintFee\",\"type\":\"uint256\"},{\"internalType\":\"uint96\",\"name\":\"_creatorFeePerc\",\"type\":\"uint96\"},{\"internalType\":\"addresspayable\",\"name\":\"_feeRecipient\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"baseUri\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"usebaseUriOnly\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"baseUriExt\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"maxItems\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxItemSupply\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"mintStartTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"mintStopTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"revealTime\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"preRevealUri\",\"type\":\"string\"}],\"internalType\":\"structVolcanoERC1155Tradable.contractERC1155Options\",\"name\":\"_options\",\"type\":\"tuple\"}],\"name\":\"createNFTContract\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenContractAddress\",\"type\":\"address\"}],\"name\":\"disableTokenContract\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"exists\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeRecipient\",\"outputs\":[{\"internalType\":\"addresspayable\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"isprivate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"marketplace\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"platformContractFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"platformMintFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenContractAddress\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"_isprivate\",\"type\":\"bool\"}],\"name\":\"registerTokenContract\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_auction\",\"type\":\"address\"}],\"name\":\"updateAuction\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_bundleMarketplace\",\"type\":\"address\"}],\"name\":\"updateBundleMarketplace\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"addresspayable\",\"name\":\"_feeRecipient\",\"type\":\"address\"}],\"name\":\"updateFeeRecipient\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_marketplace\",\"type\":\"address\"}],\"name\":\"updateMarketplace\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_platformContractFee\",\"type\":\"uint256\"}],\"name\":\"updatePlatformContractFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_platformMintFee\",\"type\":\"uint256\"}],\"name\":\"updatePlatformMintFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // VolcanoERC1155FactoryABI is the input ABI used to generate the binding from.
@@ -397,12 +412,12 @@ func (_VolcanoERC1155Factory *VolcanoERC1155FactoryCallerSession) Owner() (commo
 	return _VolcanoERC1155Factory.Contract.Owner(&_VolcanoERC1155Factory.CallOpts)
 }
 
-// PlatformFee is a free data retrieval call binding the contract method 0x26232a2e.
+// PlatformContractFee is a free data retrieval call binding the contract method 0xb69d4b98.
 //
-// Solidity: function platformFee() view returns(uint256)
-func (_VolcanoERC1155Factory *VolcanoERC1155FactoryCaller) PlatformFee(opts *bind.CallOpts) (*big.Int, error) {
+// Solidity: function platformContractFee() view returns(uint256)
+func (_VolcanoERC1155Factory *VolcanoERC1155FactoryCaller) PlatformContractFee(opts *bind.CallOpts) (*big.Int, error) {
 	var out []interface{}
-	err := _VolcanoERC1155Factory.contract.Call(opts, &out, "platformFee")
+	err := _VolcanoERC1155Factory.contract.Call(opts, &out, "platformContractFee")
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -414,39 +429,70 @@ func (_VolcanoERC1155Factory *VolcanoERC1155FactoryCaller) PlatformFee(opts *bin
 
 }
 
-// PlatformFee is a free data retrieval call binding the contract method 0x26232a2e.
+// PlatformContractFee is a free data retrieval call binding the contract method 0xb69d4b98.
 //
-// Solidity: function platformFee() view returns(uint256)
-func (_VolcanoERC1155Factory *VolcanoERC1155FactorySession) PlatformFee() (*big.Int, error) {
-	return _VolcanoERC1155Factory.Contract.PlatformFee(&_VolcanoERC1155Factory.CallOpts)
+// Solidity: function platformContractFee() view returns(uint256)
+func (_VolcanoERC1155Factory *VolcanoERC1155FactorySession) PlatformContractFee() (*big.Int, error) {
+	return _VolcanoERC1155Factory.Contract.PlatformContractFee(&_VolcanoERC1155Factory.CallOpts)
 }
 
-// PlatformFee is a free data retrieval call binding the contract method 0x26232a2e.
+// PlatformContractFee is a free data retrieval call binding the contract method 0xb69d4b98.
 //
-// Solidity: function platformFee() view returns(uint256)
-func (_VolcanoERC1155Factory *VolcanoERC1155FactoryCallerSession) PlatformFee() (*big.Int, error) {
-	return _VolcanoERC1155Factory.Contract.PlatformFee(&_VolcanoERC1155Factory.CallOpts)
+// Solidity: function platformContractFee() view returns(uint256)
+func (_VolcanoERC1155Factory *VolcanoERC1155FactoryCallerSession) PlatformContractFee() (*big.Int, error) {
+	return _VolcanoERC1155Factory.Contract.PlatformContractFee(&_VolcanoERC1155Factory.CallOpts)
 }
 
-// CreateNFTContract is a paid mutator transaction binding the contract method 0xba49b0ef.
+// PlatformMintFee is a free data retrieval call binding the contract method 0xce922b7b.
 //
-// Solidity: function createNFTContract(string _name, string _symbol, bool _private, uint256 _mintFee, uint256 _creatorFee, address _feeRecipient) payable returns(address)
-func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactor) CreateNFTContract(opts *bind.TransactOpts, _name string, _symbol string, _private bool, _mintFee *big.Int, _creatorFee *big.Int, _feeRecipient common.Address) (*types.Transaction, error) {
-	return _VolcanoERC1155Factory.contract.Transact(opts, "createNFTContract", _name, _symbol, _private, _mintFee, _creatorFee, _feeRecipient)
+// Solidity: function platformMintFee() view returns(uint256)
+func (_VolcanoERC1155Factory *VolcanoERC1155FactoryCaller) PlatformMintFee(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _VolcanoERC1155Factory.contract.Call(opts, &out, "platformMintFee")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
 }
 
-// CreateNFTContract is a paid mutator transaction binding the contract method 0xba49b0ef.
+// PlatformMintFee is a free data retrieval call binding the contract method 0xce922b7b.
 //
-// Solidity: function createNFTContract(string _name, string _symbol, bool _private, uint256 _mintFee, uint256 _creatorFee, address _feeRecipient) payable returns(address)
-func (_VolcanoERC1155Factory *VolcanoERC1155FactorySession) CreateNFTContract(_name string, _symbol string, _private bool, _mintFee *big.Int, _creatorFee *big.Int, _feeRecipient common.Address) (*types.Transaction, error) {
-	return _VolcanoERC1155Factory.Contract.CreateNFTContract(&_VolcanoERC1155Factory.TransactOpts, _name, _symbol, _private, _mintFee, _creatorFee, _feeRecipient)
+// Solidity: function platformMintFee() view returns(uint256)
+func (_VolcanoERC1155Factory *VolcanoERC1155FactorySession) PlatformMintFee() (*big.Int, error) {
+	return _VolcanoERC1155Factory.Contract.PlatformMintFee(&_VolcanoERC1155Factory.CallOpts)
 }
 
-// CreateNFTContract is a paid mutator transaction binding the contract method 0xba49b0ef.
+// PlatformMintFee is a free data retrieval call binding the contract method 0xce922b7b.
 //
-// Solidity: function createNFTContract(string _name, string _symbol, bool _private, uint256 _mintFee, uint256 _creatorFee, address _feeRecipient) payable returns(address)
-func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactorSession) CreateNFTContract(_name string, _symbol string, _private bool, _mintFee *big.Int, _creatorFee *big.Int, _feeRecipient common.Address) (*types.Transaction, error) {
-	return _VolcanoERC1155Factory.Contract.CreateNFTContract(&_VolcanoERC1155Factory.TransactOpts, _name, _symbol, _private, _mintFee, _creatorFee, _feeRecipient)
+// Solidity: function platformMintFee() view returns(uint256)
+func (_VolcanoERC1155Factory *VolcanoERC1155FactoryCallerSession) PlatformMintFee() (*big.Int, error) {
+	return _VolcanoERC1155Factory.Contract.PlatformMintFee(&_VolcanoERC1155Factory.CallOpts)
+}
+
+// CreateNFTContract is a paid mutator transaction binding the contract method 0x4675b82c.
+//
+// Solidity: function createNFTContract(string _name, string _symbol, bool _private, uint256 _mintFee, uint96 _creatorFeePerc, address _feeRecipient, (string,bool,string,uint256,uint256,uint256,uint256,uint256,string) _options) payable returns(address)
+func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactor) CreateNFTContract(opts *bind.TransactOpts, _name string, _symbol string, _private bool, _mintFee *big.Int, _creatorFeePerc *big.Int, _feeRecipient common.Address, _options VolcanoERC1155TradablecontractERC1155Options) (*types.Transaction, error) {
+	return _VolcanoERC1155Factory.contract.Transact(opts, "createNFTContract", _name, _symbol, _private, _mintFee, _creatorFeePerc, _feeRecipient, _options)
+}
+
+// CreateNFTContract is a paid mutator transaction binding the contract method 0x4675b82c.
+//
+// Solidity: function createNFTContract(string _name, string _symbol, bool _private, uint256 _mintFee, uint96 _creatorFeePerc, address _feeRecipient, (string,bool,string,uint256,uint256,uint256,uint256,uint256,string) _options) payable returns(address)
+func (_VolcanoERC1155Factory *VolcanoERC1155FactorySession) CreateNFTContract(_name string, _symbol string, _private bool, _mintFee *big.Int, _creatorFeePerc *big.Int, _feeRecipient common.Address, _options VolcanoERC1155TradablecontractERC1155Options) (*types.Transaction, error) {
+	return _VolcanoERC1155Factory.Contract.CreateNFTContract(&_VolcanoERC1155Factory.TransactOpts, _name, _symbol, _private, _mintFee, _creatorFeePerc, _feeRecipient, _options)
+}
+
+// CreateNFTContract is a paid mutator transaction binding the contract method 0x4675b82c.
+//
+// Solidity: function createNFTContract(string _name, string _symbol, bool _private, uint256 _mintFee, uint96 _creatorFeePerc, address _feeRecipient, (string,bool,string,uint256,uint256,uint256,uint256,uint256,string) _options) payable returns(address)
+func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactorSession) CreateNFTContract(_name string, _symbol string, _private bool, _mintFee *big.Int, _creatorFeePerc *big.Int, _feeRecipient common.Address, _options VolcanoERC1155TradablecontractERC1155Options) (*types.Transaction, error) {
+	return _VolcanoERC1155Factory.Contract.CreateNFTContract(&_VolcanoERC1155Factory.TransactOpts, _name, _symbol, _private, _mintFee, _creatorFeePerc, _feeRecipient, _options)
 }
 
 // DisableTokenContract is a paid mutator transaction binding the contract method 0xd39bb16a.
@@ -617,25 +663,46 @@ func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactorSession) UpdateMark
 	return _VolcanoERC1155Factory.Contract.UpdateMarketplace(&_VolcanoERC1155Factory.TransactOpts, _marketplace)
 }
 
-// UpdatePlatformFee is a paid mutator transaction binding the contract method 0xaa0b5988.
+// UpdatePlatformContractFee is a paid mutator transaction binding the contract method 0xc57482bb.
 //
-// Solidity: function updatePlatformFee(uint256 _platformFee) returns()
-func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactor) UpdatePlatformFee(opts *bind.TransactOpts, _platformFee *big.Int) (*types.Transaction, error) {
-	return _VolcanoERC1155Factory.contract.Transact(opts, "updatePlatformFee", _platformFee)
+// Solidity: function updatePlatformContractFee(uint256 _platformContractFee) returns()
+func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactor) UpdatePlatformContractFee(opts *bind.TransactOpts, _platformContractFee *big.Int) (*types.Transaction, error) {
+	return _VolcanoERC1155Factory.contract.Transact(opts, "updatePlatformContractFee", _platformContractFee)
 }
 
-// UpdatePlatformFee is a paid mutator transaction binding the contract method 0xaa0b5988.
+// UpdatePlatformContractFee is a paid mutator transaction binding the contract method 0xc57482bb.
 //
-// Solidity: function updatePlatformFee(uint256 _platformFee) returns()
-func (_VolcanoERC1155Factory *VolcanoERC1155FactorySession) UpdatePlatformFee(_platformFee *big.Int) (*types.Transaction, error) {
-	return _VolcanoERC1155Factory.Contract.UpdatePlatformFee(&_VolcanoERC1155Factory.TransactOpts, _platformFee)
+// Solidity: function updatePlatformContractFee(uint256 _platformContractFee) returns()
+func (_VolcanoERC1155Factory *VolcanoERC1155FactorySession) UpdatePlatformContractFee(_platformContractFee *big.Int) (*types.Transaction, error) {
+	return _VolcanoERC1155Factory.Contract.UpdatePlatformContractFee(&_VolcanoERC1155Factory.TransactOpts, _platformContractFee)
 }
 
-// UpdatePlatformFee is a paid mutator transaction binding the contract method 0xaa0b5988.
+// UpdatePlatformContractFee is a paid mutator transaction binding the contract method 0xc57482bb.
 //
-// Solidity: function updatePlatformFee(uint256 _platformFee) returns()
-func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactorSession) UpdatePlatformFee(_platformFee *big.Int) (*types.Transaction, error) {
-	return _VolcanoERC1155Factory.Contract.UpdatePlatformFee(&_VolcanoERC1155Factory.TransactOpts, _platformFee)
+// Solidity: function updatePlatformContractFee(uint256 _platformContractFee) returns()
+func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactorSession) UpdatePlatformContractFee(_platformContractFee *big.Int) (*types.Transaction, error) {
+	return _VolcanoERC1155Factory.Contract.UpdatePlatformContractFee(&_VolcanoERC1155Factory.TransactOpts, _platformContractFee)
+}
+
+// UpdatePlatformMintFee is a paid mutator transaction binding the contract method 0x61d2beae.
+//
+// Solidity: function updatePlatformMintFee(uint256 _platformMintFee) returns()
+func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactor) UpdatePlatformMintFee(opts *bind.TransactOpts, _platformMintFee *big.Int) (*types.Transaction, error) {
+	return _VolcanoERC1155Factory.contract.Transact(opts, "updatePlatformMintFee", _platformMintFee)
+}
+
+// UpdatePlatformMintFee is a paid mutator transaction binding the contract method 0x61d2beae.
+//
+// Solidity: function updatePlatformMintFee(uint256 _platformMintFee) returns()
+func (_VolcanoERC1155Factory *VolcanoERC1155FactorySession) UpdatePlatformMintFee(_platformMintFee *big.Int) (*types.Transaction, error) {
+	return _VolcanoERC1155Factory.Contract.UpdatePlatformMintFee(&_VolcanoERC1155Factory.TransactOpts, _platformMintFee)
+}
+
+// UpdatePlatformMintFee is a paid mutator transaction binding the contract method 0x61d2beae.
+//
+// Solidity: function updatePlatformMintFee(uint256 _platformMintFee) returns()
+func (_VolcanoERC1155Factory *VolcanoERC1155FactoryTransactorSession) UpdatePlatformMintFee(_platformMintFee *big.Int) (*types.Transaction, error) {
+	return _VolcanoERC1155Factory.Contract.UpdatePlatformMintFee(&_VolcanoERC1155Factory.TransactOpts, _platformMintFee)
 }
 
 // VolcanoERC1155FactoryContractCreatedIterator is returned from FilterContractCreated and is used to iterate over the raw logs and unpacked data for ContractCreated events raised by the VolcanoERC1155Factory contract.
@@ -707,7 +774,7 @@ func (it *VolcanoERC1155FactoryContractCreatedIterator) Close() error {
 
 // VolcanoERC1155FactoryContractCreated represents a ContractCreated event raised by the VolcanoERC1155Factory contract.
 type VolcanoERC1155FactoryContractCreated struct {
-	Creator   common.Address
+	Platform  common.Address
 	Nft       common.Address
 	Isprivate bool
 	Raw       types.Log // Blockchain specific contextual infos
@@ -715,7 +782,7 @@ type VolcanoERC1155FactoryContractCreated struct {
 
 // FilterContractCreated is a free log retrieval operation binding the contract event 0xbbe78d8749296d5db350f8a76bbc6f2f85649a62516790be41dc6a67393aecde.
 //
-// Solidity: event ContractCreated(address creator, address nft, bool isprivate)
+// Solidity: event ContractCreated(address platform, address nft, bool isprivate)
 func (_VolcanoERC1155Factory *VolcanoERC1155FactoryFilterer) FilterContractCreated(opts *bind.FilterOpts) (*VolcanoERC1155FactoryContractCreatedIterator, error) {
 
 	logs, sub, err := _VolcanoERC1155Factory.contract.FilterLogs(opts, "ContractCreated")
@@ -727,7 +794,7 @@ func (_VolcanoERC1155Factory *VolcanoERC1155FactoryFilterer) FilterContractCreat
 
 // WatchContractCreated is a free log subscription operation binding the contract event 0xbbe78d8749296d5db350f8a76bbc6f2f85649a62516790be41dc6a67393aecde.
 //
-// Solidity: event ContractCreated(address creator, address nft, bool isprivate)
+// Solidity: event ContractCreated(address platform, address nft, bool isprivate)
 func (_VolcanoERC1155Factory *VolcanoERC1155FactoryFilterer) WatchContractCreated(opts *bind.WatchOpts, sink chan<- *VolcanoERC1155FactoryContractCreated) (event.Subscription, error) {
 
 	logs, sub, err := _VolcanoERC1155Factory.contract.WatchLogs(opts, "ContractCreated")
@@ -764,7 +831,7 @@ func (_VolcanoERC1155Factory *VolcanoERC1155FactoryFilterer) WatchContractCreate
 
 // ParseContractCreated is a log parse operation binding the contract event 0xbbe78d8749296d5db350f8a76bbc6f2f85649a62516790be41dc6a67393aecde.
 //
-// Solidity: event ContractCreated(address creator, address nft, bool isprivate)
+// Solidity: event ContractCreated(address platform, address nft, bool isprivate)
 func (_VolcanoERC1155Factory *VolcanoERC1155FactoryFilterer) ParseContractCreated(log types.Log) (*VolcanoERC1155FactoryContractCreated, error) {
 	event := new(VolcanoERC1155FactoryContractCreated)
 	if err := _VolcanoERC1155Factory.contract.UnpackLog(event, "ContractCreated", log); err != nil {

@@ -3,16 +3,21 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "_token",
           "type": "address"
         }
       ],
-      "name": "exists",
+      "name": "getPrice",
       "outputs": [
         {
-          "internalType": "bool",
+          "internalType": "uint256",
           "name": "",
-          "type": "bool"
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
         }
       ],
       "stateMutability": "view",

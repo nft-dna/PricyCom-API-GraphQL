@@ -27,24 +27,71 @@
           "type": "address"
         },
         {
-          "internalType": "uint256",
-          "name": "_mintFee",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "_factory",
+          "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "_creatorFee",
+          "name": "_mintCreatorFee",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint96",
+          "name": "_creatorFeePerc",
+          "type": "uint96"
         },
         {
           "internalType": "address payable",
-          "name": "_feeReceipient",
+          "name": "_feeRecipient",
           "type": "address"
         },
         {
           "internalType": "bool",
           "name": "_isprivate",
           "type": "bool"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "baseUri",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "baseUriExt",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxItems",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "mintStartTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "mintStopTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "revealTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "preRevealUri",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct VolcanoERC721Tradable.contractERC721Options",
+          "name": "_options",
+          "type": "tuple"
         }
       ],
       "stateMutability": "nonpayable",
@@ -212,12 +259,12 @@
       "inputs": [
         {
           "indexed": false,
-          "internalType": "address payable",
-          "name": "feeRecipient",
-          "type": "address"
+          "internalType": "uint96",
+          "name": "creatorFeePerc",
+          "type": "uint96"
         }
       ],
-      "name": "UpdateFeeRecipient",
+      "name": "UpdateCreatorFee",
       "type": "event"
     },
     {
@@ -225,12 +272,12 @@
       "inputs": [
         {
           "indexed": false,
-          "internalType": "uint256",
-          "name": "creatorFee",
-          "type": "uint256"
+          "internalType": "address payable",
+          "name": "feeRecipient",
+          "type": "address"
         }
       ],
-      "name": "UpdatecreatorFee",
+      "name": "UpdateFeeRecipient",
       "type": "event"
     },
     {
@@ -285,12 +332,25 @@
     },
     {
       "inputs": [],
-      "name": "creatorFee",
+      "name": "contractURI",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "string",
           "name": "",
-          "type": "uint256"
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "creatorFeePerc",
+      "outputs": [
+        {
+          "internalType": "uint96",
+          "name": "",
+          "type": "uint96"
         }
       ],
       "stateMutability": "view",
@@ -317,7 +377,7 @@
     },
     {
       "inputs": [],
-      "name": "feeReceipient",
+      "name": "feeRecipient",
       "outputs": [
         {
           "internalType": "address payable",
@@ -396,6 +456,32 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "isprivate",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "maxSupply",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -415,7 +501,33 @@
     },
     {
       "inputs": [],
-      "name": "mintFee",
+      "name": "mintCreatorFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "mintStartTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "mintStopTime",
       "outputs": [
         {
           "internalType": "uint256",
@@ -476,6 +588,48 @@
       "name": "renounceOwnership",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "revealTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "salePrice",
+          "type": "uint256"
+        }
+      ],
+      "name": "royaltyInfo",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -577,6 +731,30 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "length",
+          "type": "uint256"
+        }
+      ],
+      "name": "toHexString",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "pure",
       "type": "function"
     },
     {
@@ -693,8 +871,34 @@
     {
       "inputs": [
         {
+          "internalType": "string",
+          "name": "_uri",
+          "type": "string"
+        }
+      ],
+      "name": "updateContractURI",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint96",
+          "name": "_creatorFeePerc",
+          "type": "uint96"
+        }
+      ],
+      "name": "updateCreatorFeePerc",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "address payable",
-          "name": "_feeReceipient",
+          "name": "_feeRecipient",
           "type": "address"
         }
       ],
@@ -704,16 +908,16 @@
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "useBaseUri",
+      "outputs": [
         {
-          "internalType": "uint256",
-          "name": "_creatorFee",
-          "type": "uint256"
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
         }
       ],
-      "name": "updatecreatorFee",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     }
-]
+  ]

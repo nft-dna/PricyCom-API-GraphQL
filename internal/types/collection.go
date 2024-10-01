@@ -38,7 +38,7 @@ type Collection struct {
 	IsActive   bool            `bson:"is_active"`
 	VerifiedBy *common.Address `bson:"verified_by"`
 	//
-	IsOurFactory bool                  `bson:"verified_by"`
+	IsOurFactory bool                  `bson:"isOurFactory"`
 	MintDetails  CollectionMintDetails `bson:"mintDetails"`
 	MemeDetails  MemeTokenDetails      `bson:"memetDetails"`
 }

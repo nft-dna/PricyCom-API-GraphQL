@@ -40,5 +40,5 @@ type Collection struct {
 	//
 	IsOurFactory bool                  `bson:"isOurFactory"`
 	MintDetails  CollectionMintDetails `bson:"mintDetails"`
-	MemeDetails  MemeTokenDetails      `bson:"memetDetails"`
+	MemeDetails  MemeTokenDetails      `bson:"memeDetails"`
 }

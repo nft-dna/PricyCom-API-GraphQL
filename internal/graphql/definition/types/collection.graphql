@@ -77,6 +77,11 @@ type CollectionConnection {
     pageInfo: PageInfo!
 }
 
+type MemeTokenEdge {
+    cursor: Cursor!
+    node: Collection!
+}
+
 type MemeTokenConnection {
     # Edges contains provided edges of the sequential list.
     edges: [MemeTokenEdge!]!

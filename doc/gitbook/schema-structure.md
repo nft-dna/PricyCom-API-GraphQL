@@ -493,6 +493,23 @@ type CollectionConnection {
     # PageInfo is an information about the current page of the list.
     pageInfo: PageInfo!
 }
+
+type MemeTokenEdge {
+    cursor: Cursor!
+    node: Collection!
+}
+
+type MemeTokenConnection {
+    # Edges contains provided edges of the sequential list.
+    edges: [MemeTokenEdge!]!
+
+    # TotalCount is the total amount of items in the list.
+    totalCount: BigInt!
+
+    # PageInfo is an information about the current page of the list.
+    pageInfo: PageInfo!
+}
+
 ```
 
 ## Core contracts

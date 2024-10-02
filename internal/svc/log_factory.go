@@ -3,7 +3,6 @@ package svc
 
 import (
 	"artion-api-graphql/internal/types"
-	"math/big"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -94,14 +93,17 @@ func extendMemeTokenMetadata(meme *types.Collection) (err error) {
 		}
 	}
 
-	if err = extenMemeTokenMintDetails(meme); err != nil {
-		log.Criticalf("failed to extend Meme Token MintDetails %s; %s", meme.Address.String(), err.Error())
-		return err
-	}
+	/*
+		if err = extenMemeTokenMintDetails(meme); err != nil {
+			log.Criticalf("failed to extend Meme Token MintDetails %s; %s", meme.Address.String(), err.Error())
+			return err
+		}
+	*/
 
 	return nil
 }
 
+/*
 func extenMemeTokenMintDetails(nft *types.Collection) (err error) {
 	nft.MintDetails = types.CollectionMintDetails{
 		PublicMint:    true,        // NB: also need to set fiLegacyCollectionIsOwnerOnly when registering
@@ -151,6 +153,7 @@ func extenMemeTokenMintDetails(nft *types.Collection) (err error) {
 
 	return nil
 }
+*/
 
 // newNFTContract handles log event for new factory deployed ERC721/ERC1155 contract.
 // Factory::event ContractCreated(address creator, address nft)
@@ -241,14 +244,17 @@ func extendCollectionMetadata(nft *types.Collection) (err error) {
 		}
 	}
 
-	if err = extendNFTCollectionMintDetails(nft); err != nil {
-		log.Criticalf("failed to extend NFT Collection MintDetails %s; %s", nft.Address.String(), err.Error())
-		return err
-	}
+	/*
+		if err = extendNFTCollectionMintDetails(nft); err != nil {
+			log.Criticalf("failed to extend NFT Collection MintDetails %s; %s", nft.Address.String(), err.Error())
+			return err
+		}
+	*/
 
 	return nil
 }
 
+/*
 func extendNFTCollectionMintDetails(nft *types.Collection) (err error) {
 	nft.MintDetails = types.CollectionMintDetails{
 		PublicMint:    false,                                   // NB: also need to set fiLegacyCollectionIsOwnerOnly when registering
@@ -341,6 +347,7 @@ func extendNFTCollectionMintDetails(nft *types.Collection) (err error) {
 
 	return nil
 }
+*/
 
 // addObservedContract adds new observed contract into repository and log observer.
 func addObservedContract(nft *types.Collection, evt *eth.Log) {

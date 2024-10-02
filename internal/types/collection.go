@@ -2,12 +2,10 @@
 package types
 
 import (
-	"math/big"
-	"time"
-
 	"github.com/ethereum/go-ethereum/common"
 )
 
+/*
 type CollectionMintDetails struct {
 	PublicMint    bool      `bson:"publicMint"`
 	IsErc1155     bool      `bson:"isErc1155"`
@@ -25,6 +23,7 @@ type MemeTokenDetails struct {
 	BlocksFee       big.Int `bson:"blocksFee"`
 	BlocksMaxSupply uint64  `bson:"blocksMaxSupply"`
 }
+*/
 
 // Collection represents an Artion token collection, represented by an NFT contract.
 // Artion basically recognizes NFT contracts deployed form a designated factory.
@@ -38,7 +37,7 @@ type Collection struct {
 	IsActive   bool            `bson:"is_active"`
 	VerifiedBy *common.Address `bson:"verified_by"`
 	//
-	IsOurFactory bool                  `bson:"isOurFactory"`
-	MintDetails  CollectionMintDetails `bson:"mintDetails"`
-	MemeDetails  MemeTokenDetails      `bson:"memeDetails"`
+	IsOurFactory bool `bson:"isOurFactory"`
+	//MintDetails  CollectionMintDetails `bson:"mintDetails"`
+	//MemeDetails  MemeTokenDetails      `bson:"memeDetails"`
 }

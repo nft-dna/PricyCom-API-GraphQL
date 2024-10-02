@@ -2,12 +2,31 @@ package types
 
 import (
 	"encoding/json"
+	"math/big"
 	"strconv"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+type CollectionMintDetails struct {
+	PublicMint    bool      `bson:"publicMint"`
+	IsErc1155     bool      `bson:"isErc1155"`
+	HasBaseUri    bool      `bson:"hasBaseUri"`
+	MaxItems      uint64    `bson:"maxItems"`
+	MaxItemCount  uint64    `bson:"maxItemCount"`
+	MintStartTime time.Time `bson:"mintStartTime"`
+	MintEndTime   time.Time `bson:"mintEndTime"`
+	RevealTime    time.Time `bson:"revealTime"`
+}
+
+type MemeTokenDetails struct {
+	InitialReserves big.Int `bson:"initialReserves"`
+	BlocksAmount    uint64  `bson:"blocksAmount"`
+	BlocksFee       big.Int `bson:"blocksFee"`
+	BlocksMaxSupply uint64  `bson:"blocksMaxSupply"`
+}
 
 // LegacyCollection represents token collection from old Artion.
 // Keeps off-chain data about the collection.
@@ -35,6 +54,9 @@ type LegacyCollection struct {
 	IsVerified        bool               `bson:"isVerified"`        // is boosted by admin? (moderator is not sufficient)
 	IsReviewed        bool               `bson:"status"`            // false = in review, true = approved (removed on reject)
 	AppropriateUpdate time.Time          `bson:"appropriateUpdate"` // when was "isAppropriate" changed last time?
+	//
+	MintDetails CollectionMintDetails `bson:"mintDetails"`
+	MemeDetails MemeTokenDetails      `bson:"memeDetails"`
 }
 
 // CategoriesAsInt provides a list of category ID-s
@@ -82,7 +104,7 @@ func DecodeCollectionApplication(data []byte) (*CollectionApplication, error) {
 	return &out, nil
 }
 
-func (app CollectionApplication) ToCollection(image string, owner *common.Address, isAppropriate bool, isInternal bool, isOwnerOnly bool) LegacyCollection {
+func (app CollectionApplication) ToCollection(image string, owner *common.Address, isAppropriate bool, isInternal bool, isOwnerOnly bool, mintDet CollectionMintDetails, memeDet MemeTokenDetails) LegacyCollection {
 	categoriesStr := make([]string, len(app.Categories))
 	for i, categoryId := range app.Categories {
 		categoriesStr[i] = strconv.Itoa(int(categoryId))
@@ -109,5 +131,7 @@ func (app CollectionApplication) ToCollection(image string, owner *common.Addres
 		IsOwnerOnly:   isOwnerOnly,
 		IsVerified:    false,
 		IsReviewed:    false,
+		MintDetails:   mintDet,
+		MemeDetails:   memeDet,
 	}
 }

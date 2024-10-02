@@ -17,6 +17,7 @@ const (
 // TextSearchEdge represents a single row of the TextSearch result set.
 type TextSearchEdge struct {
 	Collection *Collection
+	MemeToken  *Collection
 	Token      *Token
 	User       *User
 }
@@ -41,6 +42,11 @@ func (rs *RootResolver) TextSearch(args struct {
 		return nil, err
 	}
 
+	memetoken, err := repository.R().TextSearchMemeToken(args.Phrase, args.MaxLength)
+	if err != nil {
+		return nil, err
+	}
+
 	tokens, err := repository.R().TextSearchToken(args.Phrase, args.MaxLength)
 	if err != nil {
 		return nil, err
@@ -52,7 +58,7 @@ func (rs *RootResolver) TextSearch(args struct {
 	}
 
 	// make the output list
-	list := make([]*TextSearchEdge, len(collections)+len(tokens)+len(users))
+	list := make([]*TextSearchEdge, len(collections)+len(tokens)+len(memetoken)+len(users))
 	for i, c := range collections {
 		list[i] = &TextSearchEdge{
 			Collection: (*Collection)(c),
@@ -67,6 +73,13 @@ func (rs *RootResolver) TextSearch(args struct {
 	}
 
 	offset = offset + len(tokens)
+	for i, m := range memetoken {
+		list[offset+i] = &TextSearchEdge{
+			MemeToken: (*Collection)(m),
+		}
+	}
+
+	offset = offset + len(memetoken)
 	for i, u := range users {
 		list[offset+i] = &TextSearchEdge{
 			User: &User{Address: u.Address, dbUser: u},

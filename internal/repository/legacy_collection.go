@@ -3,6 +3,7 @@ package repository
 import (
 	"artion-api-graphql/internal/types"
 	"fmt"
+	"math/big"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -54,85 +55,137 @@ func (p *Proxy) UploadCollectionApplication(app types.CollectionApplication, ima
 		}
 	}
 
+	mintDetails := types.CollectionMintDetails{
+		PublicMint:    false, // NB: also need to set fiLegacyCollectionIsOwnerOnly when registering
+		IsErc1155:     false, // instead of erc721
+		HasBaseUri:    false,
+		MaxItems:      0,
+		MaxItemCount:  0,
+		MintStartTime: time.Time{},
+		MintEndTime:   time.Time{},
+		RevealTime:    time.Time{},
+	}
+	memeDetails := types.MemeTokenDetails{
+		InitialReserves: big.Int{},
+		BlocksAmount:    0,
+		BlocksFee:       big.Int{},
+		BlocksMaxSupply: 0,
+	}
+
 	isOwnerOnly := false
 	// check if it is created by 'our factory' contract
 	// TODO.. implement an 'interface' or check for contract creator address...
 	isInternal := true
 
 	if p.IsErc1155Contract(&app.Contract) {
-		isOwnerOnly, err = p.CollectionErc1155IsPrivate(&app.Contract)
+		isInternal = p.extendErc1155CollectionMintDetails(&app.Contract, &mintDetails)
 		if err != nil {
-			isInternal = false
+			log.Criticalf("failed to extend Erc1155 Collection MintDetails %s; %s", app.Contract.String(), err.Error())
+			return err
 		}
-		if isInternal {
-			_, err = p.CollectionErc1155MaxSupply(&app.Contract)
-			if err != nil {
-				isInternal = false
-			}
-		}
-		if isInternal {
-			_, err = p.CollectionErc1155MintStartTime(&app.Contract)
-			if err != nil {
-				isInternal = false
-			}
-		}
-		if isInternal {
-			_, err = p.CollectionErc1155MintStopTime(&app.Contract)
-			if err != nil {
-				isInternal = false
-			}
-		}
-		if isInternal {
-			_, err = p.CollectionErc1155RevealTime(&app.Contract)
-			if err != nil {
-				//isInternal = false
-			}
-		}
-		if isInternal {
-			_, err = p.CollectionErc1155MaxItemSupply(&app.Contract)
-			if err != nil {
-				isInternal = false
-			}
-		}
+		isOwnerOnly = !mintDetails.PublicMint
+		mintDetails.IsErc1155 = true
 	} else {
-		isOwnerOnly, err = p.CollectionErc721IsPrivate(&app.Contract)
+		isInternal = p.extendErc721CollectionMintDetails(&app.Contract, &mintDetails)
 		if err != nil {
-			isInternal = false
+			log.Criticalf("failed to extend Erc721 Collection MintDetails %s; %s", app.Contract.String(), err.Error())
+			return err
 		}
-		if isInternal {
-			_, err = p.CollectionErc721MaxSupply(&app.Contract)
-			if err != nil {
-				isInternal = false
-			}
-		}
-		if isInternal {
-			_, err = p.CollectionErc721MintStartTime(&app.Contract)
-			if err != nil {
-				isInternal = false
-			}
-		}
-		if isInternal {
-			_, err = p.CollectionErc721MintStopTime(&app.Contract)
-			if err != nil {
-				isInternal = false
-			}
-		}
-		if isInternal {
-			_, err = p.CollectionErc721RevealTime(&app.Contract)
-			if err != nil {
-				//isInternal = false
-			}
-		}
-		if isInternal {
-			_, err = p.CollectionErc721UseBaseUri(&app.Contract)
-			if err != nil {
-				//isInternal = false
-			}
-		}
+		isOwnerOnly = !mintDetails.PublicMint
 	}
+	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, isInternal, !isInternal || isOwnerOnly, mintDetails, memeDetails)
 
-	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, isInternal, !isInternal || isOwnerOnly)
 	return p.shared.InsertLegacyCollection(collection)
+}
+
+func (p *Proxy) extendErc1155CollectionMintDetails(adr *common.Address, mintDetails *types.CollectionMintDetails) bool {
+	isInternal := true
+	var err error
+	mintDetails.PublicMint, err = p.CollectionErc1155IsPrivate(adr)
+	if err != nil {
+		log.Errorf("%s isPrivate not known; %s", adr.String(), err.Error())
+		isInternal = false
+	}
+	maxItemCount, err := p.CollectionErc1155MaxItemSupply(adr)
+	if err != nil {
+		log.Errorf("%s isPrivate not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		mintDetails.MaxItemCount = maxItemCount.Uint64()
+	}
+	maxSupply, err := p.CollectionErc1155MaxSupply(adr)
+	if err != nil {
+		log.Errorf("%s maxSupply not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		mintDetails.MaxItems = maxSupply.Uint64()
+	}
+	mTime, err := p.CollectionErc1155MintStartTime(adr)
+	if err != nil {
+		log.Errorf("%s mintStartTime not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		mintDetails.MintStartTime = time.Unix(mTime.Int64(), 0)
+	}
+	mTime, err = p.CollectionErc1155MintStopTime(adr)
+	if err != nil {
+		log.Errorf("%s mintEndTime not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		mintDetails.MintEndTime = time.Unix(mTime.Int64(), 0)
+	}
+	mTime, err = p.CollectionErc1155RevealTime(adr)
+	if err != nil {
+		log.Errorf("%s revealTime not known; %s", adr.String(), err.Error())
+		//isInternal = false
+	} else {
+		mintDetails.RevealTime = time.Unix(mTime.Int64(), 0)
+	}
+	return isInternal
+}
+
+func (p *Proxy) extendErc721CollectionMintDetails(adr *common.Address, mintDetails *types.CollectionMintDetails) bool {
+	isInternal := true
+	var err error
+	mintDetails.PublicMint, err = p.CollectionErc721IsPrivate(adr)
+	if err != nil {
+		log.Errorf("%s isPrivate not known; %s", adr.String(), err.Error())
+		isInternal = false
+	}
+	mintDetails.HasBaseUri, err = p.CollectionErc721UseBaseUri(adr)
+	if err != nil {
+		log.Errorf("%s useBaseUri not known; %s", adr.String(), err.Error())
+		//isInternal = false
+	}
+	maxSupply, err := p.CollectionErc721MaxSupply(adr)
+	if err != nil {
+		log.Errorf("%s maxSupply not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		mintDetails.MaxItems = maxSupply.Uint64()
+	}
+	mTime, err := p.CollectionErc721MintStartTime(adr)
+	if err != nil {
+		log.Errorf("%s mintStartTime not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		mintDetails.MintStartTime = time.Unix(mTime.Int64(), 0)
+	}
+	mTime, err = p.CollectionErc721MintStopTime(adr)
+	if err != nil {
+		log.Errorf("%s mintEndTime not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		mintDetails.MintEndTime = time.Unix(mTime.Int64(), 0)
+	}
+	mTime, err = p.CollectionErc721RevealTime(adr)
+	if err != nil {
+		log.Errorf("%s revealTime not known; %s", adr.String(), err.Error())
+		//isInternal = false
+	} else {
+		mintDetails.RevealTime = time.Unix(mTime.Int64(), 0)
+	}
+	return isInternal
 }
 
 // MustCollectionName provides a name of an Artion ERC721 and/or ERC1155 token,

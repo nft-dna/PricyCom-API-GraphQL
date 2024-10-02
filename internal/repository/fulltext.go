@@ -13,6 +13,11 @@ func (p *Proxy) TextSearchCollection(phrase string, limit int32) ([]*types.Legac
 	return p.shared.TextSearchLegacyCollection(phrase, limit)
 }
 
+// TextSearchMemeToken tries to search for collections relevant to the given textual phrase.
+func (p *Proxy) TextSearchMemeToken(phrase string, limit int32) ([]*types.LegacyCollection, error) {
+	return p.shared.TextSearchLegacyMemeToken(phrase, limit)
+}
+
 // TextSearchUser tries to search for user profiles relevant to the given textual phrase.
 func (p *Proxy) TextSearchUser(phrase string, limit int32) ([]*types.User, error) {
 	return p.shared.TextSearchUser(phrase, limit)

@@ -3,6 +3,7 @@ package repository
 import (
 	"artion-api-graphql/internal/types"
 	"fmt"
+	"math/big"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -54,38 +55,75 @@ func (p *Proxy) UploadMemeTokenApplication(app types.CollectionApplication, imag
 		}
 	}
 
+	mintDetails := types.CollectionMintDetails{
+		PublicMint:    false, // NB: also need to set fiLegacyCollectionIsOwnerOnly when registering
+		IsErc1155:     false, // instead of erc721
+		HasBaseUri:    false,
+		MaxItems:      0,
+		MaxItemCount:  0,
+		MintStartTime: time.Time{},
+		MintEndTime:   time.Time{},
+		RevealTime:    time.Time{},
+	}
+	memeDetails := types.MemeTokenDetails{
+		InitialReserves: big.Int{},
+		BlocksAmount:    0,
+		BlocksFee:       big.Int{},
+		BlocksMaxSupply: 0,
+	}
+
 	// check if it is created by 'our factory' contract
 	// TODO.. implement an 'interface' or check for contract creator address...
-	isInternal := true
-	_, err = p.CollectionErc20InitialReserves(&app.Contract)
+	isInternal := p.extendMemeTokenDetails(&app.Contract, &memeDetails)
 	if err != nil {
-		isInternal = false
-	}
-	if isInternal {
-		_, err = p.CollectionErc20BlocksAmount(&app.Contract)
-		if err != nil {
-			isInternal = false
-		}
-	}
-	if isInternal {
-		_, err = p.CollectionErc20BlocksFee(&app.Contract)
-		if err != nil {
-			isInternal = false
-		}
-	}
-	if isInternal {
-		_, err = p.CollectionErc20BlocksMaxSupply(&app.Contract)
-		if err != nil {
-			isInternal = false
-		}
+		log.Criticalf("failed to extend Meme Tokne Details %s; %s", app.Contract.String(), err.Error())
+		return err
 	}
 
 	if !isInternal {
 		return fmt.Errorf("'Not-Factory' Meme Tokens actually are not supported here")
 	}
 
-	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, isInternal, false)
+	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, isInternal, false, mintDetails, memeDetails)
 	return p.shared.InsertLegacyMemeToken(collection)
+}
+
+func (p *Proxy) extendMemeTokenDetails(adr *common.Address, memeDetails *types.MemeTokenDetails) bool {
+
+	isInternal := true
+	biVal, err := p.CollectionErc20InitialReserves(adr)
+	if err != nil {
+		log.Errorf("%s initialReserves not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		memeDetails.InitialReserves = *biVal
+	}
+
+	bVal, err := p.CollectionErc20BlocksAmount(adr)
+	if err != nil {
+		log.Errorf("%s blocksAmount not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		memeDetails.BlocksAmount = bVal.Uint64()
+	}
+
+	biVal, err = p.CollectionErc20BlocksFee(adr)
+	if err != nil {
+		log.Errorf("%s blocksFee not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		memeDetails.BlocksFee = *biVal
+	}
+
+	bVal, err = p.CollectionErc20BlocksMaxSupply(adr)
+	if err != nil {
+		log.Errorf("%s blocksMaxSupply not known; %s", adr.String(), err.Error())
+		isInternal = false
+	} else {
+		memeDetails.BlocksMaxSupply = bVal.Uint64()
+	}
+
+	return isInternal
 }
 
 // MustCollectionName provides a name of an Artion ERC721 and/or ERC1155 token,

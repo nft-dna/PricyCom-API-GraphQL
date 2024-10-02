@@ -5,10 +5,11 @@ import (
 	"artion-api-graphql/internal/repository"
 	"errors"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"net/http"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 // ImageHandler builds a HTTP handler function for Token images.
@@ -116,6 +117,23 @@ func CollectionImageResolver(path string) (imageUri string, err error) {
 	}
 	collectionAddress := common.HexToAddress(pathParts[3])
 	collection, err := repository.R().GetLegacyCollection(collectionAddress)
+	if err != nil {
+		return "", fmt.Errorf("unable to find collection in db; %s", err)
+	}
+	if collection == nil || collection.Image == "" {
+		return "", fmt.Errorf("collection has no image; %s", err)
+	}
+	return "/ipfs/" + collection.Image, nil
+}
+
+// MemeTokenImageResolver resolves /memetoken/{address} to collection image URI
+func MemeTokenImageResolver(path string) (imageUri string, err error) {
+	pathParts := strings.Split(path, "/")
+	if len(pathParts) != 5 {
+		return "", errors.New("invalid amount of slash delimiters in URL")
+	}
+	collectionAddress := common.HexToAddress(pathParts[3])
+	collection, err := repository.R().GetLegacyMemeToken(collectionAddress)
 	if err != nil {
 		return "", fmt.Errorf("unable to find collection in db; %s", err)
 	}

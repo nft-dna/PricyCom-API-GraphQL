@@ -1,10 +1,10 @@
 db.volcano.createIndex( {  
-"categories": "text",
 "collectionName": "text",
+"collectionSymbol": "text",
 "description": "text",
 "discord": "text",
 "email": "text",
-"erc721Address": "text",
+"ercAddress": "text",
 "mediumHandle": "text",
 "owner": "text",
 "siteUrl": "text",
@@ -12,12 +12,38 @@ db.volcano.createIndex( {
 "twitterHandle": "text" })
 
 db.volcano_shared.createIndex( {  
-"categories": "text",
+"collectionName": "text",
+"collectionSymbol": "text",
+"description": "text",
+"discord": "text",
+"email": "text",
+"ercAddress": "text",
+"mediumHandle": "text",
+"owner": "text",
+"siteUrl": "text",
+"telegram": "text",
+"twitterHandle": "text" })
+
+
+db.sepolia.createIndex( {  
+"collectionName": "text",
+"collectionSymbol": "text",
+"description": "text",
+"discord": "text",
+"email": "text",
+"ercAddress": "text",
+"mediumHandle": "text",
+"owner": "text",
+"siteUrl": "text",
+"telegram": "text",
+"twitterHandle": "text" })
+
+db.sepolia_shared.createIndex( {  
 "collectionName": "text",
 "description": "text",
 "discord": "text",
 "email": "text",
-"erc721Address": "text",
+"ercAddress": "text",
 "mediumHandle": "text",
 "owner": "text",
 "siteUrl": "text",

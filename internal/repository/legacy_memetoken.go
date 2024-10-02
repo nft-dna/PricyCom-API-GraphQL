@@ -11,7 +11,7 @@ import (
 func (p *Proxy) GetLegacyMemeToken(address common.Address) (*types.LegacyCollection, error) {
 	key := "lmtk_-" + address.String()
 	user, err, _ := p.callGroup.Do(key, func() (interface{}, error) {
-		return p.cache.GetLegacyMemeToken(address, p.shared.GetLegacyCollection)
+		return p.cache.GetLegacyMemeToken(address, p.shared.GetLegacyMemeToken)
 	})
 	return user.(*types.LegacyCollection), err
 }
@@ -53,7 +53,38 @@ func (p *Proxy) UploadMemeTokenApplication(app types.CollectionApplication, imag
 			return fmt.Errorf("uploading collection image failed; %s", err)
 		}
 	}
-	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, false /*, nil*/)
+
+	// check if it is created by 'our factory' contract
+	// TODO.. implement an 'interface' or check for contract creator address...
+	isInternal := true
+	_, err = p.CollectionErc20InitialReserves(&app.Contract)
+	if err != nil {
+		isInternal = false
+	}
+	if isInternal {
+		_, err = p.CollectionErc20BlocksAmount(&app.Contract)
+		if err != nil {
+			isInternal = false
+		}
+	}
+	if isInternal {
+		_, err = p.CollectionErc20BlocksFee(&app.Contract)
+		if err != nil {
+			isInternal = false
+		}
+	}
+	if isInternal {
+		_, err = p.CollectionErc20BlocksMaxSupply(&app.Contract)
+		if err != nil {
+			isInternal = false
+		}
+	}
+
+	if !isInternal {
+		return fmt.Errorf("'Not-Factory' Meme Tokens actually are not supported here")
+	}
+
+	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, isInternal, false)
 	return p.shared.InsertLegacyMemeToken(collection)
 }
 

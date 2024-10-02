@@ -69,6 +69,8 @@ type Log struct {
 
 // Node represents the Volcano Opera node access configuration
 type Node struct {
+	Proxy                string `mapstructure:"proxy"`
+	InsecureSkipVerify   bool   `mapstructure:"insecureSkipVerify"`
 	Url                  string `mapstructure:"url"`
 	Token                string `mapstructure:"token"`
 	BlkScannerHysteresis int64  `mapstructure:"blk_scanner_hysteresis"`

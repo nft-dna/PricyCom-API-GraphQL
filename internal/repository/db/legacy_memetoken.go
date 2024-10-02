@@ -19,9 +19,10 @@ const (
 	coLegacyMemeToken = "memetokens"
 
 	// fiCollectionAddress is the name of the field keeping the NFT contract address.
-	fiLegacyMemeTokenAddress = "erc20Address"
+	fiLegacyMemeTokenAddress = "ercAddress"
 
 	fiLegacyMemeTokenName              = "collectionName"
+	fiLegacyMemeTokenSymbol            = "collectionSymbol"
 	fiLegacyMemeTokenDescription       = "description"
 	fiLegacyMemeTokenCategoriesStr     = "categories"
 	fiLegacyMemeTokenImage             = "logoImageHash"
@@ -63,15 +64,25 @@ func (sdb *SharedMongoDbBridge) GetLegacyMemeToken(address common.Address) (coll
 	return &row, err
 }
 
+// isCollectionKnown checks if the given NFT collection is already stored in the database.
+func (sdb *SharedMongoDbBridge) isMemeTokenKnown(col *mongo.Collection, nft *types.LegacyCollection) bool {
+	return sdb.exists(col, &bson.D{{Key: fiLegacyMemeTokenAddress, Value: strings.ToLower(nft.Address.String())}})
+}
+
 // InsertMemeToken inserts collection record.
 func (sdb *SharedMongoDbBridge) InsertLegacyMemeToken(c types.LegacyCollection) error {
 	col := sdb.client.Database(sdb.dbName).Collection(coMemeToken)
+
+	if sdb.isMemeTokenKnown(col, &c) {
+		return nil
+	}
 
 	if _, err := col.InsertOne(
 		context.Background(),
 		bson.D{
 			{Key: fiLegacyMemeTokenAddress, Value: strings.ToLower(c.Address.String())},
 			{Key: fiLegacyMemeTokenName, Value: c.Name},
+			{Key: fiLegacyMemeTokenSymbol, Value: c.Symbol},
 			{Key: fiLegacyMemeTokenDescription, Value: c.Description},
 			{Key: fiLegacyMemeTokenCategoriesStr, Value: c.CategoriesStr},
 			{Key: fiLegacyMemeTokenImage, Value: c.Image},

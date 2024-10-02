@@ -66,6 +66,10 @@ func (p *Proxy) MemeTokenOwner(contract *common.Address) *common.Address {
 // CanRegisterCollection checks if the given collection can be registered.
 func (p *Proxy) CanRegisterMemeToken(contract *common.Address, user *common.Address) error {
 
+	if !p.IsErc20Contract(contract) {
+		return fmt.Errorf("the contract is not ERC-20")
+	}
+
 	owner := p.rpc.MemeTokenOwner(contract)
 	if owner != nil {
 		if !bytes.Equal(user.Bytes(), owner.Bytes()) {

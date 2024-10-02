@@ -19,9 +19,10 @@ const (
 	coLegacyCollection = "collections"
 
 	// fiCollectionAddress is the name of the field keeping the NFT contract address.
-	fiLegacyCollectionAddress = "erc721Address" // should be changed to a 'generic' ercAddress
+	fiLegacyCollectionAddress = "ercAddress" // should be changed to a 'generic' ercAddress
 
 	fiLegacyCollectionName              = "collectionName"
+	fiLegacyCollectionSymbol            = "collectionSymbol"
 	fiLegacyCollectionDescription       = "description"
 	fiLegacyCollectionCategoriesStr     = "categories"
 	fiLegacyCollectionImage             = "logoImageHash"
@@ -73,15 +74,25 @@ func (sdb *SharedMongoDbBridge) GetLegacyCollection(address common.Address) (col
 	return &row, err
 }
 
+// isCollectionKnown checks if the given NFT collection is already stored in the database.
+func (sdb *SharedMongoDbBridge) isLegacyCollectionKnown(col *mongo.Collection, nft *types.LegacyCollection) bool {
+	return sdb.exists(col, &bson.D{{Key: fiLegacyCollectionAddress, Value: strings.ToLower(nft.Address.String())}})
+}
+
 // InsertLegacyCollection inserts collection record.
 func (sdb *SharedMongoDbBridge) InsertLegacyCollection(c types.LegacyCollection) error {
 	col := sdb.client.Database(sdb.dbName).Collection(coLegacyCollection)
+
+	if sdb.isLegacyCollectionKnown(col, &c) {
+		return nil
+	}
 
 	if _, err := col.InsertOne(
 		context.Background(),
 		bson.D{
 			{Key: fiLegacyCollectionAddress, Value: strings.ToLower(c.Address.String())},
 			{Key: fiLegacyCollectionName, Value: c.Name},
+			{Key: fiLegacyCollectionSymbol, Value: c.Symbol},
 			{Key: fiLegacyCollectionDescription, Value: c.Description},
 			{Key: fiLegacyCollectionCategoriesStr, Value: c.CategoriesStr},
 			{Key: fiLegacyCollectionImage, Value: c.Image},

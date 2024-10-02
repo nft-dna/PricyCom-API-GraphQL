@@ -13,8 +13,9 @@ import (
 // Keeps off-chain data about the collection.
 type LegacyCollection struct {
 	Id                primitive.ObjectID `bson:"_id"`
-	Address           common.Address     `bson:"erc721Address"` // unique index // should be changed to a 'generic' ercAddress
+	Address           common.Address     `bson:"ercAddress"` // unique index // should be changed to a 'generic' ercAddress
 	Name              string             `bson:"collectionName"`
+	Symbol            string             `bson:"collectionSymbol"`
 	Description       string             `bson:"description"`
 	CategoriesStr     []string           `bson:"categories"`
 	Image             string             `bson:"logoImageHash"`
@@ -57,6 +58,7 @@ func (lc LegacyCollection) CategoriesAsInt() ([]int32, error) {
 type CollectionApplication struct {
 	Contract        common.Address `json:"contract"`
 	Name            string         `json:"name"`
+	Symbol          string         `json:"symbol"`
 	Description     string         `json:"description"`
 	Royalty         json.Number    `json:"royalty"` // percents of fee
 	FeeRecipient    common.Address `json:"feeRecipient"`
@@ -80,7 +82,7 @@ func DecodeCollectionApplication(data []byte) (*CollectionApplication, error) {
 	return &out, nil
 }
 
-func (app CollectionApplication) ToCollection(image string, owner *common.Address, isAppropriate bool, isInternal bool /*, mdet *LegacyCollectionMintDetails*/) LegacyCollection {
+func (app CollectionApplication) ToCollection(image string, owner *common.Address, isAppropriate bool, isInternal bool, isOwnerOnly bool) LegacyCollection {
 	categoriesStr := make([]string, len(app.Categories))
 	for i, categoryId := range app.Categories {
 		categoriesStr[i] = strconv.Itoa(int(categoryId))
@@ -88,6 +90,7 @@ func (app CollectionApplication) ToCollection(image string, owner *common.Addres
 	return LegacyCollection{
 		Address:       app.Contract,
 		Name:          app.Name,
+		Symbol:        app.Symbol,
 		Description:   app.Description,
 		CategoriesStr: categoriesStr,
 		Image:         image,
@@ -103,7 +106,7 @@ func (app CollectionApplication) ToCollection(image string, owner *common.Addres
 		Instagram:     app.InstagramHandle,
 		IsAppropriate: isAppropriate,
 		IsInternal:    isInternal,
-		IsOwnerOnly:   false,
+		IsOwnerOnly:   isOwnerOnly,
 		IsVerified:    false,
 		IsReviewed:    false,
 	}

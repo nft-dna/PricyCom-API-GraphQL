@@ -54,7 +54,7 @@ func (o *Opera) Erc1155IsPrivate(contract *common.Address, block *big.Int) (bool
 	if err != nil {
 		return false, err
 	}
-	return *abi.ConvertType(data[0], new(bool)).(*bool), nil
+	return len(data) == 32 && data[0] == 0 && data[31] > 0, nil
 }
 
 func (o *Opera) Erc1155MaxSupply(contract *common.Address, block *big.Int) (*big.Int, error) {

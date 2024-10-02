@@ -65,6 +65,15 @@ func (p *Proxy) NFTContractType(adr *common.Address) (string, error) {
 	return "", fmt.Errorf("unknown contract type at %s", adr.String())
 }
 
+// IsMemeContractType analyses the contract on given address and returns the type, if possible.
+func (p *Proxy) IsMemeContractType(adr *common.Address) (string, error) {
+	if p.IsErc20Contract(adr) {
+		log.Infof("contract %s is ERC-20", adr.String())
+		return types.ContractTypeERC20, nil
+	}
+	return "", fmt.Errorf("unknown contract type at %s", adr.String())
+}
+
 // CanMint checks if the given user can mint a new token on the given NFT contract.
 func (p *Proxy) CanMint(contract *common.Address, user *common.Address, fee *big.Int) (bool, error) {
 	// the ERC-721 minter differs from other contracts, we need to check the type first

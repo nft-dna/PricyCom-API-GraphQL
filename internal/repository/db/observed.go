@@ -220,7 +220,7 @@ func (sdb *SharedMongoDbBridge) ObservedCollections() ([]ContractInfo, error) {
 	list := make([]ContractInfo, 0)
 	for cur.Next(context.Background()) {
 		var row struct {
-			Adr common.Address `bson:"erc721Address"` // should be changed to a 'generic' ercAddress
+			Adr common.Address `bson:"ercAddress"` // should be changed to a 'generic' ercAddress
 			Blk uint64         `bson:"block"`
 		}
 

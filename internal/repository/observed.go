@@ -103,8 +103,11 @@ func (p *Proxy) loadObservedCollections() {
 func (p *Proxy) addObservedCollection(adr *common.Address, blk uint64) {
 	ct, err := p.NFTContractType(adr)
 	if err != nil {
-		log.Warningf("contract can not be observed; %s", err.Error())
-		return
+		ct, err = p.IsMemeContractType(adr)
+		if err != nil {
+			log.Warningf("contract can not be observed; %s", err.Error())
+			return
+		}
 	}
 
 	//var blk uint64

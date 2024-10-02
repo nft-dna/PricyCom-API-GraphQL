@@ -53,7 +53,85 @@ func (p *Proxy) UploadCollectionApplication(app types.CollectionApplication, ima
 			return fmt.Errorf("uploading collection image failed; %s", err)
 		}
 	}
-	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, false /*, nil*/)
+
+	isOwnerOnly := false
+	// check if it is created by 'our factory' contract
+	// TODO.. implement an 'interface' or check for contract creator address...
+	isInternal := true
+
+	if p.IsErc1155Contract(&app.Contract) {
+		isOwnerOnly, err = p.CollectionErc1155IsPrivate(&app.Contract)
+		if err != nil {
+			isInternal = false
+		}
+		if isInternal {
+			_, err = p.CollectionErc1155MaxSupply(&app.Contract)
+			if err != nil {
+				isInternal = false
+			}
+		}
+		if isInternal {
+			_, err = p.CollectionErc1155MintStartTime(&app.Contract)
+			if err != nil {
+				isInternal = false
+			}
+		}
+		if isInternal {
+			_, err = p.CollectionErc1155MintStopTime(&app.Contract)
+			if err != nil {
+				isInternal = false
+			}
+		}
+		if isInternal {
+			_, err = p.CollectionErc1155RevealTime(&app.Contract)
+			if err != nil {
+				//isInternal = false
+			}
+		}
+		if isInternal {
+			_, err = p.CollectionErc1155MaxItemSupply(&app.Contract)
+			if err != nil {
+				isInternal = false
+			}
+		}
+	} else {
+		isOwnerOnly, err = p.CollectionErc721IsPrivate(&app.Contract)
+		if err != nil {
+			isInternal = false
+		}
+		if isInternal {
+			_, err = p.CollectionErc721MaxSupply(&app.Contract)
+			if err != nil {
+				isInternal = false
+			}
+		}
+		if isInternal {
+			_, err = p.CollectionErc721MintStartTime(&app.Contract)
+			if err != nil {
+				isInternal = false
+			}
+		}
+		if isInternal {
+			_, err = p.CollectionErc721MintStopTime(&app.Contract)
+			if err != nil {
+				isInternal = false
+			}
+		}
+		if isInternal {
+			_, err = p.CollectionErc721RevealTime(&app.Contract)
+			if err != nil {
+				//isInternal = false
+			}
+		}
+		if isInternal {
+			_, err = p.CollectionErc721UseBaseUri(&app.Contract)
+			if err != nil {
+				//isInternal = false
+			}
+		}
+	}
+
+	collection := app.ToCollection(imageCid, &owner, cfg.Server.AddCollectionAsAppropriate, isInternal, !isInternal || isOwnerOnly)
 	return p.shared.InsertLegacyCollection(collection)
 }
 

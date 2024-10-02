@@ -8,9 +8,15 @@ import (
 	"artion-api-graphql/internal/repository/rpc/contracts"
 	"artion-api-graphql/internal/types"
 	"bytes"
+	"crypto/tls"
 	"embed"
 	"fmt"
+	"net"
+	"net/http"
+	"net/url"
+	"strings"
 	"sync"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -172,7 +178,48 @@ func New() *Opera {
 
 // connects opens RPC connection to the Opera node.
 func connect() (*client.Client, error) {
-	c, err := client.Dial(cfg.Node.Url)
+	var c *client.Client
+	var err error
+	if len(cfg.Node.Proxy) > 0 {
+		proxyUrl, _ := url.Parse(cfg.Node.Proxy)
+		if strings.HasPrefix(cfg.Node.Url, "ws") {
+
+			log.Criticalf("upgrade ethereum rpc to handle proxied wss connections")
+			return nil, fmt.Errorf("upgrade ethereum rpc to handle proxied wss connections")
+			/*
+				rpcwssClient := client.WithWebsocketDialer(websocket.Dialer{
+					HandshakeTimeout: 45 * time.Second,
+					TLSClientConfig:  &tls.Config{InsecureSkipVerify: cfg.Node.InsecureSkipVerify}, // Create a custom HTTP client with InsecureSkipVerify to ignore SSL certificate errors if needed
+					NetDial: (&net.Dialer{
+						Timeout:   45 * time.Second,
+						KeepAlive: 30 * time.Second,
+					}).Dial,
+				})
+
+				c, err = client.DialOptions(context.Background(), cfg.Node.Url, rpcwssClient)
+			*/
+		} else {
+			httpClient := &http.Client{
+				Transport: &http.Transport{
+					//MaxConnsPerHost : 120,
+					DialContext: (&net.Dialer{
+						Timeout:   30 * time.Second,
+						KeepAlive: 30 * time.Second,
+					}).DialContext,
+					MaxIdleConnsPerHost:   25,
+					MaxIdleConns:          200,
+					IdleConnTimeout:       2 * time.Second,
+					TLSHandshakeTimeout:   10 * time.Second,
+					ExpectContinueTimeout: 1 * time.Second,
+					TLSClientConfig:       &tls.Config{InsecureSkipVerify: cfg.Node.InsecureSkipVerify}, // Create a custom HTTP client with InsecureSkipVerify to ignore SSL certificate errors if needed
+					Proxy:                 http.ProxyURL(proxyUrl),
+				},
+			}
+			c, err = client.DialHTTPWithClient(cfg.Node.Url, httpClient)
+		}
+	} else {
+		c, err = client.Dial(cfg.Node.Url)
+	}
 	if err != nil {
 		log.Criticalf("can not connect blockchain node; %s", err.Error())
 		return nil, err

@@ -51,11 +51,6 @@ const (
 	fiLegacyCollectionMintStartTime = "mintStartTime"
 	fiLegacyCollectionMintEndTime   = "mintEndTime"
 	fiLegacyCollectionRevealTime    = "revealTime"
-	// isInternal Meme Token (created by marketplace users)
-	fiLegacyCollectionInitialReserves = "initialReserves"
-	fiLegacyCollectionBlocksAmount    = "blocksAmount"
-	fiLegacyCollectionBlocksFee       = "blocksFee"
-	fiLegacyCollectionBlocksMaxSupply = "blocksMaxSupply"
 )
 
 func (sdb *SharedMongoDbBridge) GetLegacyCollection(address common.Address) (collection *types.LegacyCollection, err error) {
@@ -124,11 +119,6 @@ func (sdb *SharedMongoDbBridge) InsertLegacyCollection(c types.LegacyCollection)
 			{Key: fiLegacyCollectionMintStartTime, Value: c.MintDetails.MintStartTime},
 			{Key: fiLegacyCollectionMintEndTime, Value: c.MintDetails.MintEndTime},
 			{Key: fiLegacyCollectionRevealTime, Value: c.MintDetails.RevealTime},
-			// isInternal Meme Token (created by marketplace users)
-			{Key: fiLegacyCollectionInitialReserves, Value: c.MemeDetails.InitialReserves},
-			{Key: fiLegacyCollectionBlocksAmount, Value: c.MemeDetails.BlocksAmount},
-			{Key: fiLegacyCollectionBlocksFee, Value: c.MemeDetails.BlocksFee},
-			{Key: fiLegacyCollectionBlocksMaxSupply, Value: c.MemeDetails.BlocksMaxSupply},
 		},
 	); err != nil {
 		log.Errorf("can not insert LegacyCollection; %s", err)

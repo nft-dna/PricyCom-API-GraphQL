@@ -118,7 +118,7 @@ func extenMemeTokenMintDetails(nft *types.Collection) (err error) {
 
 	nft.MemeDetails = types.MemeTokenDetails{
 		InitialReserves: big.Int{},
-		BlocksAmount:    0,
+		BlocksAmount:    big.Int{},
 		BlocksFee:       big.Int{},
 		BlocksMaxSupply: 0,
 	}
@@ -269,7 +269,7 @@ func extendNFTCollectionMintDetails(nft *types.Collection) (err error) {
 
 	nft.MemeDetails = types.MemeTokenDetails{
 		InitialReserves: big.Int{},
-		BlocksAmount:    0,
+		BlocksAmount:    big.Int{},
 		BlocksFee:       big.Int{},
 		BlocksMaxSupply: 0,
 	}

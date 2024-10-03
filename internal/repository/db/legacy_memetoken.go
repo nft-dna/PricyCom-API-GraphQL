@@ -42,6 +42,12 @@ const (
 	fiLegacyMemeTokenIsOwnerOnly       = "isOwnerble"
 	fiLegacyMemeTokenIsVerified        = "isVerified"
 	fiLegacyMemeTokenIsReviewed        = "status"
+
+	// isInternal Meme Token (created by marketplace users)
+	fiLegacyMemeTokenInitialReserves = "initialReserves"
+	fiLegacyMemeTokenBlocksAmount    = "blocksAmount"
+	fiLegacyMemeTokenBlocksFee       = "blocksFee"
+	fiLegacyMemeTokenBlocksMaxSupply = "blocksMaxSupply"
 )
 
 func (sdb *SharedMongoDbBridge) GetLegacyMemeToken(address common.Address) (collection *types.LegacyCollection, err error) {
@@ -102,6 +108,11 @@ func (sdb *SharedMongoDbBridge) InsertLegacyMemeToken(c types.LegacyCollection) 
 			{Key: fiLegacyMemeTokenIsVerified, Value: c.IsVerified},
 			{Key: fiLegacyMemeTokenIsReviewed, Value: c.IsReviewed},
 			{Key: fiLegacyMemeTokenAppropriateUpdate, Value: time.Now()},
+			// isInternal Meme Token (created by marketplace users)
+			{Key: fiLegacyMemeTokenInitialReserves, Value: c.MemeDetails.InitialReserves},
+			{Key: fiLegacyMemeTokenBlocksAmount, Value: c.MemeDetails.BlocksAmount},
+			{Key: fiLegacyMemeTokenBlocksFee, Value: c.MemeDetails.BlocksFee},
+			{Key: fiLegacyMemeTokenBlocksMaxSupply, Value: c.MemeDetails.BlocksMaxSupply},
 		},
 	); err != nil {
 		log.Errorf("can not insert MemeToken; %s", err)

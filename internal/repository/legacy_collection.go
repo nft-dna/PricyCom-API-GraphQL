@@ -67,7 +67,7 @@ func (p *Proxy) UploadCollectionApplication(app types.CollectionApplication, ima
 	}
 	memeDetails := types.MemeTokenDetails{
 		InitialReserves: big.Int{},
-		BlocksAmount:    0,
+		BlocksAmount:    big.Int{},
 		BlocksFee:       big.Int{},
 		BlocksMaxSupply: 0,
 	}

@@ -67,7 +67,7 @@ func (p *Proxy) UploadMemeTokenApplication(app types.CollectionApplication, imag
 	}
 	memeDetails := types.MemeTokenDetails{
 		InitialReserves: big.Int{},
-		BlocksAmount:    0,
+		BlocksAmount:    big.Int{},
 		BlocksFee:       big.Int{},
 		BlocksMaxSupply: 0,
 	}
@@ -99,12 +99,12 @@ func (p *Proxy) extendMemeTokenDetails(adr *common.Address, memeDetails *types.M
 		memeDetails.InitialReserves = *biVal
 	}
 
-	bVal, err := p.CollectionErc20BlocksAmount(adr)
+	biVal, err = p.CollectionErc20BlocksAmount(adr)
 	if err != nil {
 		log.Errorf("%s blocksAmount not known; %s", adr.String(), err.Error())
 		isInternal = false
 	} else {
-		memeDetails.BlocksAmount = bVal.Uint64()
+		memeDetails.BlocksAmount = *biVal
 	}
 
 	biVal, err = p.CollectionErc20BlocksFee(adr)
@@ -115,7 +115,7 @@ func (p *Proxy) extendMemeTokenDetails(adr *common.Address, memeDetails *types.M
 		memeDetails.BlocksFee = *biVal
 	}
 
-	bVal, err = p.CollectionErc20BlocksMaxSupply(adr)
+	bVal, err := p.CollectionErc20BlocksMaxSupply(adr)
 	if err != nil {
 		log.Errorf("%s blocksMaxSupply not known; %s", adr.String(), err.Error())
 		isInternal = false

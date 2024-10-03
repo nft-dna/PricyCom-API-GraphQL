@@ -101,10 +101,12 @@ func (p *Proxy) UploadCollectionApplication(app types.CollectionApplication, ima
 func (p *Proxy) extendErc1155CollectionMintDetails(adr *common.Address, mintDetails *types.CollectionMintDetails) bool {
 	isInternal := true
 	var err error
-	mintDetails.PublicMint, err = p.CollectionErc1155IsPrivate(adr)
+	isprivate, err := p.CollectionErc1155IsPrivate(adr)
 	if err != nil {
 		log.Errorf("%s isPrivate not known; %s", adr.String(), err.Error())
 		isInternal = false
+	} else {
+		mintDetails.PublicMint = !isprivate
 	}
 	maxItemCount, err := p.CollectionErc1155MaxItemSupply(adr)
 	if err != nil {
@@ -147,10 +149,12 @@ func (p *Proxy) extendErc1155CollectionMintDetails(adr *common.Address, mintDeta
 func (p *Proxy) extendErc721CollectionMintDetails(adr *common.Address, mintDetails *types.CollectionMintDetails) bool {
 	isInternal := true
 	var err error
-	mintDetails.PublicMint, err = p.CollectionErc721IsPrivate(adr)
+	isprivate, err := p.CollectionErc721IsPrivate(adr)
 	if err != nil {
 		log.Errorf("%s isPrivate not known; %s", adr.String(), err.Error())
 		isInternal = false
+	} else {
+		mintDetails.PublicMint = !isprivate
 	}
 	mintDetails.HasBaseUri, err = p.CollectionErc721UseBaseUri(adr)
 	if err != nil {

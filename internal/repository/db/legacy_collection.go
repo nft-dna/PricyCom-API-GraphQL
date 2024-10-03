@@ -39,19 +39,23 @@ const (
 	fiLegacyCollectionIsAppropriate     = "isAppropriate"
 	fiLegacyCollectionAppropriateUpdate = "appropriateUpdate"
 	fiLegacyCollectionIsInternal        = "isInternal"
-	fiLegacyCollectionIsOwnerOnly       = "isOwnerble"
+	fiLegacyCollectionIsOwnerOnly       = "isOwnerble" // ! CollectionMintDetails.PublicMint
 	fiLegacyCollectionIsVerified        = "isVerified"
 	fiLegacyCollectionIsReviewed        = "status"
-	/*
-		// isInternal collections (mintable by marketplace users)
-		fiLegacyCollectionIsErc1155     = "isErc1155"
-		fiLegacyCollectionHasBaseUri    = "hasBaseUri"
-		fiLegacyCollectionMaxItems      = "maxItems"
-		fiLegacyCollectionMaxItemCount  = "maxItemCount"
-		fiLegacyCollectionMintStartTime = "mintStartTime"
-		fiLegacyCollectionMintEndTime   = "mintEndTime"
-		fiLegacyCollectionRevealTime    = "revealTime"
-	*/
+
+	// isInternal Collections (mintable by marketplace users)
+	fiLegacyCollectionIsErc1155     = "isErc1155"
+	fiLegacyCollectionHasBaseUri    = "hasBaseUri"
+	fiLegacyCollectionMaxItems      = "maxItems"
+	fiLegacyCollectionMaxItemCount  = "maxItemCount"
+	fiLegacyCollectionMintStartTime = "mintStartTime"
+	fiLegacyCollectionMintEndTime   = "mintEndTime"
+	fiLegacyCollectionRevealTime    = "revealTime"
+	// isInternal Meme Token (created by marketplace users)
+	fiLegacyCollectionInitialReserves = "initialReserves"
+	fiLegacyCollectionBlocksAmount    = "blocksAmount"
+	fiLegacyCollectionBlocksFee       = "blocksFee"
+	fiLegacyCollectionBlocksMaxSupply = "blocksMaxSupply"
 )
 
 func (sdb *SharedMongoDbBridge) GetLegacyCollection(address common.Address) (collection *types.LegacyCollection, err error) {
@@ -112,15 +116,19 @@ func (sdb *SharedMongoDbBridge) InsertLegacyCollection(c types.LegacyCollection)
 			{Key: fiLegacyCollectionIsVerified, Value: c.IsVerified},
 			{Key: fiLegacyCollectionIsReviewed, Value: c.IsReviewed},
 			{Key: fiLegacyCollectionAppropriateUpdate, Value: time.Now()},
-			/*
-				{Key: fiLegacyCollectionIsErc1155, Value: c.MintDetails.IsErc1155},
-				{Key: fiLegacyCollectionHasBaseUri, Value: c.MintDetails.HasBaseUri},
-				{Key: fiLegacyCollectionMaxItems, Value: c.MintDetails.MaxItems},
-				{Key: fiLegacyCollectionMaxItemCount, Value: c.MintDetails.MaxItemCount},
-				{Key: fiLegacyCollectionMintStartTime, Value: c.MintDetails.MintStartTime},
-				{Key: fiLegacyCollectionMintEndTime, Value: c.MintDetails.MintEndTime},
-				{Key: fiLegacyCollectionRevealTime, Value: c.MintDetails.RevealTime},
-			*/
+			// isInternal Collections (mintable by marketplace users)
+			{Key: fiLegacyCollectionIsErc1155, Value: c.MintDetails.IsErc1155},
+			{Key: fiLegacyCollectionHasBaseUri, Value: c.MintDetails.HasBaseUri},
+			{Key: fiLegacyCollectionMaxItems, Value: c.MintDetails.MaxItems},
+			{Key: fiLegacyCollectionMaxItemCount, Value: c.MintDetails.MaxItemCount},
+			{Key: fiLegacyCollectionMintStartTime, Value: c.MintDetails.MintStartTime},
+			{Key: fiLegacyCollectionMintEndTime, Value: c.MintDetails.MintEndTime},
+			{Key: fiLegacyCollectionRevealTime, Value: c.MintDetails.RevealTime},
+			// isInternal Meme Token (created by marketplace users)
+			{Key: fiLegacyCollectionInitialReserves, Value: c.MemeDetails.InitialReserves},
+			{Key: fiLegacyCollectionBlocksAmount, Value: c.MemeDetails.BlocksAmount},
+			{Key: fiLegacyCollectionBlocksFee, Value: c.MemeDetails.BlocksFee},
+			{Key: fiLegacyCollectionBlocksMaxSupply, Value: c.MemeDetails.BlocksMaxSupply},
 		},
 	); err != nil {
 		log.Errorf("can not insert LegacyCollection; %s", err)

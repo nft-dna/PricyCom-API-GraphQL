@@ -164,6 +164,11 @@
               "type": "string"
             },
             {
+              "internalType": "bool",
+              "name": "useDecimalUri",
+              "type": "bool"
+			},
+			{
               "internalType": "string",
               "name": "baseUriExt",
               "type": "string"

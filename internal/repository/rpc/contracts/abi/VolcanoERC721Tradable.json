@@ -59,6 +59,11 @@
               "type": "string"
             },
             {
+              "internalType": "bool",
+              "name": "useDecimalUri",
+              "type": "bool"
+			},
+			{
               "internalType": "string",
               "name": "baseUriExt",
               "type": "string"
@@ -376,6 +381,19 @@
       "type": "function"
     },
     {
+      "inputs": [],
+		"name": "factory",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
       "inputs": [],
       "name": "feeRecipient",
       "outputs": [

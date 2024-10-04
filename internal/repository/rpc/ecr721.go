@@ -156,16 +156,57 @@ func (o *Opera) Erc721StartingBlockNumber(adr *common.Address) (uint64, error) {
 	iter, err := erc.FilterTransfer(nil, []common.Address{{}}, nil, nil)
 	if err != nil {
 
-		// MM timeot on Sepolia 'open' rpc
-		filterOps := bind.FilterOpts{
-			Context: context.Background(),
-			Start:   o.minBlockNumber,
-			End:     nil,
-		}
-		iter, err = erc.FilterTransfer(&filterOps, []common.Address{{}}, nil, nil)
-		if err != nil {
+		// MM timeout on Sepolia 'open' rpc
+		if strings.Contains(strings.ToLower(fmt.Sprint(err)), "timed out") {
+			// do something
+			chb, perr := o.CurrentHead()
+			if perr == nil {
+				step := uint64(20000)
+				resOk := false
+				b := o.minBlockNumber
+				for b <= chb {
+					stop := b + step
+					filterOps := bind.FilterOpts{
+						Context: context.Background(),
+						Start:   b,
+						End:     &stop,
+					}
+					iter, err = erc.FilterTransfer(&filterOps, []common.Address{{}}, nil, nil)
+					if err == nil && iter.Event != nil {
+						resOk = true
+						break
+					}
+					b = b + step
+				}
+				/*
+					if !resOk {
+						b = o.minBlockNumber
+						for b > 0 {
 
-			return 0, err
+							filterOps := bind.FilterOpts{
+								Context: context.Background(),
+								Start:   b - step,
+								End:     &b,
+							}
+							iter, err = erc.FilterTransfer(&filterOps, []common.Address{{}}, nil, nil)
+							if err == nil && iter.Event != nil {
+								resOk = true
+								break
+							}
+							if b > step {
+								b = b - step
+							} else if b > 0 {
+								b = 0
+							} else {
+								break
+							}
+						}
+					}
+				*/
+				if !resOk {
+					return 0, err
+				}
+			}
 		}
 	}
 

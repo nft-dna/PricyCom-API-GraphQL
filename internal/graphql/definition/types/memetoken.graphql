@@ -1,5 +1,5 @@
-# Collection represents tokens contract.
-type Collection {
+# MemeToken represents tokens contract.
+type MemeToken {
     # Address of the token contract
     contract: Address!
 
@@ -60,45 +60,33 @@ type Collection {
     # Time when was the collection approved/banned/unbanned
     changedTime: Time
 
-    # Allows marketplace user to mint an item
-    isPublicMintable: Boolean!    
-
     # Is from our factory
     isInternal: Boolean!    
 
-    # contract is Erc1155 instead of Erc721
-    isErc1155: Boolean!      
+    # Token initial reserve minted to initial address receiver
+    initialReserve: BigInt! 
 
-    # Erc721 contract has its own uri already set for items minting (Erc1155 must already have a base uri)
-    hasBaseUri: Boolean!     
+    # Tokens distributed to the minter at minting time (and the same amount will be sent as LP on the dex pool)
+    blocksAmount: BigInt!   
+    
+    # Fee payed to mint a block (and sent as LP on the dex pool)
+    blocksFee: BigInt!
 
-    # collection items cap (0 if not set)
-    maxItems: BigInt   
-
-    # Erc1155 collection max item replica (0 if not set)
-    maxItemCount: BigInt    
-
-    # Time when mint could start (0 if not set)
-    mintStartTime: Time  
-
-    # Time when mint must end (0 if not set)
-    mintEndTime: Time      
-
-    # Time when real uri will be shown (0 if not set)
-    revealTime: Time      
+    # Token blocks cap (that implies a token distribution cap)
+    blocksMaxSupply: BigInt!        
 
     # canMint checks if the given user address can create new tokens on the collection
     canMint(user:Address!, fee: BigInt): Boolean!
 }
 
-type CollectionEdge {
+type MemeTokenEdge {
     cursor: Cursor!
-    node: Collection!
+    node: MemeToken!
 }
 
-type CollectionConnection {
+type MemeTokenConnection {
     # Edges contains provided edges of the sequential list.
-    edges: [CollectionEdge!]!
+    edges: [MemeTokenEdge!]!
 
     # TotalCount is the total amount of items in the list.
     totalCount: BigInt!

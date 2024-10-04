@@ -1,6 +1,15 @@
-db.volcano.createIndex( {  
+use volcano
+db.tokens.createIndex( {  
+"name": "text",
+"token": "text" })
+
+use volcano_shared
+db.accounts.createIndex( {  
+"address": "text",
+"alias": "text" })
+
+db.collections.createIndex( {  
 "collectionName": "text",
-"collectionSymbol": "text",
 "description": "text",
 "discord": "text",
 "email": "text",
@@ -11,9 +20,8 @@ db.volcano.createIndex( {
 "telegram": "text",
 "twitterHandle": "text" })
 
-db.volcano_shared.createIndex( {  
+db.memetokens.createIndex( {  
 "collectionName": "text",
-"collectionSymbol": "text",
 "description": "text",
 "discord": "text",
 "email": "text",
@@ -25,9 +33,20 @@ db.volcano_shared.createIndex( {
 "twitterHandle": "text" })
 
 
-db.sepolia.createIndex( {  
+
+
+use sepolia
+db.tokens.createIndex( {  
+"name": "text",
+"token": "text" })
+
+use sepolia_shared
+db.accounts.createIndex( {  
+"address": "text",
+"alias": "text" })
+
+db.collections.createIndex( {  
 "collectionName": "text",
-"collectionSymbol": "text",
 "description": "text",
 "discord": "text",
 "email": "text",
@@ -38,7 +57,7 @@ db.sepolia.createIndex( {
 "telegram": "text",
 "twitterHandle": "text" })
 
-db.sepolia_shared.createIndex( {  
+db.memetokens.createIndex( {  
 "collectionName": "text",
 "description": "text",
 "discord": "text",

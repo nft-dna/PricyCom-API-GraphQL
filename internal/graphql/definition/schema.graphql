@@ -26,10 +26,10 @@ type Query {
     collections(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!
 
     # Get a memetoken by address.
-    memeToken(contract: Address!): Collection
+    memeToken(contract: Address!): MemeToken
 
     # Get a memetoken to be advertised on the home page.
-    advertisedMemeToken: Collection
+    advertisedMemeToken: MemeToken
 
     # List memetokens (all, search name or filter mintable by given user).
     memeTokens(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): MemeTokenConnection!    

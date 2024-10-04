@@ -139,7 +139,7 @@ func (rs *RootResolver) UnbanCollection(ctx context.Context, args struct {
 func (rs *RootResolver) MemeTokensInReview(ctx context.Context, args struct {
 	Search *string
 	PaginationInput
-}) (con *CollectionConnection, err error) {
+}) (con *MemeTokenConnection, err error) {
 	err = requireModerator(ctx)
 	if err != nil {
 		return nil, err
@@ -158,7 +158,7 @@ func (rs *RootResolver) MemeTokensInReview(ctx context.Context, args struct {
 		return nil, err
 	}
 
-	return NewCollectionConnection(list)
+	return NewMemeTokenConnection(list)
 }
 
 // BannedCollections resolve a list of Meme Token which was banned by a moderator.

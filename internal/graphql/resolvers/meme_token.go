@@ -11,49 +11,49 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
-// Collection represents a resolvable collection of NFT tokens.
-type Collection types.LegacyCollection
+// MemeToken represents a resolvable meme token.
+type MemeToken types.LegacyCollection
 
-// CollectionConnection represents a resolvable connection
-// between Collection list and its edges.
-type CollectionConnection struct {
-	Edges      []CollectionEdge
+// MemeTokenConnection represents a resolvable connection
+// between MemeToken list and its edges.
+type MemeTokenConnection struct {
+	Edges      []MemeTokenEdge
 	TotalCount hexutil.Big
 	PageInfo   PageInfo
 }
 
-// CollectionEdge represents an edge on Collection list.
-type CollectionEdge struct {
-	Node *Collection
+// MemeTokenEdge represents an edge on Collection list.
+type MemeTokenEdge struct {
+	Node *MemeToken
 }
 
-// Collection resolves an NFT collection for the given contract address.
-func (rs *RootResolver) Collection(args struct {
+// MemeToken resolves an Meme Token for the given contract address.
+func (rs *RootResolver) MemeToken(args struct {
 	Contract common.Address
-}) (*Collection, error) {
-	return NewCollection(&args.Contract)
+}) (*MemeToken, error) {
+	return NewMemeToken(&args.Contract)
 }
 
 // AdvertisedCollection is the address of the NFT collection to be advertised.
-var advertisedCollection = common.HexToAddress("0x5dbc2a8b01b7e37dfd7850237a3330c9939d6457")
+var advertisedMemeToken = common.HexToAddress("0x5dbc2a8b01b7e37dfd7850237a3330c9939d6457")
 
 // AdvertisedCollection resolves an NFT collection to be advertised on the home page.
-func (rs *RootResolver) AdvertisedCollection() (*Collection, error) {
-	return NewCollection(&advertisedCollection) // TODO: random favourite collection?
+func (rs *RootResolver) AdvertisedMemeToken() (*MemeToken, error) {
+	return NewMemeToken(&advertisedCollection) // TODO: random favourite collection?
 }
 
-// Collections resolve a list of NFT Collection for the given criteria.
-func (rs *RootResolver) Collections(args struct {
+// MemeTokens resolve a list of Meme Token for the given criteria.
+func (rs *RootResolver) MemeTokens(args struct {
 	Search     *string
 	MintableBy *common.Address
 	PaginationInput
-}) (con *CollectionConnection, err error) {
+}) (con *MemeTokenConnection, err error) {
 	cursor, count, backward, err := args.ToRepositoryInput()
 	if err != nil {
 		return nil, err
 	}
 
-	list, err := repository.R().ListLegacyCollections(types.CollectionFilter{
+	list, err := repository.R().ListLegacyMemeTokens(types.CollectionFilter{
 		Search:     args.Search,
 		MintableBy: args.MintableBy,
 	}, cursor, count, backward)
@@ -61,35 +61,35 @@ func (rs *RootResolver) Collections(args struct {
 		return nil, err
 	}
 
-	return NewCollectionConnection(list)
+	return NewMemeTokenConnection(list)
 }
 
-// NewCollection loads a Collection structure for the given address.
-func NewCollection(adr *common.Address) (*Collection, error) {
-	col, err := repository.R().GetLegacyCollection(*adr)
+// NewMemeToken loads a Collection structure for the given address.
+func NewMemeToken(adr *common.Address) (*MemeToken, error) {
+	col, err := repository.R().GetLegacyMemeToken(*adr)
 	if err != nil {
 		return nil, err
 	}
-	return (*Collection)(col), nil
+	return (*MemeToken)(col), nil
 }
 
 // Cursor generates new unique identifier of the collection list edge.
-func (edge CollectionEdge) Cursor() (types.Cursor, error) {
+func (edge MemeTokenEdge) Cursor() (types.Cursor, error) {
 	return sorting.LegacyCollectionSortingName.GetCursor((*types.LegacyCollection)(edge.Node))
 }
 
-// NewCollectionConnection creates a new connection of a Collection list.
-func NewCollectionConnection(list *types.LegacyCollectionList) (*CollectionConnection, error) {
+// NewMemeTokenConnection creates a new connection of a Collection list.
+func NewMemeTokenConnection(list *types.LegacyCollectionList) (*MemeTokenConnection, error) {
 	// create new connection
-	con := &CollectionConnection{
-		Edges:      make([]CollectionEdge, len(list.Collection)),
+	con := &MemeTokenConnection{
+		Edges:      make([]MemeTokenEdge, len(list.Collection)),
 		TotalCount: (hexutil.Big)(*big.NewInt(list.TotalCount)),
 		PageInfo:   PageInfo{},
 	}
 
 	// connect edges
 	for i := 0; i < len(list.Collection); i++ {
-		con.Edges[i].Node = (*Collection)(list.Collection[i])
+		con.Edges[i].Node = (*MemeToken)(list.Collection[i])
 	}
 
 	// setup page info
@@ -113,21 +113,21 @@ func NewCollectionConnection(list *types.LegacyCollectionList) (*CollectionConne
 }
 
 // Contract resolves thr address of the NFT collection contract.
-func (t *Collection) Contract() common.Address {
+func (t *MemeToken) Contract() common.Address {
 	return t.Address
 }
 
 // Categories resolves list of Collection categories as a slice of PK indexes.
-func (t *Collection) Categories() ([]int32, error) {
+func (t *MemeToken) Categories() ([]int32, error) {
 	return (*types.LegacyCollection)(t).CategoriesAsInt()
 }
 
 // Royalty returns percents of royalty fee as a string value.
-func (t *Collection) Royalty() string {
+func (t *MemeToken) Royalty() string {
 	return (*types.LegacyCollection)(t).RoyaltyValue.String()
 }
 
-func (t *Collection) Discord() string {
+func (t *MemeToken) Discord() string {
 	if idx := strings.Index(t.DiscordUrl, "discord.gg/"); idx != -1 {
 		return "https://discord.gg/" + t.DiscordUrl[idx+11:]
 	}
@@ -137,7 +137,7 @@ func (t *Collection) Discord() string {
 	return ""
 }
 
-func (t *Collection) Site() string {
+func (t *MemeToken) Site() string {
 	if strings.HasPrefix(t.SiteUrl, "https://") || strings.HasPrefix(t.SiteUrl, "http://") {
 		return t.SiteUrl
 	}
@@ -147,7 +147,7 @@ func (t *Collection) Site() string {
 	return ""
 }
 
-func (t *Collection) Telegram() string {
+func (t *MemeToken) Telegram() string {
 	if idx := strings.Index(t.TelegramUrl, "t.me/"); idx != -1 {
 		return "https://t.me/" + t.TelegramUrl[idx+5:]
 	}
@@ -160,7 +160,7 @@ func (t *Collection) Telegram() string {
 	return ""
 }
 
-func (t *Collection) Twitter() string {
+func (t *MemeToken) Twitter() string {
 	if idx := strings.Index(t.TwitterUrl, "twitter.com/"); idx != -1 {
 		return "https://twitter.com/" + t.TwitterUrl[idx+12:]
 	}
@@ -173,7 +173,7 @@ func (t *Collection) Twitter() string {
 	return ""
 }
 
-func (t *Collection) Medium() string {
+func (t *MemeToken) Medium() string {
 	if strings.HasPrefix(t.MediumUrl, "https://") || strings.HasPrefix(t.MediumUrl, "http://") {
 		return t.MediumUrl
 	}
@@ -186,11 +186,11 @@ func (t *Collection) Medium() string {
 	return ""
 }
 
-func (t *Collection) CreatedTime() types.Time {
+func (t *MemeToken) CreatedTime() types.Time {
 	return types.Time(t.Id.Timestamp())
 }
 
-func (t *Collection) ChangedTime() *types.Time {
+func (t *MemeToken) ChangedTime() *types.Time {
 	if t.AppropriateUpdate.Unix() <= 0 {
 		return nil
 	}
@@ -198,68 +198,34 @@ func (t *Collection) ChangedTime() *types.Time {
 	return &tm
 }
 
-func (t *Collection) OwnerUser() (*User, error) {
+func (t *MemeToken) OwnerUser() (*User, error) {
 	return getUserByAddressPtr(t.Owner)
 }
 
-func (t *Collection) FeeRecipientUser() (*User, error) {
+func (t *MemeToken) FeeRecipientUser() (*User, error) {
 	return getUserByAddressPtr(t.FeeRecipient)
 }
 
-func (t *Collection) IsPublicMintable() bool {
-	return (t.IsOwnerOnly == false)
+func (t *MemeToken) InitialReserve() hexutil.Big {
+	return *(*hexutil.Big)(&t.MemeDetails.InitialReserves)
 }
 
-func (t *Collection) IsErc1155() bool {
-	return t.MintDetails.IsErc1155
+func (t *MemeToken) BlocksAmount() hexutil.Big {
+	return *(*hexutil.Big)(&t.MemeDetails.BlocksAmount)
 }
 
-func (t *Collection) HasBaseUri() bool {
-	return t.MintDetails.HasBaseUri
+func (t *MemeToken) BlocksFee() hexutil.Big {
+	return *(*hexutil.Big)(&t.MemeDetails.BlocksFee)
 }
 
-func (t *Collection) MaxItems() *hexutil.Big {
-	if t.MintDetails.MaxItems == 0 {
-		return nil
-	}
-	return (*hexutil.Big)(big.NewInt(int64(t.MintDetails.MaxItems)))
-}
-
-func (t *Collection) MaxItemCount() *hexutil.Big {
-	if t.MintDetails.MaxItemCount == 0 {
-		return nil
-	}
-	return (*hexutil.Big)(big.NewInt(int64(t.MintDetails.MaxItemCount)))
-}
-
-func (t *Collection) MintStartTime() *types.Time {
-	if t.MintDetails.MintStartTime.Unix() <= 0 {
-		return nil
-	}
-	tm := types.Time(t.MintDetails.MintStartTime)
-	return &tm
-}
-
-func (t *Collection) MintEndTime() *types.Time {
-	if t.MintDetails.MintEndTime.Unix() <= 0 {
-		return nil
-	}
-	tm := types.Time(t.MintDetails.MintEndTime)
-	return &tm
-}
-
-func (t *Collection) RevealTime() *types.Time {
-	if t.MintDetails.RevealTime.Unix() <= 0 {
-		return nil
-	}
-	tm := types.Time(t.MintDetails.RevealTime)
-	return &tm
+func (t *MemeToken) BlocksMaxSupply() hexutil.Big {
+	return *(*hexutil.Big)(big.NewInt(int64(t.MemeDetails.BlocksMaxSupply)))
 }
 
 // CanMint resolves the minting privilege for the given user by address.
-func (t *Collection) CanMint(args struct {
+func (t *MemeToken) CanMint(args struct {
 	User common.Address
 	Fee  *hexutil.Big
 }) (bool, error) {
-	return repository.R().CanMint(&t.Address, &args.User, (*big.Int)(args.Fee))
+	return repository.R().CanMintBlock(&t.Address, &args.User, (*big.Int)(args.Fee))
 }

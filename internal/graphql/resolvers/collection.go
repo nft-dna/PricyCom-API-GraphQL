@@ -4,8 +4,10 @@ import (
 	"artion-api-graphql/internal/repository"
 	"artion-api-graphql/internal/types"
 	"artion-api-graphql/internal/types/sorting"
+	"bytes"
 	"math/big"
 	"strings"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -261,5 +263,44 @@ func (t *Collection) CanMint(args struct {
 	User common.Address
 	Fee  *hexutil.Big
 }) (bool, error) {
-	return repository.R().CanMint(&t.Address, &args.User, (*big.Int)(args.Fee))
+	if !t.IsInternal {
+		return false, nil
+	}
+	if t.IsOwnerOnly || !bytes.EqualFold(t.Owner.Bytes(), args.User.Bytes()) {
+		return false, nil
+	}
+
+	if t.MintDetails.MintStartTime.Unix() > 0 {
+		if time.Now().Unix() < t.MintDetails.MintStartTime.Unix() {
+			return false, nil
+		}
+	}
+
+	if t.MintDetails.MintEndTime.Unix() > 0 {
+		if time.Now().Unix() >= t.MintDetails.MintEndTime.Unix() {
+			return false, nil
+		}
+	}
+
+	if t.MintDetails.IsErc1155 {
+		sup, err := repository.R().CollectionErc1155Supply(&t.Address)
+		if err != nil {
+			return false, err
+		}
+
+		if sup.Cmp(big.NewInt(int64(t.MemeDetails.BlocksMaxSupply))) < 0 {
+			return false, err
+		}
+		return repository.R().CanMintErc1155(&t.Address, &args.User, (*big.Int)(args.Fee))
+	} else {
+		sup, err := repository.R().CollectionErc721Supply(&t.Address)
+		if err != nil {
+			return false, err
+		}
+
+		if sup.Cmp(big.NewInt(int64(t.MemeDetails.BlocksMaxSupply))) < 0 {
+			return false, err
+		}
+		return repository.R().CanMintErc721(&t.Address, &args.User, (*big.Int)(args.Fee))
+	}
 }

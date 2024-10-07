@@ -55,10 +55,13 @@ type Opera struct {
 	headers chan *eth.Header
 
 	// decode ABI structures
-	abiVolcano721  *abi.ABI
-	abiVolcano1155 *abi.ABI
-	abiVolcano20   *abi.ABI
-	abiMarketplace *abi.ABI
+	abiVolcano721         *abi.ABI
+	abiVolcano721Factory  *abi.ABI
+	abiVolcano1155        *abi.ABI
+	abiVolcano1155Factory *abi.ABI
+	abiVolcano20          *abi.ABI
+	abiVolcano20Factory   *abi.ABI
+	abiMarketplace        *abi.ABI
 
 	// contracts
 	auctionContractsProps   map[common.Address]types.AuctionProps
@@ -236,12 +239,27 @@ func loadABI(o *Opera) (err error) {
 		return err
 	}
 
+	o.abiVolcano721Factory, err = loadABIFile("contracts/abi/VolcanoERC721Factory.json")
+	if err != nil {
+		return err
+	}
+
 	o.abiVolcano1155, err = loadABIFile("contracts/abi/VolcanoERC1155Tradable.json")
 	if err != nil {
 		return err
 	}
 
+	o.abiVolcano1155Factory, err = loadABIFile("contracts/abi/VolcanoERC1155Factory.json")
+	if err != nil {
+		return err
+	}
+
 	o.abiVolcano20, err = loadABIFile("contracts/abi/VolcanoERC20Token.json")
+	if err != nil {
+		return err
+	}
+
+	o.abiVolcano20Factory, err = loadABIFile("contracts/abi/VolcanoERC20Factory.json")
 	if err != nil {
 		return err
 	}

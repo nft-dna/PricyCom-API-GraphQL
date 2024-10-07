@@ -4,6 +4,7 @@ package rpc
 
 import (
 	"context"
+	"math/big"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -72,4 +73,12 @@ func (o *Opera) MemeTokenOwner(contract *common.Address) *common.Address {
 
 	owner := common.BytesToAddress(data)
 	return &owner
+}
+
+func (o *Opera) CanMintMemeBlocks(contract *common.Address, user *common.Address, fee *big.Int) (bool, error) {
+	return o.Erc20CanMintBlocks(contract, user, fee)
+}
+
+func (o *Opera) MemeSupply(contract *common.Address) (*big.Int, error) {
+	return o.Erc20MintBlocksSupply(contract, nil)
 }

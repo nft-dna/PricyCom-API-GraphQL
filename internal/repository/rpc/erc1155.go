@@ -37,6 +37,31 @@ func (o *Opera) Erc1155BalanceOf(contract *common.Address, tokenId *big.Int, own
 	return new(big.Int).SetBytes(data), nil
 }
 
+func (o *Opera) Erc1155IsFromFactory(contract *common.Address, block *big.Int) (*common.Address, error) {
+	// prepare params
+	input, err := o.Erc1155Abi().Pack("factory")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	res, err := o.Erc1155Abi().Unpack("factory", data)
+	if err != nil {
+		log.Errorf("can not decode contract %s name; %s", contract.String(), err.Error())
+		return nil, err
+	}
+	return abi.ConvertType(res[0], new(common.Address)).(*common.Address), nil
+}
+
 func (o *Opera) Erc1155IsPrivate(contract *common.Address, block *big.Int) (bool, error) {
 	// prepare params
 	input, err := o.Erc1155Abi().Pack("isprivate")
@@ -55,6 +80,26 @@ func (o *Opera) Erc1155IsPrivate(contract *common.Address, block *big.Int) (bool
 		return false, err
 	}
 	return len(data) == 32 && data[0] == 0 && data[31] > 0, nil
+}
+
+func (o *Opera) Erc1155TotalSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc1155Abi().Pack("totalSupply")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
 }
 
 func (o *Opera) Erc1155MaxSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
@@ -367,7 +412,7 @@ func (o *Opera) CanMintErc1155(contract *common.Address, user *common.Address, f
 	// use default fee, if not specified
 	if fee == nil {
 		fee = o.MustPlatformFee(contract)
-		log.Infof("platform fee for %s is %s", contract.String(), (*hexutil.Big)(fee).String())
+		log.Infof("platform fee plus creator fee for %s is %s", contract.String(), (*hexutil.Big)(fee).String())
 	}
 
 	// try to estimate the call

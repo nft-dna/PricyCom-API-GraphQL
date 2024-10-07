@@ -101,6 +101,15 @@ func (p *Proxy) UploadCollectionApplication(app types.CollectionApplication, ima
 func (p *Proxy) extendErc1155CollectionMintDetails(adr *common.Address, mintDetails *types.CollectionMintDetails) bool {
 	isInternal := true
 	var err error
+
+	fval, err := p.CollectionErc1155IsFromFactory(adr)
+	if err != nil {
+		log.Errorf("%s isFromFactory not known; %s", adr.String(), err.Error())
+		//isInternal = false debug .. wip..  previuos versions hadn't this method
+	} else {
+		log.Infof("%s isFromFactory: %s", adr.String(), fval.String())
+	}
+
 	isprivate, err := p.CollectionErc1155IsPrivate(adr)
 	if err != nil {
 		log.Errorf("%s isPrivate not known; %s", adr.String(), err.Error())
@@ -149,6 +158,15 @@ func (p *Proxy) extendErc1155CollectionMintDetails(adr *common.Address, mintDeta
 func (p *Proxy) extendErc721CollectionMintDetails(adr *common.Address, mintDetails *types.CollectionMintDetails) bool {
 	isInternal := true
 	var err error
+
+	fval, err := p.CollectionErc721IsFromFactory(adr)
+	if err != nil {
+		log.Errorf("%s isFromFactory not known; %s", adr.String(), err.Error())
+		//isInternal = false debug .. wip..  previuos versions hadn't this method
+	} else {
+		log.Infof("%s isFromFactory: %s", adr.String(), fval.String())
+	}
+
 	isprivate, err := p.CollectionErc721IsPrivate(adr)
 	if err != nil {
 		log.Errorf("%s isPrivate not known; %s", adr.String(), err.Error())

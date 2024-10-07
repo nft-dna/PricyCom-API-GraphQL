@@ -20,7 +20,32 @@ import (
 const defaultMintingTestTokenUrl = "https://minter.artion.io/default/access/minter/estimation.json"
 
 // defaultMintingTestFee is the default fee we try on minting test (10 FTM).
-var defaultMintingTestFee = hexutil.MustDecodeBig("0x8AC7230489E80000")
+//var defaultMintingTestFee = hexutil.MustDecodeBig("0x8AC7230489E80000")
+
+func (o *Opera) Erc721IsFromFactory(contract *common.Address, block *big.Int) (*common.Address, error) {
+	// prepare params
+	input, err := o.Erc721Abi().Pack("factory")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	res, err := o.Erc721Abi().Unpack("factory", data)
+	if err != nil {
+		log.Errorf("can not decode contract %s name; %s", contract.String(), err.Error())
+		return nil, err
+	}
+	return abi.ConvertType(res[0], new(common.Address)).(*common.Address), nil
+}
 
 func (o *Opera) Erc721IsPrivate(contract *common.Address, block *big.Int) (bool, error) {
 	// prepare params
@@ -60,6 +85,26 @@ func (o *Opera) Erc721UseBaseUri(contract *common.Address, block *big.Int) (bool
 		return false, err
 	}
 	return len(data) == 32 && data[0] == 0 && data[31] > 0, nil
+}
+
+func (o *Opera) Erc721TotalSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc721Abi().Pack("totalSupply")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
 }
 
 func (o *Opera) Erc721MaxSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
@@ -232,7 +277,7 @@ func (o *Opera) CanMintErc721(contract *common.Address, user *common.Address, fe
 	// use default fee, if not specified
 	if fee == nil {
 		fee = o.MustPlatformFee(contract)
-		log.Infof("platform fee for %s is %s", contract.String(), (*hexutil.Big)(fee).String())
+		log.Infof("platform fee plus creator fee for %s is %s", contract.String(), (*hexutil.Big)(fee).String())
 	}
 
 	// try to estimate the call
@@ -253,23 +298,46 @@ func (o *Opera) CanMintErc721(contract *common.Address, user *common.Address, fe
 
 // MustPlatformFee returns the platform fee for the given contract, or the default one.
 func (o *Opera) MustPlatformFee(contract *common.Address) *big.Int {
+	fact, err := o.Erc721IsFromFactory(contract, nil)
+	if err != nil {
+		return nil
+	}
+
+	input, err := o.abiVolcano721Factory.Pack("platformMintFee")
+	if err != nil {
+		return nil
+	}
+
+	// call the contract
 	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
 		From: common.Address{},
-		To:   contract,
-		Data: common.Hex2Bytes("26232a2e"),
+		To:   fact,
+		Data: input,
 	}, nil)
 	if err != nil {
-		log.Errorf("can not get platform fee from %s; %s", contract.String(), err.Error())
-		return defaultMintingTestFee
+		return nil
 	}
 
-	// try to unpack the data if possible; we expect uint256 value = 32 bytes
-	if len(data) != 32 {
-		log.Errorf("invalid platform fee response from %s; expected 32 bytes, %d bytes received", contract.String(), len(data))
-		return defaultMintingTestFee
+	mfee := new(big.Int).SetBytes(data)
+
+	data, err = o.abiVolcano721.Pack("mintCreatorFee")
+	if err != nil {
+		return nil
 	}
 
-	return new(big.Int).SetBytes(data)
+	// call the contract
+	data, err = o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, nil)
+	if err != nil {
+		return nil
+	}
+
+	mfee.Add(mfee, new(big.Int).SetBytes(data))
+
+	return mfee
 }
 
 // Erc721TokenUri gets a token specific URI address from ERC-721 contract using tokenURI() call.

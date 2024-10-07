@@ -74,14 +74,19 @@ func (p *Proxy) IsMemeContractType(adr *common.Address) (string, error) {
 	return "", fmt.Errorf("unknown contract type at %s", adr.String())
 }
 
-// CanMint checks if the given user can mint a new token on the given NFT contract.
-func (p *Proxy) CanMint(contract *common.Address, user *common.Address, fee *big.Int) (bool, error) {
-	// the ERC-721 minter differs from other contracts, we need to check the type first
-	if p.IsErc721Contract(contract) {
-		return p.rpc.CanMintErc721(contract, user, fee)
-	}
+func (p *Proxy) CollectionErc721Supply(contract *common.Address) (*big.Int, error) {
+	return p.rpc.Erc721TotalSupply(contract, nil)
+}
 
-	// it's either ERC-1155 or not a valid minter at all
+func (p *Proxy) CollectionErc1155Supply(contract *common.Address) (*big.Int, error) {
+	return p.rpc.Erc1155TotalSupply(contract, nil)
+}
+
+func (p *Proxy) CanMintErc721(contract *common.Address, user *common.Address, fee *big.Int) (bool, error) {
+	return p.rpc.CanMintErc721(contract, user, fee)
+}
+
+func (p *Proxy) CanMintErc1155(contract *common.Address, user *common.Address, fee *big.Int) (bool, error) {
 	return p.rpc.CanMintErc1155(contract, user, fee)
 }
 
@@ -122,6 +127,14 @@ func (p *Proxy) CollectionErc1155MaxItemSupply(adr *common.Address) (*big.Int, e
 	return p.rpc.Erc1155MaxItemSupply(adr, nil)
 }
 
+func (p *Proxy) CollectionErc721IsFromFactory(adr *common.Address) (*common.Address, error) {
+	return p.rpc.Erc721IsFromFactory(adr, nil)
+}
+
+func (p *Proxy) CollectionErc1155IsFromFactory(adr *common.Address) (*common.Address, error) {
+	return p.rpc.Erc1155IsFromFactory(adr, nil)
+}
+
 func (p *Proxy) CollectionErc721IsPrivate(adr *common.Address) (bool, error) {
 	return p.rpc.Erc721IsPrivate(adr, nil)
 }
@@ -160,6 +173,10 @@ func (p *Proxy) CollectionErc721RevealTime(adr *common.Address) (*big.Int, error
 
 func (p *Proxy) CollectionErc1155RevealTime(adr *common.Address) (*big.Int, error) {
 	return p.rpc.Erc1155RevealTime(adr, nil)
+}
+
+func (p *Proxy) CollectionErc20IsFromFactory(adr *common.Address) (*common.Address, error) {
+	return p.rpc.Erc20IsFromFactory(adr, nil)
 }
 
 func (p *Proxy) CollectionErc20InitialReserves(adr *common.Address) (*big.Int, error) {

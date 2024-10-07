@@ -52,10 +52,13 @@ func (p *Proxy) ListMemeTokens(cursor types.Cursor, count int, backward bool) (*
 	return p.db.ListMemeTokens(cursor, count, backward)
 }
 
+func (p *Proxy) MemeSupply(contract *common.Address) (*big.Int, error) {
+	return p.rpc.MemeSupply(contract)
+}
+
 // CanMint checks if the given user can mint a new token on the given NFT contract.
 func (p *Proxy) CanMintBlock(contract *common.Address, user *common.Address, fee *big.Int) (bool, error) {
-	// MM TODO
-	return false, nil
+	return p.rpc.CanMintMemeBlocks(contract, user, fee)
 }
 
 // CollectionOwner tries to get the owner of the given collection.

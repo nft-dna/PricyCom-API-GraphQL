@@ -30,7 +30,7 @@ type Query {
     collections(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!
 
     # Get memetoken by address.
-    memeToken(contract: Address!): Collection
+    memeToken(contract: Address!): MemeToken
 
     # List memetokens (all, search name or filter mintable by given user).
     memeTokens(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): MemeTokenConnection!    
@@ -496,7 +496,7 @@ type CollectionConnection {
 
 type MemeTokenEdge {
     cursor: Cursor!
-    node: Collection!
+    node: MemeToken!
 }
 
 type MemeTokenConnection {

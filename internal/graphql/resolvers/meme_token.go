@@ -227,5 +227,19 @@ func (t *MemeToken) CanMint(args struct {
 	User common.Address
 	Fee  *hexutil.Big
 }) (bool, error) {
+	if !t.IsInternal {
+		return false, nil
+	}
+	//if (t.IsOwnerOnly || !bytes.EqualFold(t.Owner.Bytes(), args.User.Bytes())) {
+	//	return false, nil
+	//}
+	sup, err := repository.R().MemeSupply(&t.Address)
+	if err != nil {
+		return false, err
+	}
+
+	if sup.Cmp(big.NewInt(int64(t.MemeDetails.BlocksMaxSupply))) < 0 {
+		return false, err
+	}
 	return repository.R().CanMintBlock(&t.Address, &args.User, (*big.Int)(args.Fee))
 }

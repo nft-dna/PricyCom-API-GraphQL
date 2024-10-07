@@ -10,8 +10,10 @@ import (
 	"strings"
 
 	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 // Erc721StartingBlockNumber provides the first important block number for the ERC-721 contract.
@@ -93,6 +95,31 @@ func (o *Opera) Erc20StartingBlockNumber(adr *common.Address) (uint64, error) {
 	return blk, nil
 }
 
+func (o *Opera) Erc20IsFromFactory(contract *common.Address, block *big.Int) (*common.Address, error) {
+	// prepare params
+	input, err := o.Erc20Abi().Pack("factory")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	res, err := o.Erc20Abi().Unpack("factory", data)
+	if err != nil {
+		log.Errorf("can not decode contract %s name; %s", contract.String(), err.Error())
+		return nil, err
+	}
+	return abi.ConvertType(res[0], new(common.Address)).(*common.Address), nil
+}
+
 func (o *Opera) Erc20InitialReserves(contract *common.Address, block *big.Int) (*big.Int, error) {
 	// prepare params
 	input, err := o.Erc20Abi().Pack("initialReserves")
@@ -153,6 +180,26 @@ func (o *Opera) Erc20MintBlocksFee(contract *common.Address, block *big.Int) (*b
 	return new(big.Int).SetBytes(data), nil
 }
 
+func (o *Opera) Erc20MintBlocksSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
+	// prepare params
+	input, err := o.Erc20Abi().Pack("mintBlocksSupply")
+	if err != nil {
+		log.Errorf("can not pack data; %s", err.Error())
+		return nil, err
+	}
+
+	// call the contract
+	data, err := o.ftm.CallContract(context.Background(), ethereum.CallMsg{
+		From: common.Address{},
+		To:   contract,
+		Data: input,
+	}, block)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetBytes(data), nil
+}
+
 func (o *Opera) Erc20MintBlocksMaxSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
 	// prepare params
 	input, err := o.Erc20Abi().Pack("mintBlocksMaxSupply")
@@ -171,4 +218,54 @@ func (o *Opera) Erc20MintBlocksMaxSupply(contract *common.Address, block *big.In
 		return nil, err
 	}
 	return new(big.Int).SetBytes(data), nil
+}
+
+func (o *Opera) Erc20MHasSupply(contract *common.Address, block *big.Int) (bool, error) {
+	// prepare params
+	va, err := o.Erc20MintBlocksSupply(contract, block)
+	if err != nil {
+		log.Errorf("can not get supply; %s", err.Error())
+		return false, err
+	}
+
+	ma, err := o.Erc20MintBlocksMaxSupply(contract, block)
+	if err != nil {
+		log.Errorf("can not get max supply; %s", err.Error())
+		return false, err
+	}
+
+	return (va.Cmp(ma) < 0), nil
+}
+
+// CanMintErc721 checks if the given user can mint a new token on the given NFT contract.
+func (o *Opera) Erc20CanMintBlocks(contract *common.Address, user *common.Address, fee *big.Int) (bool, error) {
+	// MM: TODO.. adjust to newer Factory contract
+	data, err := o.abiVolcano20.Pack("mintBlock", *user)
+	if err != nil {
+		return false, err
+	}
+
+	// use default fee, if not specified
+	if fee == nil {
+		fee, err = o.Erc20MintBlocksFee(contract, nil)
+		if err != nil {
+			return false, err
+		}
+		log.Infof("mint blocks fee for %s is %s", contract.String(), (*hexutil.Big)(fee).String())
+	}
+
+	// try to estimate the call
+	gas, err := o.ftm.EstimateGas(context.Background(), ethereum.CallMsg{
+		From:  *user,
+		To:    contract,
+		Data:  data,
+		Value: fee,
+	})
+	if err != nil {
+		log.Warningf("user %s can not mint on ERC-20 %s; %s", user.String(), contract.String(), err.Error())
+		return false, nil
+	}
+
+	log.Infof("user %s can mint on ERC-20 %s for %d gas", user.String(), contract.String(), gas)
+	return true, nil
 }

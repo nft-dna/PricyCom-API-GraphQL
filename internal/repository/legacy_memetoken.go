@@ -91,6 +91,15 @@ func (p *Proxy) UploadMemeTokenApplication(app types.CollectionApplication, imag
 func (p *Proxy) extendMemeTokenDetails(adr *common.Address, memeDetails *types.MemeTokenDetails) bool {
 
 	isInternal := true
+
+	fval, err := p.CollectionErc20IsFromFactory(adr)
+	if err != nil {
+		log.Errorf("%s isFromFactory not known; %s", adr.String(), err.Error())
+		//isInternal = false debug .. wip..  previuos versions hadn't this method
+	} else {
+		log.Infof("%s isFromFactory: %s", adr.String(), fval.String())
+	}
+
 	biVal, err := p.CollectionErc20InitialReserves(adr)
 	if err != nil {
 		log.Errorf("%s initialReserves not known; %s", adr.String(), err.Error())

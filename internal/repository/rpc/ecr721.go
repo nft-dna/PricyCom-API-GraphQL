@@ -320,7 +320,7 @@ func (o *Opera) MustPlatformFee(contract *common.Address) *big.Int {
 
 	mfee := new(big.Int).SetBytes(data)
 
-	data, err = o.abiVolcano721.Pack("mintCreatorFee")
+	input, err = o.abiVolcano721.Pack("mintCreatorFee")
 	if err != nil {
 		return nil
 	}

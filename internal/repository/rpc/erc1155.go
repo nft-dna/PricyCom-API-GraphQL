@@ -84,7 +84,7 @@ func (o *Opera) Erc1155IsPrivate(contract *common.Address, block *big.Int) (bool
 
 func (o *Opera) Erc1155TotalSupply(contract *common.Address, block *big.Int) (*big.Int, error) {
 	// prepare params
-	input, err := o.Erc1155Abi().Pack("totalSupply")
+	input, err := o.Erc1155Abi().Pack("itemsSupply")
 	if err != nil {
 		log.Errorf("can not pack data; %s", err.Error())
 		return nil, err

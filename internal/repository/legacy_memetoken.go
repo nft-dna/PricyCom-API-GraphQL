@@ -95,7 +95,7 @@ func (p *Proxy) extendMemeTokenDetails(adr *common.Address, memeDetails *types.M
 	fval, err := p.CollectionErc20IsFromFactory(adr)
 	if err != nil {
 		log.Errorf("%s isFromFactory not known; %s", adr.String(), err.Error())
-		//isInternal = false debug .. wip..  previuos versions hadn't this method
+		isInternal = false
 	} else {
 		log.Infof("%s isFromFactory: %s", adr.String(), fval.String())
 	}

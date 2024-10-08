@@ -32,6 +32,7 @@ type CollectionEdge struct {
 // Collection resolves an NFT collection for the given contract address.
 func (rs *RootResolver) Collection(args struct {
 	Contract common.Address
+	User     *common.Address
 }) (*Collection, error) {
 	return NewCollection(&args.Contract)
 }
@@ -288,7 +289,7 @@ func (t *Collection) CanMint(args struct {
 			return false, err
 		}
 
-		if sup.Cmp(big.NewInt(int64(t.MemeDetails.BlocksMaxSupply))) < 0 {
+		if sup.Cmp(big.NewInt(int64(t.MintDetails.MaxItems))) < 0 {
 			return false, err
 		}
 		return repository.R().CanMintErc1155(&t.Address, &args.User, (*big.Int)(args.Fee))
@@ -298,7 +299,7 @@ func (t *Collection) CanMint(args struct {
 			return false, err
 		}
 
-		if sup.Cmp(big.NewInt(int64(t.MemeDetails.BlocksMaxSupply))) < 0 {
+		if sup.Cmp(big.NewInt(int64(t.MintDetails.MaxItems))) < 0 {
 			return false, err
 		}
 		return repository.R().CanMintErc721(&t.Address, &args.User, (*big.Int)(args.Fee))

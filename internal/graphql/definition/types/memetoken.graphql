@@ -73,7 +73,7 @@ type MemeToken {
     blocksFee: BigInt!
 
     # Token blocks cap (that implies a token distribution cap)
-    blocksMaxSupply: BigInt!        
+    blocksMaxSupply: BigInt!           
 
     # canMint checks if the given user address can create new tokens on the collection
     canMint(user:Address!, fee: BigInt): Boolean!

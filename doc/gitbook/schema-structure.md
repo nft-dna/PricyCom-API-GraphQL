@@ -24,13 +24,13 @@ type Query {
     categories: [Category!]!
 
     # Get collection by address.
-    collection(contract: Address!): Collection
+    collection(contract: Address!, user: Address): Collection
 
     # List collections (all, search name or filter mintable by given user).
     collections(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!
 
     # Get memetoken by address.
-    memeToken(contract: Address!): MemeToken
+    memeToken(contract: Address!, user: Address): MemeToken
 
     # List memetokens (all, search name or filter mintable by given user).
     memeTokens(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): MemeTokenConnection!    
@@ -473,6 +473,9 @@ type Collection {
 
     # Social: Instagram URL
     instagram: String!
+
+    # maint Fees
+    maintFees: BigInt      
 
     # canMint checks if the given user address can create new tokens on the collection
     canMint(user:Address!, fee: BigInt): Boolean!

@@ -17,7 +17,7 @@ type Query {
     categories: [Category!]!
 
     # Get a collection by address.
-    collection(contract: Address!): Collection
+    collection(contract: Address!, user: Address): Collection
 
     # Get a collection to be advertised on the home page.
     advertisedCollection: Collection
@@ -26,7 +26,7 @@ type Query {
     collections(search: String, mintableBy: Address, first: Int, after: Cursor, last: Int, before: Cursor): CollectionConnection!
 
     # Get a memetoken by address.
-    memeToken(contract: Address!): MemeToken
+    memeToken(contract: Address!, user: Address): MemeToken
 
     # Get a memetoken to be advertised on the home page.
     advertisedMemeToken: MemeToken

@@ -105,7 +105,7 @@ func (p *Proxy) extendErc1155CollectionMintDetails(adr *common.Address, mintDeta
 	fval, err := p.CollectionErc1155IsFromFactory(adr)
 	if err != nil {
 		log.Errorf("%s isFromFactory not known; %s", adr.String(), err.Error())
-		//isInternal = false debug .. wip..  previuos versions hadn't this method
+		isInternal = false
 	} else {
 		log.Infof("%s isFromFactory: %s", adr.String(), fval.String())
 	}

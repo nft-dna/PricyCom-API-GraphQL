@@ -30,6 +30,7 @@ type MemeTokenEdge struct {
 // MemeToken resolves an Meme Token for the given contract address.
 func (rs *RootResolver) MemeToken(args struct {
 	Contract common.Address
+	User     *common.Address
 }) (*MemeToken, error) {
 	return NewMemeToken(&args.Contract)
 }

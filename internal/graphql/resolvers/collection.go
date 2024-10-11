@@ -267,7 +267,7 @@ func (t *Collection) CanMint(args struct {
 	if !t.IsInternal {
 		return false, nil
 	}
-	if t.IsOwnerOnly || !bytes.EqualFold(t.Owner.Bytes(), args.User.Bytes()) {
+	if t.IsOwnerOnly && !bytes.EqualFold(t.Owner.Bytes(), args.User.Bytes()) {
 		return false, nil
 	}
 

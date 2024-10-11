@@ -286,21 +286,21 @@ func (t *Collection) CanMint(args struct {
 	if t.MintDetails.IsErc1155 {
 		sup, err := repository.R().CollectionErc1155Supply(&t.Address)
 		if err != nil {
-			return false, err
+			return false, nil
 		}
 
-		if sup.Cmp(big.NewInt(int64(t.MintDetails.MaxItems))) < 0 {
-			return false, err
+		if sup.Cmp(big.NewInt(int64(t.MintDetails.MaxItems))) >= 0 {
+			return false, nil
 		}
 		return repository.R().CanMintErc1155(&t.Address, &args.User, (*big.Int)(args.Fee))
 	} else {
 		sup, err := repository.R().CollectionErc721Supply(&t.Address)
 		if err != nil {
-			return false, err
+			return false, nil
 		}
 
-		if sup.Cmp(big.NewInt(int64(t.MintDetails.MaxItems))) < 0 {
-			return false, err
+		if sup.Cmp(big.NewInt(int64(t.MintDetails.MaxItems))) >= 0 {
+			return false, nil
 		}
 		return repository.R().CanMintErc721(&t.Address, &args.User, (*big.Int)(args.Fee))
 	}

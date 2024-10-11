@@ -271,7 +271,7 @@ func (o *Opera) CanMintErc721(contract *common.Address, user *common.Address, fe
 	// MM: TODO.. adjust to newer Factory contract
 	data, err := o.abiVolcano721.Pack("mint", *user, defaultMintingTestTokenUrl)
 	if err != nil {
-		return false, err
+		return false, nil
 	}
 
 	// use default fee, if not specified

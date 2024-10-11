@@ -3,7 +3,6 @@ package repository
 import (
 	"artion-api-graphql/internal/types"
 	"fmt"
-	"math/big"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -66,9 +65,9 @@ func (p *Proxy) UploadMemeTokenApplication(app types.CollectionApplication, imag
 		RevealTime:    time.Time{},
 	}
 	memeDetails := types.MemeTokenDetails{
-		InitialReserves: big.Int{},
-		BlocksAmount:    big.Int{},
-		BlocksFee:       big.Int{},
+		InitialReserves: "", //big.Int{},
+		BlocksAmount:    "", //big.Int{},
+		BlocksFee:       "", //big.Int{},
 		BlocksMaxSupply: 0,
 	}
 
@@ -105,7 +104,7 @@ func (p *Proxy) extendMemeTokenDetails(adr *common.Address, memeDetails *types.M
 		log.Errorf("%s initialReserves not known; %s", adr.String(), err.Error())
 		isInternal = false
 	} else {
-		memeDetails.InitialReserves = *biVal
+		memeDetails.InitialReserves = biVal.Text(16) //hexutil.Big(*biVal)
 	}
 
 	biVal, err = p.CollectionErc20BlocksAmount(adr)
@@ -113,7 +112,7 @@ func (p *Proxy) extendMemeTokenDetails(adr *common.Address, memeDetails *types.M
 		log.Errorf("%s blocksAmount not known; %s", adr.String(), err.Error())
 		isInternal = false
 	} else {
-		memeDetails.BlocksAmount = *biVal
+		memeDetails.BlocksAmount = biVal.Text(16) //hexutil.Big(*biVal)
 	}
 
 	biVal, err = p.CollectionErc20BlocksFee(adr)
@@ -121,7 +120,7 @@ func (p *Proxy) extendMemeTokenDetails(adr *common.Address, memeDetails *types.M
 		log.Errorf("%s blocksFee not known; %s", adr.String(), err.Error())
 		isInternal = false
 	} else {
-		memeDetails.BlocksFee = *biVal
+		memeDetails.BlocksFee = biVal.Text(16) //hexutil.Big(*biVal)
 	}
 
 	bVal, err := p.CollectionErc20BlocksMaxSupply(adr)

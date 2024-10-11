@@ -63,6 +63,9 @@ type MemeToken {
     # Is from our factory
     isInternal: Boolean!    
 
+    # Is verified
+    isVerified: Boolean!        
+
     # Token initial reserve minted to initial address receiver
     initialReserve: BigInt! 
 

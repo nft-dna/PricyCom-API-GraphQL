@@ -44,13 +44,14 @@ const (
 	fiLegacyCollectionIsReviewed        = "status"
 
 	// isInternal Collections (mintable by marketplace users)
-	fiLegacyCollectionIsErc1155     = "isErc1155"
-	fiLegacyCollectionHasBaseUri    = "hasBaseUri"
-	fiLegacyCollectionMaxItems      = "maxItems"
-	fiLegacyCollectionMaxItemCount  = "maxItemCount"
-	fiLegacyCollectionMintStartTime = "mintStartTime"
-	fiLegacyCollectionMintEndTime   = "mintEndTime"
-	fiLegacyCollectionRevealTime    = "revealTime"
+	//fiLegacyCollectionIsErc1155     = "isErc1155"
+	//fiLegacyCollectionHasBaseUri    = "hasBaseUri"
+	//fiLegacyCollectionMaxItems      = "maxItems"
+	//fiLegacyCollectionMaxItemCount  = "maxItemCount"
+	//fiLegacyCollectionMintStartTime = "mintStartTime"
+	//fiLegacyCollectionMintEndTime   = "mintEndTime"
+	//fiLegacyCollectionRevealTime    = "revealTime"
+	fiLegacyCollectionMintDetails = "mintDetails"
 )
 
 func (sdb *SharedMongoDbBridge) GetLegacyCollection(address common.Address) (collection *types.LegacyCollection, err error) {
@@ -112,13 +113,14 @@ func (sdb *SharedMongoDbBridge) InsertLegacyCollection(c types.LegacyCollection)
 			{Key: fiLegacyCollectionIsReviewed, Value: c.IsReviewed},
 			{Key: fiLegacyCollectionAppropriateUpdate, Value: time.Now()},
 			// isInternal Collections (mintable by marketplace users)
-			{Key: fiLegacyCollectionIsErc1155, Value: c.MintDetails.IsErc1155},
-			{Key: fiLegacyCollectionHasBaseUri, Value: c.MintDetails.HasBaseUri},
-			{Key: fiLegacyCollectionMaxItems, Value: c.MintDetails.MaxItems},
-			{Key: fiLegacyCollectionMaxItemCount, Value: c.MintDetails.MaxItemCount},
-			{Key: fiLegacyCollectionMintStartTime, Value: c.MintDetails.MintStartTime},
-			{Key: fiLegacyCollectionMintEndTime, Value: c.MintDetails.MintEndTime},
-			{Key: fiLegacyCollectionRevealTime, Value: c.MintDetails.RevealTime},
+			//{Key: fiLegacyCollectionIsErc1155, Value: c.MintDetails.IsErc1155},
+			//{Key: fiLegacyCollectionHasBaseUri, Value: c.MintDetails.HasBaseUri},
+			//{Key: fiLegacyCollectionMaxItems, Value: c.MintDetails.MaxItems},
+			//{Key: fiLegacyCollectionMaxItemCount, Value: c.MintDetails.MaxItemCount},
+			//{Key: fiLegacyCollectionMintStartTime, Value: c.MintDetails.MintStartTime},
+			//{Key: fiLegacyCollectionMintEndTime, Value: c.MintDetails.MintEndTime},
+			//{Key: fiLegacyCollectionRevealTime, Value: c.MintDetails.RevealTime},
+			{Key: fiLegacyCollectionMintDetails, Value: c.MintDetails},
 		},
 	); err != nil {
 		log.Errorf("can not insert LegacyCollection; %s", err)
@@ -289,7 +291,7 @@ func (sdb *SharedMongoDbBridge) ListLegacyCollections(collectionFilter types.Col
 		filter = append(filter, bson.E{Key: fiLegacyCollectionIsInternal, Value: true})
 		filter = append(filter, bson.E{Key: "$or", Value: bson.A{
 			bson.D{{Key: fiLegacyCollectionIsOwnerOnly, Value: false}},
-			bson.D{{Key: fiLegacyCollectionOwner, Value: *collectionFilter.MintableBy}},
+			bson.D{{Key: fiLegacyCollectionOwner, Value: strings.ToLower(collectionFilter.MintableBy.String())}},
 		}})
 	}
 

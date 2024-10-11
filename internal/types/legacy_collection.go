@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"math/big"
 	"strconv"
 	"time"
 
@@ -22,10 +21,10 @@ type CollectionMintDetails struct {
 }
 
 type MemeTokenDetails struct {
-	InitialReserves big.Int `bson:"initialReserves"`
-	BlocksAmount    big.Int `bson:"blocksAmount"`
-	BlocksFee       big.Int `bson:"blocksFee"`
-	BlocksMaxSupply uint64  `bson:"blocksMaxSupply"`
+	InitialReserves string `bson:"initialReserves"`
+	BlocksAmount    string `bson:"blocksAmount"`
+	BlocksFee       string `bson:"blocksFee"`
+	BlocksMaxSupply uint64 `bson:"blocksMaxSupply"`
 }
 
 // LegacyCollection represents token collection from old Artion.

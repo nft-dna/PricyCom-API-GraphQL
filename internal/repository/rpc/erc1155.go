@@ -404,9 +404,9 @@ func (o *Opera) Erc1155FirstMintBatchBlock(erc *contracts.Erc1155) (uint64, erro
 // CanMintErc1155 checks if the given user can mint a new token on the given NFT contract.
 func (o *Opera) CanMintErc1155(contract *common.Address, user *common.Address, fee *big.Int) (bool, error) {
 	// MM: TODO.. adjust to newer Factory contract
-	data, err := o.abiVolcano1155.Pack("mint", *user, big.NewInt(1), defaultMintingTestTokenUrl)
+	data, err := o.abiVolcano1155.Pack("mint", *user, big.NewInt(1), []byte(defaultMintingTestTokenUrl))
 	if err != nil {
-		return false, err
+		return false, nil
 	}
 
 	// use default fee, if not specified

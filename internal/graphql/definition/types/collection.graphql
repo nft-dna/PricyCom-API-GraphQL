@@ -66,6 +66,12 @@ type Collection {
     # Is from our factory
     isInternal: Boolean!    
 
+    # Is verified
+    isVerified: Boolean!        
+
+    # Is ownerOnly
+    IsOwnerOnly: Boolean!          
+
     # contract is Erc1155 instead of Erc721
     isErc1155: Boolean!      
 

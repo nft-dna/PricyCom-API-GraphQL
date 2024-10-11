@@ -3,7 +3,6 @@ package repository
 import (
 	"artion-api-graphql/internal/types"
 	"fmt"
-	"math/big"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -66,9 +65,9 @@ func (p *Proxy) UploadCollectionApplication(app types.CollectionApplication, ima
 		RevealTime:    time.Time{},
 	}
 	memeDetails := types.MemeTokenDetails{
-		InitialReserves: big.Int{},
-		BlocksAmount:    big.Int{},
-		BlocksFee:       big.Int{},
+		InitialReserves: "", //big.Int{},
+		BlocksAmount:    "", //big.Int{},
+		BlocksFee:       "", //big.Int{},
 		BlocksMaxSupply: 0,
 	}
 
@@ -117,6 +116,9 @@ func (p *Proxy) extendErc1155CollectionMintDetails(adr *common.Address, mintDeta
 	} else {
 		mintDetails.PublicMint = !isprivate
 	}
+
+	mintDetails.HasBaseUri = true
+
 	maxItemCount, err := p.CollectionErc1155MaxItemSupply(adr)
 	if err != nil {
 		log.Errorf("%s isPrivate not known; %s", adr.String(), err.Error())

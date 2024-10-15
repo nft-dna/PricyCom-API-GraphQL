@@ -30,7 +30,7 @@ var (
 )
 
 // VolcanoERC1155TradablecontractERC1155Options is an auto generated low-level Go binding around an user-defined struct.
-type VolcanoERC1155TradablecontractERC1155Options struct {
+/*type VolcanoERC1155TradablecontractERC1155Options struct {
 	BaseUri        string
 	UsebaseUriOnly bool
 	UseDecimalUri  bool
@@ -42,7 +42,7 @@ type VolcanoERC1155TradablecontractERC1155Options struct {
 	RevealTime     *big.Int
 	PreRevealUri   string
 	ContractUri    string
-}
+}*/
 
 // VolcanoERC1155FactoryMetaData contains all meta data concerning the VolcanoERC1155Factory contract.
 var VolcanoERC1155FactoryMetaData = &bind.MetaData{

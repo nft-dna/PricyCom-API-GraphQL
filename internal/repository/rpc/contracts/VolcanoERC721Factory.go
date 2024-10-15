@@ -30,7 +30,7 @@ var (
 )
 
 // VolcanoERC721TradablecontractERC721Options is an auto generated low-level Go binding around an user-defined struct.
-type VolcanoERC721TradablecontractERC721Options struct {
+/*type VolcanoERC721TradablecontractERC721Options struct {
 	BaseUri       string
 	UseDecimalUri bool
 	BaseUriExt    string
@@ -40,7 +40,7 @@ type VolcanoERC721TradablecontractERC721Options struct {
 	RevealTime    *big.Int
 	PreRevealUri  string
 	ContractUri   string
-}
+}*/
 
 // VolcanoERC721FactoryMetaData contains all meta data concerning the VolcanoERC721Factory contract.
 var VolcanoERC721FactoryMetaData = &bind.MetaData{

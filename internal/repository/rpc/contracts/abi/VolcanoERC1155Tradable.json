@@ -64,6 +64,11 @@
 							"type": "bool"
 						},
 						{
+							"internalType": "bool",
+							"name": "useDecimalUri",
+							"type": "bool"
+						},
+						{
 							"internalType": "string",
 							"name": "baseUriExt",
 							"type": "string"
@@ -96,6 +101,11 @@
 						{
 							"internalType": "string",
 							"name": "preRevealUri",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "contractUri",
 							"type": "string"
 						}
 					],

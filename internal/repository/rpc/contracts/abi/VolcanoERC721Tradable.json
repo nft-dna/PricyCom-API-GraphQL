@@ -92,6 +92,11 @@
 							"internalType": "string",
 							"name": "preRevealUri",
 							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "contractUri",
+							"type": "string"
 						}
 					],
 					"internalType": "struct VolcanoERC721Tradable.contractERC721Options",
